@@ -117,7 +117,6 @@
 #define CHASSIS_BACK_PITCH_ANGLE_MAX_OUT  1000.f
 #define CHASSIS_BACK_PITCH_ANGLE_MAX_IOUT 130.f
 
-
 #define CHASSIS_BREAK_PID_KP         0.05f
 #define CHASSIS_BREAK_PID_KI         0.001f
 #define CHASSIS_BREAK_PID_KD         0.0f
@@ -136,13 +135,11 @@
 #define CHASSIS_3508_PID_MAX_OUT 2000.0f
 #define CHASSIS_3508_PID_MAX_IOUT 300.0f
 
-
 #define CHASSIS_BACK_ANGLE_PID_KP   0.08f
 #define CHASSIS_BACK_ANGLE_PID_KI   0.045f
 #define CHASSIS_BACK_ANGLE_PID_KD   0.05f
 #define CHASSIS_BACK_ANGLE_MAX_OUT  30.f
 #define CHASSIS_BACK_ANGLE_MAX_IOUT 5.f
-
 
 #define CHASSIS_PERIOD 15 // 单位为ms 底盘任务运行周期
 #define MAX_CHASSIS_VX_SPEED 12.f
@@ -180,62 +177,59 @@
 #define push_speed_MAX_OUT  15000.0f //9500.0f
 #define push_speed_MAX_IOUT 1600.0f //16000.0f
 
-typedef enum
-{
-    CHASSIS_RELAX, //底盘失能 注意底盘失能和底盘刹车的区别
-    CHASSIS_BACK,
-    CHASSIS_ONLY,
-    CHASSIS_BLOCK,//底盘刹车
-    CHASSIS_FOLLOW_GIMBAL,
-    CHASSIS_SPIN,
-    CHASSIS_INDEPENDENT_CONTROL,
-    CHASSIS_OFF_GROUND,
+typedef enum {
+  CHASSIS_RELAX, //底盘失能 注意底盘失能和底盘刹车的区别
+  CHASSIS_BACK,
+  CHASSIS_ONLY,
+  CHASSIS_BLOCK,//底盘刹车
+  CHASSIS_FOLLOW_GIMBAL,
+  CHASSIS_SPIN,
+  CHASSIS_INDEPENDENT_CONTROL,
+  CHASSIS_OFF_GROUND,
 } chassis_mode_e;
 
 typedef enum {
-    RF=1,
-    LF=0,
-    LB,
-    RB
-}chassis_motor_index_e;
+  RF = 1,
+  LF = 0,
+  LB,
+  RB
+} chassis_motor_index_e;
 
-typedef struct
-{
-    chassis_mode_e mode;
+struct Chassis{
+  chassis_mode_e mode;
 
-    chassis_mode_e last_mode;
-    motor_3508_t motor_chassis[2];
-    motor_6020_t motor_steer[4];
+  chassis_mode_e last_mode;
+  motor_3508_t motor_chassis[2];
+  motor_6020_t motor_steer[4];
 
-    motor_6020_t motor_push;
-    motor_6020_t motor_left;
+  motor_6020_t motor_push;
+  motor_6020_t motor_left;
 
-    fp32 absolute_angle_get;
-    fp32 absolute_angle_set;
-    fp32 yaw_relative_angle_get;
-    fp32 balanced_angle;
-    fp32 gyro_set;
+  fp32 absolute_angle_get;
+  fp32 absolute_angle_set;
+  fp32 yaw_relative_angle_get;
+  fp32 balanced_angle;
+  fp32 gyro_set;
 
-    pid_t chassis_vw_pid;
-    pid_t angle_p;
-    pid_t chassis_speed_p;
-    pid_t chassis_break_p;
-    pid_t chassis_back_speed_p;
-    pid_t chassis_back_angle_p;
+  pid_t chassis_vw_pid;
+  pid_t angle_p;
+  pid_t chassis_speed_p;
+  pid_t chassis_break_p;
+  pid_t chassis_back_speed_p;
+  pid_t chassis_back_angle_p;
 
-    fp32 vx;
-    fp32 vy;
-    fp32 vw;
-    fp32 run;
+  fp32 vx;
+  fp32 vy;
+  fp32 vw;
+  fp32 run;
 
-    fp32 vx_pc;
-    fp32 vy_pc;
-    fp32 vw_pc;
+  fp32 vx_pc;
+  fp32 vy_pc;
+  fp32 vw_pc;
 
-    bool_t chassis_is_back;
+  bool_t chassis_is_back;
 
-
-} chassis_t;
+};
 
 //变量
 

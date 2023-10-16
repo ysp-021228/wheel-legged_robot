@@ -16,7 +16,7 @@
 #include "Atti.h"
 
 ramp_function_source_t chassis_3508_ramp[4];
-chassis_t chassis;
+struct Chassis chassis;
 extern gimbal_t gimbal;
 extern launcher_t launcher;
 extern key_board_t KeyBoard;
@@ -24,8 +24,8 @@ uint32_t start_hurt_time;
 fp32 mileage;
 fp32 motor_LF_speed, motor_RF_speed, chassis_speed;
 
-static void chassis_init(chassis_t *chassis);
-static void chassis_set_mode(chassis_t *chassis);
+static void chassis_init(struct Chassis *chassis);
+static void chassis_set_mode(struct Chassis *chassis);
 static void chassis_ctrl_info_get();
 static void chassis_relax_handle();
 static void chassis_wheel_cal(fp32 vx, fp32 vw);
@@ -89,7 +89,7 @@ static void chassis_ctrl_info_get() {
   chassis.vw = (float) (get_rc_ctrl().rc.ch[CHASSIS_Z_CHANNEL]) * RC_TO_VW;
 }
 
-static void chassis_init(chassis_t *chassis) {
+static void chassis_init(struct Chassis *chassis) {
 
   if (chassis == NULL)
     return;
@@ -162,7 +162,7 @@ static void chassis_init(chassis_t *chassis) {
   chassis->balanced_angle = 3;
 }
 
-static void chassis_set_mode(chassis_t *chassis) {
+static void chassis_set_mode(struct Chassis *chassis) {
 
   if (chassis == NULL)
     return;

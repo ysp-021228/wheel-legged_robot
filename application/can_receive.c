@@ -56,7 +56,7 @@ motor_measure_t motor_2006_measure[1];//TRIGGER
 
 static CAN_TxHeaderTypeDef  tx_message;
 static uint8_t              can_send_data[8];
-extern chassis_t chassis;
+extern struct Chassis chassis;
 Vector_msg vector_receive_msg;//
 TOF_msg tof_msg;
 

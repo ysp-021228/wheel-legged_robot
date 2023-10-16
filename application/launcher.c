@@ -70,7 +70,7 @@ extern key_board_t KeyBoard;
 extern struct RCCtrl rc_ctrl;
 extern gimbal_t gimbal;
 extern motor_measure_t motor_2006_measure[1];
-extern chassis_t chassis;
+extern struct Chassis chassis;
 
 bool is_blocked();
 void launcher_relax_handle();

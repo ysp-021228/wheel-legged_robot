@@ -33,7 +33,7 @@
 #include "user_lib.h"
 #include "Chassis.h"
 
-extern chassis_t chassis;
+extern struct Chassis chassis;
 
 static void abs_limit(float *a, float ABS_MAX)
 {
