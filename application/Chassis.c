@@ -163,33 +163,22 @@ static void chassis_set_mode(struct Chassis *chassis) {
 
   if (chassis == NULL)
     return;
+
   if (switch_is_down(get_rc_ctrl().rc.s[RC_s_L]) && switch_is_down(get_rc_ctrl().rc.s[RC_s_R])) {
     chassis->last_mode = chassis->mode;
     chassis->mode = CHASSIS_RELAX;
-  } else if (switch_is_down(get_rc_ctrl().rc.s[RC_s_R]) && !switch_is_down(get_rc_ctrl().rc.s[RC_s_L])) {
-    chassis->last_mode = chassis->mode;
-    if (chassis->last_mode == CHASSIS_RELAX) {
-      chassis->mode = CHASSIS_BACK;
-      chassis->chassis_is_back = 0;
-    } else if (chassis->mode == CHASSIS_BACK
-        && chassis->chassis_is_back == 1
-        ) {
-      chassis->mode = CHASSIS_ONLY;
-    }
-
-  } else if (switch_is_mid(get_rc_ctrl().rc.s[RC_s_R])) {
+  }else if (switch_is_mid(get_rc_ctrl().rc.s[RC_s_R])) {
     chassis->last_mode = chassis->mode;
     chassis->mode = CHASSIS_FOLLOW_GIMBAL;
   } else if (switch_is_up(get_rc_ctrl().rc.s[RC_s_R])) {
     chassis->last_mode = chassis->mode;
     chassis->mode = CHASSIS_SPIN;
   }
+
   if (KeyBoard.E.click_flag == 1)//
   {
     chassis->mode = CHASSIS_SPIN;
   }
-  //UI????---??????
-  ui_robot_status.chassis_mode = chassis->mode;
 }
 
 static void chassis_relax_handle() {
@@ -228,5 +217,9 @@ static void chassis_relax_judge() {
   if (ABS(chassis.absolute_angle_get) > 32) {
     chassis.mode = CHASSIS_RELAX;
   }
+}
+
+struct Chassis get_chassis(){
+  return chassis;
 }
 
