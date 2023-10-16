@@ -1,7 +1,3 @@
-//
-// Created by xhuanc on 2021/10/10.
-//
-
 #ifndef DEMO1_CHASSIS_H
 #define DEMO1_CHASSIS_H
 
@@ -25,37 +21,6 @@
 #define CHASSIS_X_CHANNEL 1
 
 #define CHASSIS_Z_CHANNEL 2
-
-#define CHASSIS_MODE_CHANNEL 0
-
-//控制量系数 根据最大速度和遥控器通知区间比例来算
-
-#define CHASSIS_VX_RC_SEN 0.006f
-
-#define CHASSIS_VY_RC_SEN 0.005f
-
-#define CHASSIS_ANGLE_Z_RC_SEN 0.000002f
-
-#define CHASSIS_WZ_RC_SEN 0.01f
-
-#define CHASSIS_RC_DEADLINE 10
-
-//底盘运动过程最大前进速度 mm/s
-#define NORMAL_MAX_CHASSIS_SPEED_X 2500.0f
-
-//底盘运动过程最大平移速度  mm/s
-#define NORMAL_MAX_CHASSIS_SPEED_Y 1500.0f
-
-#define CHASSIS_WZ_SET_SCALE 0.1f
-
-//功率控制
-#define CHASSIS_POWER_LIMIT_NO_REF 40
-#define CHASSIS_CURRENT_LIMIT_TOTAL 50000
-#define CHASSIS_CURRENT_LIMIT_40W 25000
-#define CHASSIS_POWER_BUFF 60
-//#define CHASSIS_POWER_LIMIT_DEBUG
-
-#define CONTINUES_HURT_JUDGE() (HAL_GetTick()-start_hurt_time>1000)
 
 /**********************  平衡底盘  *************************/
 
@@ -83,29 +48,11 @@
 #define CHASSIS_BACK_PITCH_ANGLE_MAX_OUT  1000.f
 #define CHASSIS_BACK_PITCH_ANGLE_MAX_IOUT 130.f
 
-#define CHASSIS_BREAK_PID_KP         0.05f
-#define CHASSIS_BREAK_PID_KI         0.001f
-#define CHASSIS_BREAK_PID_KD         0.0f
-#define CHASSIS_BREAK_PID_MAX_OUT    50.0f
-#define CHASSIS_BREAK_PID_MAX_IOUT   10.0f
-
-//#define CHASSIS_3508_PID_KP     1.5f
-//#define CHASSIS_3508_PID_KI     0.08f
-//#define CHASSIS_3508_PID_KD     0.0f
-//#define CHASSIS_3508_PID_MAX_OUT 2000.0f
-//#define CHASSIS_3508_PID_MAX_IOUT 300.0f
-
 #define CHASSIS_3508_PID_KP     2.3f
 #define CHASSIS_3508_PID_KI     0.1f
 #define CHASSIS_3508_PID_KD     0.0f
 #define CHASSIS_3508_PID_MAX_OUT 2000.0f
 #define CHASSIS_3508_PID_MAX_IOUT 300.0f
-
-#define CHASSIS_BACK_ANGLE_PID_KP   0.08f
-#define CHASSIS_BACK_ANGLE_PID_KI   0.045f
-#define CHASSIS_BACK_ANGLE_PID_KD   0.05f
-#define CHASSIS_BACK_ANGLE_MAX_OUT  30.f
-#define CHASSIS_BACK_ANGLE_MAX_IOUT 5.f
 
 #define CHASSIS_PERIOD 15 // 单位为ms 底盘任务运行周期
 #define MAX_CHASSIS_VX_SPEED 12.f
