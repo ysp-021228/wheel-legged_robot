@@ -27,27 +27,16 @@ fp32 mileage;
 fp32 motor_LF_speed, motor_RF_speed, chassis_speed;
 
 static void chassis_init(chassis_t *chassis);
-
 static void chassis_set_mode(chassis_t *chassis);
-
 static void chassis_ctrl_info_get();
-
 static void chassis_relax_handle();
-
 static void chassis_wheel_cal(fp32 vx, fp32 vw);
-
 static void chassis_wheel_loop_cal();
-
 static void chassis_spin_handle();
-
 static void chassis_only_handle();
-
 static void chassis_angle_update();
-
 static void chassis_relax_judge();
-
 void chassis_device_offline_handle();
-
 static void chassis_off_ground_detection();
 
 void chassis_task(void const *pvParameters) {
@@ -63,18 +52,11 @@ void chassis_task(void const *pvParameters) {
 
     chassis_ctrl_info_get();
 
-
-
-//        chassis_set_mode(&chassis);
+    chassis_set_mode(&chassis);
 
     // chassis_relax_judge();
 
     switch (chassis.mode) {
-      case CHASSIS_BACK: {
-//                chassis_back_handle();
-//                chassis_relax_handle();
-      }
-        break;
 
       case CHASSIS_ONLY: {
 //                chassis_wheel_cal(chassis.vx,  chassis.vw);
@@ -110,12 +92,11 @@ void chassis_task(void const *pvParameters) {
       case CHASSIS_OFF_GROUND: {
       }
 
-      case CHASSIS_RELAX:chassis_relax_handle();
+      case CHASSIS_RELAX: {
+        chassis_relax_handle();
         chassis_init(&chassis);
+      }
         break;
-    }
-    if (ABS(chassis.absolute_angle_get) > 30) {
-      chassis_relax_handle();
     }
     if (chassis.vx != 0) {
       mileage = 0;
@@ -123,15 +104,11 @@ void chassis_task(void const *pvParameters) {
     mileage = mileage + 15 * 0.001 * (motor_RF_speed + motor_LF_speed) / 2;
     vTaskDelay(CHASSIS_PERIOD);
   }
-
 }
 
 static void chassis_ctrl_info_get() {
-
   chassis.vx = (float) (get_rc_ctrl().rc.ch[CHASSIS_X_CHANNEL]) * RC_TO_VX;
-
   chassis.vw = (float) (get_rc_ctrl().rc.ch[CHASSIS_Z_CHANNEL]) * RC_TO_VW;
-
 }
 
 static void chassis_init(chassis_t *chassis) {
@@ -260,13 +237,6 @@ static void chassis_spin_handle() {
   //以下两行注释为2023赛季平衡兵轮子转速线速度计算函数
   motor_LF_speed = chassis.motor_chassis[LF].motor_measure->speed_rpm * BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED;
   motor_RF_speed = -chassis.motor_chassis[RF].motor_measure->speed_rpm * BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED;
-
-}
-
-static void chassis_indepent_control_handle() {
-  KeyBoard.E.click_flag = 0;
-  laser_on();
-  launcher.fire_mode = Fire_ON;
 
 }
 
