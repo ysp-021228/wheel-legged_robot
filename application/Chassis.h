@@ -143,7 +143,7 @@
 #define push_speed_MAX_OUT  15000.0f //9500.0f
 #define push_speed_MAX_IOUT 1600.0f //16000.0f
 
-typedef enum {
+enum ChassisMode{
   CHASSIS_RELAX, //底盘失能 注意底盘失能和底盘刹车的区别
   CHASSIS_BACK,
   CHASSIS_ONLY,
@@ -152,19 +152,18 @@ typedef enum {
   CHASSIS_SPIN,
   CHASSIS_INDEPENDENT_CONTROL,
   CHASSIS_OFF_GROUND,
-} chassis_mode_e;
+};
 
-typedef enum {
+enum ChassisMotorIndex{
   RF = 1,
   LF = 0,
   LB,
   RB
-} chassis_motor_index_e;
+};
 
 struct Chassis{
-  chassis_mode_e mode;
-
-  chassis_mode_e last_mode;
+  enum ChassisMode mode;
+  enum ChassisMode last_mode;
   motor_3508_t motor_chassis[2];
   motor_6020_t motor_steer[4];
 
@@ -187,17 +186,7 @@ struct Chassis{
   fp32 vx;
   fp32 vy;
   fp32 vw;
-  fp32 run;
-
-  fp32 vx_pc;
-  fp32 vy_pc;
-  fp32 vw_pc;
-
-  bool_t chassis_is_back;
-
 };
-
-//变量
 
 //函数声明
 extern void chassis_task(void const *pvParameters);
