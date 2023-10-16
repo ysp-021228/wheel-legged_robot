@@ -1,10 +1,5 @@
-//
-// Created by xhuanc on 2021/10/11.
-//
-
 #ifndef DEMO1_REMOTE_H
 #define DEMO1_REMOTE_H
-
 
 #include "struct_typedef.h"
 #include "bsp_rc.h"
@@ -47,7 +42,7 @@
 #define MOUSE_YES 1
 #define MOUSE_NO 0
 /* ----------------------- Data Struct ------------------------------------- */
-typedef  struct
+struct RCCtrl
 {
     __packed struct
     {
@@ -67,14 +62,11 @@ typedef  struct
         uint16_t v;
     } key;
 
-}__packed RC_ctrl_t;
+}__packed ;
 
 /* ----------------------- Internal Data ----------------------------------- */
 
-extern void remote_control_init(void);
-//extern const RC_ctrl_t *get_remote_control_point(void);
-extern uint8_t RC_data_is_error(void);
-extern void slove_RC_lost(void);
-extern void slove_data_error(void);
-extern void sbus_to_usart1(uint8_t *sbus);
+void remote_control_init(void);
+struct RCCtrl get_rc_ctrl();
+
 #endif

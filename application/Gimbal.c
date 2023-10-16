@@ -20,7 +20,7 @@
 
 /*      变量      */
 gimbal_t gimbal;
-extern RC_ctrl_t rc_ctrl;
+extern struct RCCtrl rc_ctrl;
 //extern AHRS_Eulr_t Eulr;
 extern launcher_t launcher;
 extern Eulr_t Eulr;

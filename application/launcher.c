@@ -67,7 +67,7 @@ uint32_t blocked_start_time;
 uint32_t reverse_start_time;
 first_order_filter_type_t filter_trigger_rpm_in;
 extern key_board_t KeyBoard;
-extern RC_ctrl_t rc_ctrl;
+extern struct RCCtrl rc_ctrl;
 extern gimbal_t gimbal;
 extern motor_measure_t motor_2006_measure[1];
 extern chassis_t chassis;

@@ -20,7 +20,7 @@
 extern UART_HandleTypeDef huart3;
 extern DMA_HandleTypeDef hdma_usart3_rx;
 
-RC_ctrl_t rc_ctrl;
+struct RCCtrl rc_ctrl;
 
 static uint8_t sbus_rx_buf[2][SBUS_RX_BUF_NUM];
 
@@ -41,7 +41,7 @@ static int16_t RC_abs(int16_t value);
   * @param[out]     rc_ctrl: 遥控器数据指
   * @retval         none
   */
-static void sbus_to_rc(volatile const uint8_t *sbus_buf, RC_ctrl_t *rc_ctrl);
+static void sbus_to_rc(volatile const uint8_t *sbus_buf, struct RCCtrl *rc_ctrl);
 
 //在main函数中调用此函数
 void remote_control_init(void)
@@ -198,7 +198,7 @@ static int16_t RC_abs(int16_t value)
   * @param[out]     rc_ctrl: 遥控器数据指
   * @retval         none
   */
-static void sbus_to_rc(volatile const uint8_t *sbus_buf, RC_ctrl_t *rc_ctrl)
+static void sbus_to_rc(volatile const uint8_t *sbus_buf, struct RCCtrl *rc_ctrl)
 {
     if (sbus_buf == NULL || rc_ctrl == NULL)
     {
@@ -233,4 +233,7 @@ static void sbus_to_rc(volatile const uint8_t *sbus_buf, RC_ctrl_t *rc_ctrl)
     detect_handle(DETECT_REMOTE);
 }
 
+struct RCCtrl get_rc_ctrl(){
+  return rc_ctrl;
+}
 

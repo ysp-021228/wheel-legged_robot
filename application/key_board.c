@@ -5,7 +5,7 @@
 #include "key_board.h"
 
 key_board_t KeyBoard;
-extern RC_ctrl_t rc_ctrl;
+extern struct RCCtrl rc_ctrl;
 static void key_update(Key*key,uint16_t key_status,uint16_t cnt);
 void update_pc_info(){
 

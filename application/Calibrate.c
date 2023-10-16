@@ -218,8 +218,8 @@ static bool_t cali_gimbal_hook(uint32_t *cali, bool_t cmd); //gimbal device cali
 uint32_t calibrate_task_stack;
 #endif
 
-extern RC_ctrl_t rc_ctrl;
-static const RC_ctrl_t *calibrate_RC;   //remote control point
+extern struct RCCtrl rc_ctrl;
+static const struct RCCtrl *calibrate_RC;   //remote control point
 head_cali_t     head_cali;       //head cali data
 gimbal_cali_t   gimbal_cali;     //gimbal cali data
 imu_cali_t      accel_cali;      //accel cali data
