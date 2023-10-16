@@ -13,7 +13,6 @@
 #include "Referee.h"
 #include "Detection.h"
 #include "launcher.h"
-#include "bsp_laser.h"
 
 extern fp32 INS_angle[3];
 extern fp32 INS_gyro[3];
@@ -46,7 +45,6 @@ void chassis_task(void const *pvParameters) {
   chassis_init(&chassis);
 
   while (1) {
-    CAN_cmd_balance_signal_motor(CAN_1, 0x142, 0);
 
     chassis_angle_update();
 
@@ -59,33 +57,14 @@ void chassis_task(void const *pvParameters) {
     switch (chassis.mode) {
 
       case CHASSIS_ONLY: {
-//                chassis_wheel_cal(chassis.vx,  chassis.vw);
-
-//                chassis_power_limit();
-//                CAN_speed_cmd_motor(CAN_1,0x141,chassis.motor_chassis[LF].speed*100);
-//                CAN_speed_cmd_motor(CAN_1,0x142,chassis.motor_chassis[RF].speed*100);
-
-//                chassis_relax_handle();
-      }
-        break;
-
-      case CHASSIS_FOLLOW_GIMBAL: {
-        chassis_wheel_cal(chassis.vx, chassis.vw);
-        //chassis_power_limit();
-//                CAN_cmd_balance_signal_motor(CAN_1,0x141,chassis.motor_chassis[0].give_current);
-        CAN_cmd_balance_signal_motor(CAN_1, 0x142, chassis.motor_chassis[1].give_current);
-//                CAN_cmd_balance_signal_motor(CAN_1,0x141,0);
-//                CAN_cmd_balance_signal_motor(CAN_1,0x142,0);
 //                chassis_relax_handle();
       }
         break;
 
       case CHASSIS_SPIN: {
         chassis_spin_handle();
-        //chassis_power_limit();
         CAN_cmd_balance_signal_motor(CAN_1, 0x141, chassis.motor_chassis[0].give_current);
         CAN_cmd_balance_signal_motor(CAN_1, 0x142, chassis.motor_chassis[1].give_current);
-//                chassis_relax_handle();
       }
         break;
 

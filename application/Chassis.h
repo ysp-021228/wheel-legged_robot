@@ -168,44 +168,6 @@
 #define BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED  (PI*BALANCE_WHEEL_R/180.0f) //平衡兵电机rpm转为轮子的转速m/s
 //枚举 结构体
 
-
-
-#define balance_angle_kp   0.08f
-#define balance_angle_ki   0.045f
-#define balance_angle_kd   0.05f
-#define balance_angle_MAX_OUT  30.f
-#define balance_angle_MAX_IOUT 5.f
-
-#define balance_gyro_kp   0.08f
-#define balance_gyro_ki   0.045f
-#define balance_gyro_kd   0.05f
-#define balance_gyro_MAX_OUT  30.f
-#define balance_gyro_MAX_IOUT 5.f
-
-#define forward_pose_kp   0.08f
-#define forward_pose_ki   0.045f
-#define forward_pose_kd   0.05f
-#define forward_pose_MAX_OUT  30.f
-#define forward_pose_MAX_IOUT 5.f
-
-#define forward_speed_kp   0.08f
-#define forward_speed_ki   0.045f
-#define forward_speed_kd   0.05f
-#define forward_speed_MAX_OUT  30.f
-#define forward_speed_MAX_IOUT 5.f
-
-#define turn_angle_kp   0.08f
-#define turn_angle_ki   0.045f
-#define turn_angle_kd   0.05f
-#define turn_angle_MAX_OUT  30.f
-#define turn_angle_MAX_IOUT 5.f
-
-#define turn_gyro_kp   0.08f
-#define turn_gyro_ki   0.045f
-#define turn_gyro_kd   0.05f
-#define turn_gyro_MAX_OUT  30.f
-#define turn_gyro_MAX_IOUT 5.f
-
 #define push_angle_kp   0.2f
 #define push_angle_ki   0.00f
 #define push_angle_kd   0.0f
@@ -236,20 +198,6 @@ typedef enum {
     LB,
     RB
 }chassis_motor_index_e;
-
-typedef enum {
-    FAST=0,
-    NORMAL,
-    SLOW
-}chassis_speed_mode_e;
-
-typedef struct {
-    fp32 power_buff;
-    fp32 limit_k;
-    fp32 total_current;
-    fp32 total_current_limit;
-
-}chassis_power_limit_t;
 
 typedef struct
 {
@@ -285,9 +233,6 @@ typedef struct
     fp32 vw_pc;
 
     bool_t chassis_is_back;
-
-    chassis_speed_mode_e speed_mode;//速度类型
-    chassis_power_limit_t chassis_power_limit;
 
 
 } chassis_t;
