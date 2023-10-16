@@ -96,9 +96,6 @@ static void chassis_init(struct Chassis *chassis) {
 
   uint8_t i = 0;
 
-  pid_init(&chassis->chassis_vw_pid, CHASSIS_FOLLOW_GIMBAL_PID_MAX_OUT, CHASSIS_FOLLOW_GIMBAL_PID_MAX_IOUT,
-           CHASSIS_FOLLOW_GIMBAL_PID_KP, CHASSIS_FOLLOW_GIMBAL_PID_KI, CHASSIS_FOLLOW_GIMBAL_PID_KD);
-
   for (i = 0; i < 2; i++) {
     chassis->motor_chassis[i].motor_measure = motor_3508_measure + i;
     pid_init(&chassis->motor_chassis[i].speed_p,

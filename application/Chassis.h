@@ -57,47 +57,13 @@
 
 #define CONTINUES_HURT_JUDGE() (HAL_GetTick()-start_hurt_time>1000)
 
-//底盘旋转跟随PID
-#define CHASSIS_FOLLOW_GIMBAL_PID_KP 0.0f
-#define CHASSIS_FOLLOW_GIMBAL_PID_KI 0.0f
-#define CHASSIS_FOLLOW_GIMBAL_PID_KD 0.0f
-#define CHASSIS_FOLLOW_GIMBAL_PID_MAX_OUT 200.0f
-#define CHASSIS_FOLLOW_GIMBAL_PID_MAX_IOUT 0.2f
-
-
-
-
 /**********************  平衡底盘  *************************/
-
-
-//#define CHASSIS_PITCH_ANGLE_PID_KP   0.4f
-//#define CHASSIS_PITCH_ANGLE_PID_KI   0.02f
-//#define CHASSIS_PITCH_ANGLE_PID_KD   4.0f
-//#define CHASSIS_PITCH_ANGLE_MAX_OUT  2000.f
-//#define CHASSIS_PITCH_ANGLE_MAX_IOUT 130.f
-//
-//
-//#define CHASSIS_SPEED_PID_KP         1.2f
-//#define CHASSIS_SPEED_PID_KI         0.25f
-//#define CHASSIS_SPEED_PID_KD         0.0f
-//#define CHASSIS_SPEED_PID_MAX_OUT    20.0f
-//#define CHASSIS_SPEED_PID_MAX_IOUT   5.0f
 
 #define CHASSIS_PITCH_ANGLE_PID_KP   0.02f
 #define CHASSIS_PITCH_ANGLE_PID_KI   0.003f
 #define CHASSIS_PITCH_ANGLE_PID_KD   0.25f
 #define CHASSIS_PITCH_ANGLE_MAX_OUT  10.f
 #define CHASSIS_PITCH_ANGLE_MAX_IOUT 2.f
-
-//
-//#define CHASSIS_SPEED_PID_KP         0.7f
-//#define CHASSIS_SPEED_PID_KI         0.1f
-//#define CHASSIS_SPEED_PID_KD         0.08f
-//#define CHASSIS_SPEED_PID_MAX_OUT    30.0f
-//#define CHASSIS_SPEED_PID_MAX_IOUT   5.0f
-
-
-
 
 #define CHASSIS_SPEED_PID_KP         0.180f
 #define CHASSIS_SPEED_PID_KI         0.0080f
