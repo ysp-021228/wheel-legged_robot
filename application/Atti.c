@@ -661,3 +661,11 @@ void DMA2_Stream2_IRQHandler(void)
     }
 }
 
+fp32* get_ins_angle(){
+  return INS_angle;
+}
+
+fp32* get_ins_gyro(){
+  return INS_gyro;
+}
+

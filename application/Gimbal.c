@@ -483,8 +483,8 @@ static void gimbal_angle_update(){
     gimbal.pitch.relative_angle_get= motor_ecd_to_angle_change(gimbal.pitch.motor_measure->ecd,gimbal.pitch.motor_measure->offset_ecd);
     Vision_send.pitch.value= gimbal.pitch.absolute_angle_get;
 
-    gyro_yaw=INS_gyro[2]*MOTOR_RAD_TO_ANGLE;
-    gyro_pitch=-INS_gyro[1]*MOTOR_RAD_TO_ANGLE;
+    gyro_yaw=*(get_ins_gyro()+2)*MOTOR_RAD_TO_ANGLE;
+    gyro_pitch=-*(get_ins_gyro()+1)*MOTOR_RAD_TO_ANGLE;
 //    fp32 yaw_absolute_angle_get=INS_angle[0]*MOTOR_RAD_TO_ANGLE;
     gimbal.yaw.absolute_angle_get=INS_angle[0]*MOTOR_RAD_TO_ANGLE;
     gimbal.yaw.relative_angle_get= -motor_ecd_to_angle_change(gimbal.yaw.motor_measure->ecd,gimbal.yaw.motor_measure->offset_ecd);

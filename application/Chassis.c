@@ -13,9 +13,8 @@
 #include "Referee.h"
 #include "Detection.h"
 #include "launcher.h"
+#include "Atti.h"
 
-extern fp32 INS_angle[3];
-extern fp32 INS_gyro[3];
 ramp_function_source_t chassis_3508_ramp[4];
 chassis_t chassis;
 extern gimbal_t gimbal;
@@ -225,7 +224,7 @@ void chassis_device_offline_handle() {
   }
 }
 static void chassis_angle_update() {
-  chassis.absolute_angle_get = -INS_angle[2] * MOTOR_RAD_TO_ANGLE;
+  chassis.absolute_angle_get = -*(get_ins_angle()+2) * MOTOR_RAD_TO_ANGLE;
 }
 
 static void chassis_relax_judge() {
