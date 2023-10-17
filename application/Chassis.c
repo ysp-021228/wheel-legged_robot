@@ -55,11 +55,6 @@ void chassis_task(void const *pvParameters) {
 
     switch (chassis.mode) {
 
-      case CHASSIS_ONLY: {
-//                chassis_relax_handle();
-      }
-        break;
-
       case CHASSIS_SPIN: {
         chassis_spin_handle();
         CAN_cmd_balance_signal_motor(CAN_1, 0x141, chassis.motor_chassis[0].give_current);
@@ -93,63 +88,6 @@ static void chassis_init(struct Chassis *chassis) {
 
   if (chassis == NULL)
     return;
-
-  uint8_t i = 0;
-
-  for (i = 0; i < 2; i++) {
-    chassis->motor_chassis[i].motor_measure = motor_3508_measure + i;
-    pid_init(&chassis->motor_chassis[i].speed_p,
-             CHASSIS_3508_PID_MAX_OUT,
-             CHASSIS_3508_PID_MAX_IOUT,
-             CHASSIS_3508_PID_KP,
-             CHASSIS_3508_PID_KI,
-             CHASSIS_3508_PID_KD);
-  }
-  chassis->motor_push.motor_measure = &motor_3508_measure[3];//0x205
-  chassis->motor_left.motor_measure = &motor_pitch_measure;//0x206
-
-  pid_init(&chassis->motor_push.speed_p, push_speed_MAX_OUT, push_speed_MAX_IOUT, push_speed_kp,
-           push_speed_ki, push_speed_kd);
-
-  pid_init(&chassis->motor_push.angle_p, push_angle_MAX_OUT, push_angle_MAX_IOUT, push_angle_kp,
-           push_angle_ki, push_angle_kd);
-
-  pid_init(&chassis->motor_left.speed_p, push_speed_MAX_OUT, push_speed_MAX_IOUT, push_speed_kp,
-           push_speed_ki, push_speed_kd);
-
-  pid_init(&chassis->motor_left.angle_p, push_angle_MAX_OUT, push_angle_MAX_IOUT, push_angle_kp,
-           push_angle_ki, push_angle_kd);
-
-  chassis->motor_push.motor_measure->offset_ecd = 8091;
-  chassis->motor_left.motor_measure->offset_ecd = 7821;
-
-  pid_init(&chassis->chassis_speed_p,
-           CHASSIS_SPEED_PID_MAX_OUT,
-           CHASSIS_SPEED_PID_MAX_IOUT,
-           CHASSIS_SPEED_PID_KP,
-           CHASSIS_SPEED_PID_KI,
-           CHASSIS_SPEED_PID_KD);
-
-  pid_init(&chassis->angle_p,
-           CHASSIS_PITCH_ANGLE_MAX_OUT,
-           CHASSIS_PITCH_ANGLE_MAX_IOUT,
-           CHASSIS_PITCH_ANGLE_PID_KP,
-           CHASSIS_PITCH_ANGLE_PID_KI,
-           CHASSIS_PITCH_ANGLE_PID_KD);
-
-  pid_init(&chassis->chassis_back_speed_p,
-           CHASSIS_BACK_SPEED_PID_MAX_OUT,
-           CHASSIS_BACK_SPEED_PID_MAX_IOUT,
-           CHASSIS_BACK_SPEED_PID_KP,
-           CHASSIS_BACK_SPEED_PID_KI,
-           CHASSIS_BACK_SPEED_PID_KD);
-
-  pid_init(&chassis->chassis_back_angle_p,
-           CHASSIS_BACK_PITCH_ANGLE_MAX_OUT,
-           CHASSIS_BACK_PITCH_ANGLE_MAX_IOUT,
-           CHASSIS_BACK_PITCH_ANGLE_PID_KP,
-           CHASSIS_BACK_PITCH_ANGLE_PID_KI,
-           CHASSIS_BACK_PITCH_ANGLE_PID_KD);
 
   chassis->mode = chassis->last_mode = CHASSIS_RELAX;
 

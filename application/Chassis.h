@@ -56,19 +56,9 @@
 
 #define CHASSIS_PERIOD 15 // 单位为ms 底盘任务运行周期
 #define MAX_CHASSIS_VX_SPEED 12.f
-#define MAX_CHASSIS_VW_SPEED 2500.f//150
-#define MAX_CHASSIS_TILTABLE_ANGLE 25
-#define MIN_CHASSIS_TILTABLE_ANGLE -25
 
 #define RC_TO_VX  (MAX_CHASSIS_VX_SPEED/660)
 #define RC_TO_VW 0.01f    //MAX_CHASSIS_VR_SPEED / RC_MAX_VALUE
-
-#define FAST_MAX_SPEED 3000.f //快速模式下底盘的最大速度
-#define NORMAL_MAX_SPEED MAX_CHASSIS_VX_SPEED //通常模式下底盘的最大速度
-#define SLOW_MAX_SPEED 500.f //慢速模式下底盘的最大速度
-#define SPEED_CHANGE 15.f //普通模式下最大速度（2500 mm/s）?期望加到最大速度的时间（1000ms)*底盘任务的运行周期(CHASSIS_PERIOD 4ms)
-#define ROTATION_SPEED_CHANGE 10.f
-#define GYRO_TO_RPM 94.2477796076937f //  °/min
 
 //底盘机械信息 mm
 #define M3508_MAX_RPM 710
