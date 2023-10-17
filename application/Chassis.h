@@ -62,9 +62,41 @@ struct IMUReference {
   fp32 roll;
 };
 
-struct MoveSpeedSetPoint{
+struct MoveSpeedSetPoint {
   fp32 vx;
   fp32 vw;
+};
+
+/*******************************************************************************
+ *                            ForwardKinematics                                *
+ *******************************************************************************/
+struct FKL0 {
+  fp32 L0;
+  fp32 L0_last;
+  fp32 L0_dot;
+  fp32 L0_ddot;
+};
+
+struct FKPhi {
+  fp32 phi0;
+  fp32 phi1;
+  fp32 phi2;
+  fp32 phi3;
+  fp32 phi4;
+};
+
+struct FKPointCoordinates {
+  fp32 a_x, a_y;
+  fp32 b_x, b_y;
+  fp32 c_x, c_y;
+  fp32 d_x, d_y;
+  fp32 e_x, e_y;
+};
+
+struct ForwardKinematics {
+  struct FKL0 fk_L0;
+  struct FKPhi fk_phi;
+  struct FKPointCoordinates fk_point_coordinates;
 };
 
 struct Chassis {

@@ -139,7 +139,6 @@ struct Motor3508
 
     int16_t give_current;
 
-
 };
 
 typedef struct
