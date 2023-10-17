@@ -24,36 +24,6 @@
 
 /**********************  平衡底盘  *************************/
 
-#define CHASSIS_PITCH_ANGLE_PID_KP   0.02f
-#define CHASSIS_PITCH_ANGLE_PID_KI   0.003f
-#define CHASSIS_PITCH_ANGLE_PID_KD   0.25f
-#define CHASSIS_PITCH_ANGLE_MAX_OUT  10.f
-#define CHASSIS_PITCH_ANGLE_MAX_IOUT 2.f
-
-#define CHASSIS_SPEED_PID_KP         0.180f
-#define CHASSIS_SPEED_PID_KI         0.0080f
-#define CHASSIS_SPEED_PID_KD         0.0f
-#define CHASSIS_SPEED_PID_MAX_OUT    18.0f
-#define CHASSIS_SPEED_PID_MAX_IOUT   1.0f
-
-#define CHASSIS_BACK_SPEED_PID_KP         0.0001f
-#define CHASSIS_BACK_SPEED_PID_KI         0.0f
-#define CHASSIS_BACK_SPEED_PID_KD         0.0f
-#define CHASSIS_BACK_SPEED_PID_MAX_OUT    2.0f
-#define CHASSIS_BACK_SPEED_PID_MAX_IOUT   5.0f
-
-#define CHASSIS_BACK_PITCH_ANGLE_PID_KP   0.05f
-#define CHASSIS_BACK_PITCH_ANGLE_PID_KI   0.00f
-#define CHASSIS_BACK_PITCH_ANGLE_PID_KD   0.00f
-#define CHASSIS_BACK_PITCH_ANGLE_MAX_OUT  1000.f
-#define CHASSIS_BACK_PITCH_ANGLE_MAX_IOUT 130.f
-
-#define CHASSIS_3508_PID_KP     2.3f
-#define CHASSIS_3508_PID_KI     0.1f
-#define CHASSIS_3508_PID_KD     0.0f
-#define CHASSIS_3508_PID_MAX_OUT 2000.0f
-#define CHASSIS_3508_PID_MAX_IOUT 300.0f
-
 #define CHASSIS_PERIOD 15 // 单位为ms 底盘任务运行周期
 #define MAX_CHASSIS_VX_SPEED 12.f
 
@@ -66,20 +36,8 @@
 #define BALANCE_TRACK 863.938f //平衡兵轮子周长
 #define BALANCE_REDUCTION_RATIO 1.0f //平衡兵电机减速比
 #define BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED  (PI*BALANCE_WHEEL_R/180.0f) //平衡兵电机rpm转为轮子的转速m/s
+
 //枚举 结构体
-
-#define push_angle_kp   0.2f
-#define push_angle_ki   0.00f
-#define push_angle_kd   0.0f
-#define push_angle_MAX_OUT  15000.0f //5300.0f
-#define push_angle_MAX_IOUT 1600.0f // 16000.0f
-
-#define push_speed_kp   1.5f
-#define push_speed_ki   0.0f
-#define push_speed_kd   0.0f
-#define push_speed_MAX_OUT  15000.0f //9500.0f
-#define push_speed_MAX_IOUT 1600.0f //16000.0f
-
 enum ChassisMode {
   CHASSIS_RELAX, //底盘失能 注意底盘失能和底盘刹车的区别
   CHASSIS_BACK,
@@ -98,27 +56,27 @@ enum ChassisMotorIndex {
   RB
 };
 
+struct IMUSetPoint {
+  fp32 pitch;
+  fp32 yaw;
+  fp32 roll;
+};
+
+struct IMUReference {
+  fp32 pitch;
+  fp32 yaw;
+  fp32 roll;
+};
+
 struct Chassis {
   enum ChassisMode mode;
   enum ChassisMode last_mode;
   motor_3508_t motor_chassis[2];
-  motor_6020_t motor_steer[4];
 
-  motor_6020_t motor_push;
-  motor_6020_t motor_left;
-
-  fp32 absolute_angle_get;
-  fp32 absolute_angle_set;
-  fp32 yaw_relative_angle_get;
-  fp32 balanced_angle;
-  fp32 gyro_set;
+  struct IMUSetPoint imu_set_point;
+  struct IMUReference imu_reference;
 
   pid_t chassis_vw_pid;
-  pid_t angle_p;
-  pid_t chassis_speed_p;
-  pid_t chassis_break_p;
-  pid_t chassis_back_speed_p;
-  pid_t chassis_back_angle_p;
 
   fp32 vx;
   fp32 vy;

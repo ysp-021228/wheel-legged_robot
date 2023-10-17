@@ -20,7 +20,6 @@ struct Chassis chassis;
 extern gimbal_t gimbal;
 extern launcher_t launcher;
 extern key_board_t KeyBoard;
-uint32_t start_hurt_time;
 fp32 mileage;
 fp32 motor_LF_speed, motor_RF_speed, chassis_speed;
 
@@ -94,7 +93,6 @@ static void chassis_init(struct Chassis *chassis) {
   ramp_init(&chassis_3508_ramp[LF], 0.0001f, M3508_MAX_RPM, -M3508_MAX_RPM);
   ramp_init(&chassis_3508_ramp[RF], 0.0001f, M3508_MAX_RPM, -M3508_MAX_RPM);
 
-  chassis->balanced_angle = 3;
 }
 
 static void chassis_set_mode(struct Chassis *chassis) {
@@ -105,7 +103,7 @@ static void chassis_set_mode(struct Chassis *chassis) {
   if (switch_is_down(get_rc_ctrl().rc.s[RC_s_L]) && switch_is_down(get_rc_ctrl().rc.s[RC_s_R])) {
     chassis->last_mode = chassis->mode;
     chassis->mode = CHASSIS_RELAX;
-  }else if (switch_is_mid(get_rc_ctrl().rc.s[RC_s_R])) {
+  } else if (switch_is_mid(get_rc_ctrl().rc.s[RC_s_R])) {
     chassis->last_mode = chassis->mode;
     chassis->mode = CHASSIS_FOLLOW_GIMBAL;
   } else if (switch_is_up(get_rc_ctrl().rc.s[RC_s_R])) {
@@ -139,7 +137,6 @@ static void chassis_spin_handle() {
   //以下两行注释为2023赛季平衡兵轮子转速线速度计算函数
   motor_LF_speed = chassis.motor_chassis[LF].motor_measure->speed_rpm * BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED;
   motor_RF_speed = -chassis.motor_chassis[RF].motor_measure->speed_rpm * BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED;
-
 }
 
 void chassis_device_offline_handle() {
@@ -147,17 +144,18 @@ void chassis_device_offline_handle() {
     chassis.mode = CHASSIS_RELAX;
   }
 }
+
 static void chassis_angle_update() {
-  chassis.absolute_angle_get = -*(get_ins_angle()+2) * MOTOR_RAD_TO_ANGLE;
+  chassis.imu_reference.pitch = -*(get_ins_angle() + 2) * MOTOR_RAD_TO_ANGLE;
 }
 
 static void chassis_relax_judge() {
-  if (ABS(chassis.absolute_angle_get) > 32) {
+  if (ABS(chassis.imu_reference.pitch) > 32) {
     chassis.mode = CHASSIS_RELAX;
   }
 }
 
-struct Chassis get_chassis(){
+struct Chassis get_chassis() {
   return chassis;
 }
 
