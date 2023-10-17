@@ -7,12 +7,8 @@
 #include "can_receive.h"
 #include "user_lib.h"
 #include "ramp.h"
-#include "key_board.h"
-#include "Gimbal.h"
 #include "arm_math.h"
-#include "Referee.h"
 #include "Detection.h"
-#include "launcher.h"
 #include "Atti.h"
 
 ramp_function_source_t chassis_3508_ramp[4];
@@ -50,16 +46,14 @@ void chassis_task(void const *pvParameters) {
     // chassis_relax_judge();
 
     switch (chassis.mode) {
+      case CHASSIS_ENABLE:{
 
-      case CHASSIS_SPIN: {
-        chassis_spin_handle();
-        CAN_cmd_balance_signal_motor(CAN_1, 0x141, chassis.motor_chassis[0].give_current);
-        CAN_cmd_balance_signal_motor(CAN_1, 0x142, chassis.motor_chassis[1].give_current);
       }
-        break;
+      break;
 
       case CHASSIS_OFF_GROUND: {
       }
+      break;
 
       case CHASSIS_DISABLE: {
         chassis_relax_handle();
@@ -102,10 +96,10 @@ static void chassis_set_mode(struct Chassis *chassis) {
     chassis->mode = CHASSIS_DISABLE;
   } else if (switch_is_mid(get_rc_ctrl().rc.s[RC_s_R])) {
     chassis->last_mode = chassis->mode;
-    chassis->mode = CHASSIS_FOLLOW_GIMBAL;
+    chassis->mode = CHASSIS_ENABLE;
   } else if (switch_is_up(get_rc_ctrl().rc.s[RC_s_R])) {
     chassis->last_mode = chassis->mode;
-    chassis->mode = CHASSIS_SPIN;
+    chassis->mode = CHASSIS_ENABLE;
   }
 }
 
@@ -138,6 +132,8 @@ void chassis_device_offline_handle() {
 
 static void chassis_angle_update() {
   chassis.imu_reference.pitch = -*(get_ins_angle() + 2) * MOTOR_RAD_TO_ANGLE;
+  chassis.imu_reference.yaw = -*(get_ins_angle() + 1) * MOTOR_RAD_TO_ANGLE;
+  chassis.imu_reference.roll = -*(get_ins_angle() + 0) * MOTOR_RAD_TO_ANGLE;
 }
 
 static void chassis_relax_judge() {
