@@ -1,14 +1,12 @@
 # 嵌入式 C 风格指南
 
-[![Cartesius-Robotics](https://img.shields.io/badge/Cartesius-Robotics-E070C2?style=flat)](https://github.com/cartesiusrobotics) [![lang](https://img.shields.io/badge/lang-zh--CN-blue?style=flat)]() [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat)](https://github.com/RichardLitt/standard-readme)
-
-本文档用于规定 Cartesius Robotics（后称CR）嵌入式部的C编码规范。
+本文档用于规定轮腿机器人嵌入式部的C编码规范。
 
 本篇指南基于以下原则编写：
 
 - 易读性 > 运行效率 > 简短
 
-CR 嵌入式组的每一位开发者都应该遵循以上基本约定。
+嵌入式组的每一位开发者都应该遵循以上基本约定。
 
 ## 目录
 
@@ -168,7 +166,7 @@ Robot_Init()
 
 ## 格式
 
-- CR 嵌入式开发遵循 Google C++ 的代码排列格式。详情请查看：[Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html)
+嵌入式开发遵循 Google C++ 的代码排列格式。详情请查看：[Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html)
 
 ## 最佳实践
 
@@ -177,6 +175,3 @@ Robot_Init()
 - 对于私有变量及函数请使用 static 关键字修饰。
 - 采用最少 include 原则，只 include 所需的头文件，不要把所有的 include 都在头文件中引入。
 
-## 维护
-
-[@Rocky_](https://github.com/RockyXRQ)
