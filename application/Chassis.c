@@ -40,7 +40,7 @@ void chassis_task(void const *pvParameters) {
 
     chassis_set_mode(&chassis);
 
-    // chassis_relax_judge();
+    chassis_relax_judge();
 
     switch (chassis.mode) {
       case CHASSIS_ENABLE: {
@@ -143,4 +143,7 @@ static void chassis_relax_judge() {
 struct Chassis get_chassis() {
   return chassis;
 }
+
+//遥控离线刹车原地不动
+//电机离线直接全部失能
 
