@@ -11,7 +11,6 @@
 #include "Detection.h"
 #include "Atti.h"
 
-ramp_function_source_t chassis_3508_ramp[4];
 struct Chassis chassis;
 
 fp32 motor_LF_speed, motor_RF_speed, chassis_speed;
@@ -21,13 +20,11 @@ static void chassis_set_mode(struct Chassis *chassis);
 static void chassis_ctrl_info_get();
 static void chassis_relax_handle();
 static void chassis_wheel_cal(fp32 vx, fp32 vw);
-static void chassis_wheel_loop_cal();
-static void chassis_spin_handle();
-static void chassis_only_handle();
 static void chassis_angle_update();
 static void chassis_relax_judge();
 void chassis_device_offline_handle();
 static void chassis_off_ground_detection();
+static void chassis_info_update();
 
 void chassis_task(void const *pvParameters) {
 
@@ -37,7 +34,7 @@ void chassis_task(void const *pvParameters) {
 
   while (1) {
 
-    chassis_angle_update();
+    chassis_info_update();
 
     chassis_ctrl_info_get();
 
@@ -61,11 +58,16 @@ void chassis_task(void const *pvParameters) {
       }
         break;
     }
-    if (chassis.move_speed_set_point.vx != 0) {
-      chassis.mileage = 0;
-    }
-    chassis.mileage = chassis.mileage + 15 * 0.001 * (motor_RF_speed + motor_LF_speed) / 2;
+
     vTaskDelay(CHASSIS_PERIOD);
+  }
+}
+
+static void chassis_info_update() {
+  chassis_angle_update();
+  chassis.mileage = chassis.mileage + 15 * 0.001 * (motor_RF_speed + motor_LF_speed) / 2;
+  if (chassis.move_speed_set_point.vx != 0) {
+    chassis.mileage = 0;
   }
 }
 
@@ -80,9 +82,6 @@ static void chassis_init(struct Chassis *chassis) {
     return;
 
   chassis->mode = chassis->last_mode = CHASSIS_DISABLE;
-
-  ramp_init(&chassis_3508_ramp[LF], 0.0001f, M3508_MAX_RPM, -M3508_MAX_RPM);
-  ramp_init(&chassis_3508_ramp[RF], 0.0001f, M3508_MAX_RPM, -M3508_MAX_RPM);
 
 }
 
@@ -130,9 +129,9 @@ void chassis_device_offline_handle() {
 }
 
 static void chassis_angle_update() {
-  chassis.imu_reference.pitch = -*(get_ins_angle() + 2) * MOTOR_RAD_TO_ANGLE;
-  chassis.imu_reference.yaw = -*(get_ins_angle() + 1) * MOTOR_RAD_TO_ANGLE;
-  chassis.imu_reference.roll = -*(get_ins_angle() + 0) * MOTOR_RAD_TO_ANGLE;
+  chassis.imu_reference.pitch = *(get_ins_angle() + 1) * MOTOR_RAD_TO_ANGLE;
+  chassis.imu_reference.yaw = -*(get_ins_angle() + 0) * MOTOR_RAD_TO_ANGLE;
+  chassis.imu_reference.roll = *(get_ins_angle() + 2) * MOTOR_RAD_TO_ANGLE;
 }
 
 static void chassis_relax_judge() {

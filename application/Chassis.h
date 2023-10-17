@@ -139,6 +139,7 @@ struct Chassis {
   struct StateVariable state_variable_leg_R;
 
   struct Motor3508 motor_chassis[2];
+  //joint motor
 
   struct IMUSetPoint imu_set_point;
   struct IMUReference imu_reference;
