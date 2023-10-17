@@ -78,7 +78,7 @@ Referee_info_t Referee;
 ui_robot_status_t ui_robot_status={
 
     .gimbal_mode=GIMBAL_RELAX,
-    .chassis_mode=CHASSIS_RELAX,
+    .chassis_mode=CHASSIS_DISABLE,
     .block_warning=false,
     .super_cap_value=0.f,
     .shoot_heat_limit=0,
@@ -867,41 +867,12 @@ void chassis_mode_draw(){
 
     //根据对应模式塞字符串进入ClientData
     switch (ui_robot_status.chassis_mode) {
-        case CHASSIS_RELAX:
+        case CHASSIS_DISABLE:
         {
             char str[30]={" RELAX"};//局部变量
             String_Graphic(&ui_chassis_mode.clientData, "CME", three_layer_update_flag, UI_THREE_LAYER, UI_PINK,
                            15, strlen(str), 2, 320,680, str);
         }break;
-
-        case CHASSIS_SPIN:
-        {
-            char str[30]={"  SPIN"};
-            String_Graphic(&ui_chassis_mode.clientData, "CME", three_layer_update_flag, UI_THREE_LAYER, UI_PINK,
-                           15, strlen(str), 2, 320,680, str);
-        }break;
-
-        case CHASSIS_FOLLOW_GIMBAL:
-        {
-            char str[30]={"FOLLOW"};
-            String_Graphic(&ui_chassis_mode.clientData, "CME", three_layer_update_flag, UI_THREE_LAYER, UI_PINK,
-                           15, strlen(str), 2, 320,680, str);
-        }break;
-
-        case CHASSIS_BLOCK:
-        {
-            char str[30]={" BLOCK"};
-            String_Graphic(&ui_chassis_mode.clientData, "CME", three_layer_update_flag, UI_THREE_LAYER, UI_PINK,
-                           15, strlen(str), 2, 320,680, str);
-        }break;
-
-        case CHASSIS_ONLY:
-        {
-            char str[30]={"  ONLY"};
-            String_Graphic(&ui_chassis_mode.clientData, "CME", three_layer_update_flag, UI_THREE_LAYER, UI_PINK,
-                           15, strlen(str), 2, 320,680, str);
-        }break;
-
         default:
         {
 

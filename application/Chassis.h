@@ -39,21 +39,15 @@
 
 //枚举 结构体
 enum ChassisMode {
-  CHASSIS_RELAX, //底盘失能 注意底盘失能和底盘刹车的区别
-  CHASSIS_BACK,
-  CHASSIS_ONLY,
-  CHASSIS_BLOCK,//底盘刹车
-  CHASSIS_FOLLOW_GIMBAL,
-  CHASSIS_SPIN,
-  CHASSIS_INDEPENDENT_CONTROL,
+  CHASSIS_DISABLE,
+  CHASSIS_ENABLE,
   CHASSIS_OFF_GROUND,
+  CHASSIS_MODE_NUM,
 };
 
 enum ChassisMotorIndex {
   RF = 1,
   LF = 0,
-  LB,
-  RB
 };
 
 struct IMUSetPoint {

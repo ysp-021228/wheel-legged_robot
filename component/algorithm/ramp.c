@@ -1,7 +1,3 @@
-//
-// Created by xhuanc on 2021/11/24.
-//
-
 #include "ramp.h"
 
 void ramp_init(ramp_function_source_t *ramp_source_type, fp32 frame_period, fp32 max, fp32 min)

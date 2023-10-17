@@ -17,9 +17,6 @@
 
 ramp_function_source_t chassis_3508_ramp[4];
 struct Chassis chassis;
-extern gimbal_t gimbal;
-extern launcher_t launcher;
-extern key_board_t KeyBoard;
 fp32 mileage;
 fp32 motor_LF_speed, motor_RF_speed, chassis_speed;
 
@@ -64,7 +61,7 @@ void chassis_task(void const *pvParameters) {
       case CHASSIS_OFF_GROUND: {
       }
 
-      case CHASSIS_RELAX: {
+      case CHASSIS_DISABLE: {
         chassis_relax_handle();
         chassis_init(&chassis);
       }
@@ -88,7 +85,7 @@ static void chassis_init(struct Chassis *chassis) {
   if (chassis == NULL)
     return;
 
-  chassis->mode = chassis->last_mode = CHASSIS_RELAX;
+  chassis->mode = chassis->last_mode = CHASSIS_DISABLE;
 
   ramp_init(&chassis_3508_ramp[LF], 0.0001f, M3508_MAX_RPM, -M3508_MAX_RPM);
   ramp_init(&chassis_3508_ramp[RF], 0.0001f, M3508_MAX_RPM, -M3508_MAX_RPM);
@@ -102,17 +99,12 @@ static void chassis_set_mode(struct Chassis *chassis) {
 
   if (switch_is_down(get_rc_ctrl().rc.s[RC_s_L]) && switch_is_down(get_rc_ctrl().rc.s[RC_s_R])) {
     chassis->last_mode = chassis->mode;
-    chassis->mode = CHASSIS_RELAX;
+    chassis->mode = CHASSIS_DISABLE;
   } else if (switch_is_mid(get_rc_ctrl().rc.s[RC_s_R])) {
     chassis->last_mode = chassis->mode;
     chassis->mode = CHASSIS_FOLLOW_GIMBAL;
   } else if (switch_is_up(get_rc_ctrl().rc.s[RC_s_R])) {
     chassis->last_mode = chassis->mode;
-    chassis->mode = CHASSIS_SPIN;
-  }
-
-  if (KeyBoard.E.click_flag == 1)//
-  {
     chassis->mode = CHASSIS_SPIN;
   }
 }
@@ -126,7 +118,6 @@ static void chassis_relax_handle() {
 }
 
 static void chassis_wheel_cal(fp32 vx, fp32 vw) {
-
   //以下两行注释为2023赛季平衡兵轮子转速线速度计算函数
   motor_LF_speed = chassis.motor_chassis[LF].motor_measure->speed_rpm * BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED;
   motor_RF_speed = -chassis.motor_chassis[RF].motor_measure->speed_rpm * BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED;
@@ -141,7 +132,7 @@ static void chassis_spin_handle() {
 
 void chassis_device_offline_handle() {
   if (detect_list[DETECT_REMOTE].status == OFFLINE) {
-    chassis.mode = CHASSIS_RELAX;
+    chassis.mode = CHASSIS_DISABLE;
   }
 }
 
@@ -151,7 +142,7 @@ static void chassis_angle_update() {
 
 static void chassis_relax_judge() {
   if (ABS(chassis.imu_reference.pitch) > 32) {
-    chassis.mode = CHASSIS_RELAX;
+    chassis.mode = CHASSIS_DISABLE;
   }
 }
 
