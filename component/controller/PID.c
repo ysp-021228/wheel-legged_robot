@@ -96,51 +96,6 @@ float pid_calc(pid_t *pid, float get, float set)
     return pid->out;
 }
 
-float pid_reset_i_calc(pid_t *pid, float get, float set, float iout_threshold)
-{
-    pid->get = get;
-    pid->set = set;
-    pid->err[NOW] = set - get;
-
-    pid->pout = pid->p * pid->err[NOW];
-    pid->iout += pid->i * pid->err[NOW];
-    pid->dout = pid->d * (pid->err[NOW] - pid->err[LAST]);
-
-    if( ABS(pid->set - pid->get)<2 && ABS(pid->iout)>=ABS(iout_threshold) && chassis.vx==0 ){
-        pid->iout*=0.3;
-    }
-
-    abs_limit(&(pid->iout), pid->integral_limit);
-    pid->out = pid->pout + pid->iout + pid->dout;
-    abs_limit(&(pid->out), pid->max_output);
-
-    pid->err[LAST]  = pid->err[NOW];
-
-    return pid->out;
-}
-
-float pid_anti_windup_calc(pid_t *pid, float get, float set)
-{
-    pid->get = get;
-    pid->set = set;
-    pid->err[NOW] = set - get;
-
-    pid->pout = pid->p * pid->err[NOW];
-    pid->iout += pid->i * pid->err[NOW]-0.1*(pid->excess);
-    pid->dout = pid->d * (pid->err[NOW] - pid->err[LAST]);
-
-    // abs_limit(&(pid->iout), pid->integral_limit);
-    pid->out = pid->pout + pid->iout + pid->dout;
-
-    float lim_out = fmaxf(fminf(pid->out, pid->max_output), -pid->max_output);
-    pid->excess = pid->out - lim_out;
-    pid->out = lim_out;
-
-    pid->err[LAST]  = pid->err[NOW];
-
-    return pid->out;
-}
-
 
 float pid_loop_calc(pid_t *pid,float get,float set,float max_value,float min_value){
     float gap,mid;

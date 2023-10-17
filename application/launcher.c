@@ -83,29 +83,6 @@ int32_t total_ecd_ref;
 
 void launcher_mode_set(){
 
-    //摩擦轮关闭时,做拨杆向上拨一下开启摩擦轮
-    //遥控器和键盘可以同步修改摩擦轮状态
-    // 键盘直接修改相关按键click_flag的状态 通过click状态直接判断摩擦轮模式 避免遥控打开的摩擦轮被键盘关闭
-    if((!switch_is_up(rc_last_sw_L)&&switch_is_up(rc_ctrl.rc.s[RC_s_L]))){
-        if(KeyBoard.Q.click_flag==1 && (chassis.mode==CHASSIS_FOLLOW_GIMBAL || chassis.mode==CHASSIS_SPIN))
-        {
-            KeyBoard.Q.click_flag=0;
-        }
-        else if(KeyBoard.Q.click_flag==0 && (chassis.mode==CHASSIS_FOLLOW_GIMBAL || chassis.mode==CHASSIS_SPIN)){
-            KeyBoard.Q.click_flag=1;
-        }
-    }
-
-    if(KeyBoard.Q.click_flag==1 && (chassis.mode==CHASSIS_FOLLOW_GIMBAL || chassis.mode==CHASSIS_SPIN))
-    {
-        launcher.fire_mode=Fire_ON;
-        laser_on();
-    }
-    else if (KeyBoard.Q.click_flag==0 && (chassis.mode==CHASSIS_FOLLOW_GIMBAL || chassis.mode==CHASSIS_SPIN)){
-        launcher.fire_mode=Fire_OFF;
-        laser_off();
-    }
-
     //摩擦轮开启时,做拨杆向上拨一下关闭摩擦轮
 
 

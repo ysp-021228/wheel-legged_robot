@@ -61,7 +61,7 @@ void chassis_task(void const *pvParameters) {
       }
         break;
     }
-    if (chassis.vx != 0) {
+    if (chassis.move_speed_set_point.vx != 0) {
       mileage = 0;
     }
     mileage = mileage + 15 * 0.001 * (motor_RF_speed + motor_LF_speed) / 2;
@@ -70,8 +70,8 @@ void chassis_task(void const *pvParameters) {
 }
 
 static void chassis_ctrl_info_get() {
-  chassis.vx = (float) (get_rc_ctrl().rc.ch[CHASSIS_X_CHANNEL]) * RC_TO_VX;
-  chassis.vw = (float) (get_rc_ctrl().rc.ch[CHASSIS_Z_CHANNEL]) * RC_TO_VW;
+  chassis.move_speed_set_point.vx = (float) (get_rc_ctrl().rc.ch[CHASSIS_X_CHANNEL]) * RC_TO_VX;
+  chassis.move_speed_set_point.vw = (float) (get_rc_ctrl().rc.ch[CHASSIS_Z_CHANNEL]) * RC_TO_VW;
 }
 
 static void chassis_init(struct Chassis *chassis) {
@@ -104,9 +104,8 @@ static void chassis_set_mode(struct Chassis *chassis) {
 }
 
 static void chassis_relax_handle() {
-
-  chassis.vx = 0;
-  chassis.vw = 0;
+  chassis.move_speed_set_point.vx = 0;
+  chassis.move_speed_set_point.vw = 0;
 
   mileage = 0;
 }

@@ -123,7 +123,7 @@ typedef struct
 
 } motor_measure_t;
 
-typedef struct
+struct Motor3508
 {
     const motor_measure_t *motor_measure;
 
@@ -140,7 +140,7 @@ typedef struct
     int16_t give_current;
 
 
-}motor_3508_t;
+};
 
 typedef struct
 {
@@ -183,19 +183,6 @@ typedef struct
 
 }motor_2006_t;
 
-//typedef struct {
-//    union {
-//        float value;
-//        uint8_t data[4];
-//    }vx;
-//
-//    union {
-//        float value;
-//        uint8_t data[4];
-//    }vy;
-//}Vector_get_from_top;
-
-
 /******************** extern *******************/
 
 
@@ -208,20 +195,8 @@ extern motor_measure_t motor_2006_measure[1];//拨弹电机
 
 extern void CAN_cmd_motor(CAN_TYPE can_type,can_msg_id_e CMD_ID,int16_t motor1, int16_t motor2, int16_t motor3, int16_t motor4);
 
-extern void CAN_speed_cmd_motor(CAN_TYPE can_type,can_msg_id_e CMD_ID,int32_t speed);
-
-extern void CAN_cmd_balance_motor(CAN_TYPE can_type,int16_t motor1, int16_t motor2);
-
-extern void CAN_cmd_balance_signal_motor(CAN_TYPE can_type,can_msg_id_e CMD_ID,int16_t current);
-
-extern void CAN_cmd_chassis_rudder(int16_t motor1, int16_t motor2, int16_t motor3, int16_t motor4);
-
 extern fp32 motor_ecd_to_rad_change(uint16_t ecd, uint16_t offset_ecd);
 
 extern fp32 motor_ecd_to_angle_change(uint16_t ecd,uint16_t offset_ecd);
-
-extern void CAN_cmd_communication(CAN_TYPE can_type,can_msg_id_e CMD_ID,fp32 vx,fp32 vy);
-
-void CAN_msg_send(CAN_TYPE can_type,can_msg_id_e CMD_ID,Vector_msg msg);
 
 #endif //AVG_INFANTRY_CAN_RECEIVE_H

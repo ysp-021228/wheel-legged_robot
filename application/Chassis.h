@@ -62,19 +62,23 @@ struct IMUReference {
   fp32 roll;
 };
 
+struct MoveSpeedSetPoint{
+  fp32 vx;
+  fp32 vw;
+};
+
 struct Chassis {
   enum ChassisMode mode;
   enum ChassisMode last_mode;
-  motor_3508_t motor_chassis[2];
+
+  struct Motor3508 motor_chassis[2];
 
   struct IMUSetPoint imu_set_point;
   struct IMUReference imu_reference;
 
   pid_t chassis_vw_pid;
 
-  fp32 vx;
-  fp32 vy;
-  fp32 vw;
+  struct MoveSpeedSetPoint move_speed_set_point;
 };
 
 //函数声明
