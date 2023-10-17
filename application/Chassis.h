@@ -67,6 +67,17 @@ struct MoveSpeedSetPoint {
   fp32 vw;
 };
 
+struct StateVariable{
+  fp32 theta;
+  fp32 theta_dot;
+  fp32 x;
+  fp32 x_dot;
+  fp32 phi;
+  fp32 phi_dot;
+
+  fp32 theta_ddot;
+};
+
 /*******************************************************************************
  *                            ForwardKinematics                                *
  *******************************************************************************/
@@ -113,6 +124,8 @@ struct InverseKinematics {
 
   fp32 F_feedback[2][1];
   fp32 T_feedback[2][1];
+
+  fp32 Fn;
 };
 
 /*******************************************************************************
@@ -122,19 +135,25 @@ struct Chassis {
   enum ChassisMode mode;
   enum ChassisMode last_mode;
 
+  struct StateVariable state_variable_leg_L;
+  struct StateVariable state_variable_leg_R;
+
   struct Motor3508 motor_chassis[2];
 
   struct IMUSetPoint imu_set_point;
   struct IMUReference imu_reference;
 
-  struct ForwardKinematics forward_kinematics;
-  struct InverseKinematics inverse_kinematics;
+  struct ForwardKinematics forward_kinematics_leg_L;
+  struct InverseKinematics inverse_kinematics_leg_L;
+
+  struct ForwardKinematics forward_kinematics_leg_R;
+  struct InverseKinematics inverse_kinematics_leg_R;
 
   pid_t chassis_vw_pid;
 
   struct MoveSpeedSetPoint move_speed_set_point;
 
-  double Fn;
+  fp32 mileage;
 };
 
 /*******************************************************************************

@@ -13,7 +13,7 @@
 
 ramp_function_source_t chassis_3508_ramp[4];
 struct Chassis chassis;
-fp32 mileage;
+
 fp32 motor_LF_speed, motor_RF_speed, chassis_speed;
 
 static void chassis_init(struct Chassis *chassis);
@@ -46,14 +46,14 @@ void chassis_task(void const *pvParameters) {
     // chassis_relax_judge();
 
     switch (chassis.mode) {
-      case CHASSIS_ENABLE:{
+      case CHASSIS_ENABLE: {
 
       }
-      break;
+        break;
 
       case CHASSIS_OFF_GROUND: {
       }
-      break;
+        break;
 
       case CHASSIS_DISABLE: {
         chassis_relax_handle();
@@ -62,9 +62,9 @@ void chassis_task(void const *pvParameters) {
         break;
     }
     if (chassis.move_speed_set_point.vx != 0) {
-      mileage = 0;
+      chassis.mileage = 0;
     }
-    mileage = mileage + 15 * 0.001 * (motor_RF_speed + motor_LF_speed) / 2;
+    chassis.mileage = chassis.mileage + 15 * 0.001 * (motor_RF_speed + motor_LF_speed) / 2;
     vTaskDelay(CHASSIS_PERIOD);
   }
 }
@@ -107,7 +107,7 @@ static void chassis_relax_handle() {
   chassis.move_speed_set_point.vx = 0;
   chassis.move_speed_set_point.vw = 0;
 
-  mileage = 0;
+  chassis.mileage = 0;
 }
 
 static void chassis_wheel_cal(fp32 vx, fp32 vw) {
