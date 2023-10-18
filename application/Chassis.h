@@ -37,6 +37,12 @@
 #define BALANCE_REDUCTION_RATIO 1.0f //平衡兵电机减速比
 #define BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED  (PI*BALANCE_WHEEL_R/180.0f) //平衡兵电机rpm转为轮子的转速m/s
 
+#define L1 1.0f
+#define L2 1.0f
+#define L3 1.0f
+#define L4 1.0f
+#define L5 1.0f
+
 //枚举 结构体
 enum ChassisMode {
   CHASSIS_DISABLE,
@@ -86,6 +92,7 @@ struct FKL0 {
   fp32 L0;
   fp32 L0_last;
   fp32 L0_dot;
+  fp32 L0_dot_last;
   fp32 L0_ddot;
 };
 

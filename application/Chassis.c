@@ -28,6 +28,7 @@ void chassis_device_offline_handle();
 static void chassis_off_ground_detection();
 static void chassis_info_update();
 static void chassis_motor_info_update();
+static void chassis_forward_kinematics();
 
 void chassis_task(void const *pvParameters) {
 
@@ -74,13 +75,14 @@ void chassis_task(void const *pvParameters) {
 
 static void chassis_info_update() {
   chassis_angle_update();
-  chassis.mileage = chassis.mileage + CHASSIS_PERIOD * 0.001 * (chassis.leg_L.wheel.speed + chassis.leg_R.wheel.speed) / 2;//The state variable x should use this value
+  chassis.mileage = chassis.mileage + CHASSIS_PERIOD * 0.001 * (chassis.leg_L.wheel.speed + chassis.leg_R.wheel.speed)
+      / 2;//The state variable x should use this value
   if (chassis.move_speed_set_point.vx != 0) {
     chassis.mileage = 0;
   }
 }
 
-static void chassis_motor_info_update(){
+static void chassis_motor_info_update() {
   chassis.leg_L.wheel.speed = chassis.motor_chassis[LF].motor_measure->speed_rpm * BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED;
   chassis.leg_R.wheel.speed = -chassis.motor_chassis[RF].motor_measure->speed_rpm * BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED;
 }
@@ -123,7 +125,7 @@ static void chassis_relax_handle() {
   chassis.mileage = 0;
 }
 
-static void chassis_unable_leg_handle(){
+static void chassis_unable_leg_handle() {
 
 }
 
@@ -144,6 +146,115 @@ static void chassis_angle_update() {
   chassis.imu_reference.pitch = *(get_ins_angle() + 1) * MOTOR_RAD_TO_ANGLE;
   chassis.imu_reference.yaw = -*(get_ins_angle() + 0) * MOTOR_RAD_TO_ANGLE;
   chassis.imu_reference.roll = *(get_ins_angle() + 2) * MOTOR_RAD_TO_ANGLE;
+}
+
+static void chassis_forward_kinematics() {
+  //leg_L
+  chassis.leg_L.forward_kinematics.fk_point_coordinates.b_x = cos(chassis.leg_L.forward_kinematics.fk_phi.phi1) * L1;
+  chassis.leg_L.forward_kinematics.fk_point_coordinates.b_y = sin(chassis.leg_L.forward_kinematics.fk_phi.phi1) * L1;
+  chassis.leg_L.forward_kinematics.fk_point_coordinates.d_x = cos(chassis.leg_L.forward_kinematics.fk_phi.phi4) * L4
+      + L5;
+  chassis.leg_L.forward_kinematics.fk_point_coordinates.d_y = sin(chassis.leg_L.forward_kinematics.fk_phi.phi4) * L4;
+
+  fp32 L_A0 = (chassis.leg_L.forward_kinematics.fk_point_coordinates.d_x
+      - chassis.leg_L.forward_kinematics.fk_point_coordinates.b_x) * 2.f * L2;
+  fp32 L_B0 = (chassis.leg_L.forward_kinematics.fk_point_coordinates.d_y
+      - chassis.leg_L.forward_kinematics.fk_point_coordinates.b_y) * 2.f * L2;
+  fp32 L_BD_sq = (chassis.leg_L.forward_kinematics.fk_point_coordinates.d_x
+      - chassis.leg_L.forward_kinematics.fk_point_coordinates.b_x)
+      * (chassis.leg_L.forward_kinematics.fk_point_coordinates.d_x
+          - chassis.leg_L.forward_kinematics.fk_point_coordinates.b_x)
+      + (chassis.leg_L.forward_kinematics.fk_point_coordinates.d_y
+          - chassis.leg_L.forward_kinematics.fk_point_coordinates.b_y)
+          * (chassis.leg_L.forward_kinematics.fk_point_coordinates.d_y
+              - chassis.leg_L.forward_kinematics.fk_point_coordinates.b_y);
+  fp32 L_C0 = L2 * L2 + L_BD_sq - L3 * L3;
+
+  fp32 temp = L_A0 * L_A0 + L_B0 * L_B0 - L_C0 * L_C0;
+  fp32 y = L_B0 + sqrt(ABS(temp));
+  fp32 x = L_A0 + L_C0;
+  chassis.leg_L.forward_kinematics.fk_phi.phi2 = 2.f * atan2(y, x);
+
+  chassis.leg_L.forward_kinematics.fk_point_coordinates.c_x =
+      L1 * cos(chassis.leg_L.forward_kinematics.fk_phi.phi1) + L2 * cos(chassis.leg_L.forward_kinematics.fk_phi.phi2);
+  chassis.leg_L.forward_kinematics.fk_point_coordinates.c_y =
+      L1 * sin(chassis.leg_L.forward_kinematics.fk_phi.phi1) + L2 * sin(chassis.leg_L.forward_kinematics.fk_phi.phi2);
+  y = chassis.leg_L.forward_kinematics.fk_point_coordinates.c_y
+      - chassis.leg_L.forward_kinematics.fk_point_coordinates.d_y;
+  x = chassis.leg_L.forward_kinematics.fk_point_coordinates.c_x
+      - chassis.leg_L.forward_kinematics.fk_point_coordinates.d_x;
+  chassis.leg_L.forward_kinematics.fk_phi.phi3 = atan2(y, x);
+
+  temp = (chassis.leg_L.forward_kinematics.fk_point_coordinates.c_x - L5 * 0.5f)
+      * (chassis.leg_L.forward_kinematics.fk_point_coordinates.c_x - L5 * 0.5f)
+      + chassis.leg_L.forward_kinematics.fk_point_coordinates.c_y
+          * chassis.leg_L.forward_kinematics.fk_point_coordinates.c_y;
+  chassis.leg_L.forward_kinematics.fk_L0.L0_last = chassis.leg_L.forward_kinematics.fk_L0.L0;
+  chassis.leg_L.forward_kinematics.fk_L0.L0 = sqrt(ABS(temp));
+  chassis.leg_L.forward_kinematics.fk_L0.L0_dot_last = chassis.leg_L.forward_kinematics.fk_L0.L0_dot;
+  chassis.leg_L.forward_kinematics.fk_L0.L0_dot =
+      (chassis.leg_L.forward_kinematics.fk_L0.L0 - chassis.leg_L.forward_kinematics.fk_L0.L0_last)
+          / (CHASSIS_PERIOD * 0.001);
+  chassis.leg_L.forward_kinematics.fk_L0.L0_ddot =
+      (chassis.leg_L.forward_kinematics.fk_L0.L0_dot - chassis.leg_L.forward_kinematics.fk_L0.L0_dot_last)
+          / (CHASSIS_PERIOD * 0.001);
+  y = chassis.leg_L.forward_kinematics.fk_point_coordinates.c_y;
+  x = chassis.leg_L.forward_kinematics.fk_point_coordinates.c_x - L5 * 0.5f;
+  chassis.leg_L.forward_kinematics.fk_phi.phi0 = atan2(y, x);
+
+
+  //leg_R
+  chassis.leg_R.forward_kinematics.fk_point_coordinates.b_x = cos(chassis.leg_R.forward_kinematics.fk_phi.phi1) * L1;
+  chassis.leg_R.forward_kinematics.fk_point_coordinates.b_y = sin(chassis.leg_R.forward_kinematics.fk_phi.phi1) * L1;
+  chassis.leg_R.forward_kinematics.fk_point_coordinates.d_x = cos(chassis.leg_R.forward_kinematics.fk_phi.phi4) * L4
+      + L5;
+  chassis.leg_R.forward_kinematics.fk_point_coordinates.d_y = sin(chassis.leg_R.forward_kinematics.fk_phi.phi4) * L4;
+
+  fp32 R_A0 = (chassis.leg_R.forward_kinematics.fk_point_coordinates.d_x
+      - chassis.leg_R.forward_kinematics.fk_point_coordinates.b_x) * 2.f * L2;
+  fp32 R_B0 = (chassis.leg_R.forward_kinematics.fk_point_coordinates.d_y
+      - chassis.leg_R.forward_kinematics.fk_point_coordinates.b_y) * 2.f * L2;
+  fp32 R_BD_sq = (chassis.leg_R.forward_kinematics.fk_point_coordinates.d_x
+      - chassis.leg_R.forward_kinematics.fk_point_coordinates.b_x)
+      * (chassis.leg_R.forward_kinematics.fk_point_coordinates.d_x
+          - chassis.leg_R.forward_kinematics.fk_point_coordinates.b_x)
+      + (chassis.leg_R.forward_kinematics.fk_point_coordinates.d_y
+          - chassis.leg_R.forward_kinematics.fk_point_coordinates.b_y)
+          * (chassis.leg_R.forward_kinematics.fk_point_coordinates.d_y
+              - chassis.leg_R.forward_kinematics.fk_point_coordinates.b_y);
+  fp32 R_C0 = L2 * L2 + R_BD_sq - L3 * L3;
+
+  temp = R_A0 * R_A0 + R_B0 * R_B0 - R_C0 * R_C0;
+  y = R_B0 + sqrt(ABS(temp));
+  x = R_A0 + R_C0;
+  chassis.leg_R.forward_kinematics.fk_phi.phi2 = 2.f * atan2(y, x);
+
+  chassis.leg_R.forward_kinematics.fk_point_coordinates.c_x =
+      L1 * cos(chassis.leg_R.forward_kinematics.fk_phi.phi1) + L2 * cos(chassis.leg_R.forward_kinematics.fk_phi.phi2);
+  chassis.leg_R.forward_kinematics.fk_point_coordinates.c_y =
+      L1 * sin(chassis.leg_R.forward_kinematics.fk_phi.phi1) + L2 * sin(chassis.leg_R.forward_kinematics.fk_phi.phi2);
+  y = chassis.leg_R.forward_kinematics.fk_point_coordinates.c_y
+      - chassis.leg_R.forward_kinematics.fk_point_coordinates.d_y;
+  x = chassis.leg_R.forward_kinematics.fk_point_coordinates.c_x
+      - chassis.leg_R.forward_kinematics.fk_point_coordinates.d_x;
+  chassis.leg_R.forward_kinematics.fk_phi.phi3 = atan2(y, x);
+
+  temp = (chassis.leg_R.forward_kinematics.fk_point_coordinates.c_x - L5 * 0.5f)
+      * (chassis.leg_R.forward_kinematics.fk_point_coordinates.c_x - L5 * 0.5f)
+      + chassis.leg_R.forward_kinematics.fk_point_coordinates.c_y
+          * chassis.leg_R.forward_kinematics.fk_point_coordinates.c_y;
+  chassis.leg_R.forward_kinematics.fk_L0.L0_last = chassis.leg_R.forward_kinematics.fk_L0.L0;
+  chassis.leg_R.forward_kinematics.fk_L0.L0 = sqrt(ABS(temp));
+  chassis.leg_R.forward_kinematics.fk_L0.L0_dot_last = chassis.leg_R.forward_kinematics.fk_L0.L0_dot;
+  chassis.leg_R.forward_kinematics.fk_L0.L0_dot =
+      (chassis.leg_R.forward_kinematics.fk_L0.L0 - chassis.leg_R.forward_kinematics.fk_L0.L0_last)
+          / (CHASSIS_PERIOD * 0.001);
+  chassis.leg_R.forward_kinematics.fk_L0.L0_ddot =
+      (chassis.leg_R.forward_kinematics.fk_L0.L0_dot - chassis.leg_R.forward_kinematics.fk_L0.L0_dot_last)
+          / (CHASSIS_PERIOD * 0.001);
+  y = chassis.leg_R.forward_kinematics.fk_point_coordinates.c_y;
+  x = chassis.leg_R.forward_kinematics.fk_point_coordinates.c_x - L5 * 0.5f;
+  chassis.leg_R.forward_kinematics.fk_phi.phi0 = atan2(y, x);
 }
 
 static void chassis_relax_judge() {
