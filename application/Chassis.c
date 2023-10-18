@@ -19,6 +19,8 @@ static void chassis_init(struct Chassis *chassis);
 static void chassis_set_mode(struct Chassis *chassis);
 static void chassis_ctrl_info_get();
 static void chassis_relax_handle();
+static void chassis_enabled_leg_handle();
+static void chassis_unable_leg_handle();
 static void chassis_wheel_cal(fp32 vx, fp32 vw);
 static void chassis_angle_update();
 static void chassis_relax_judge();
@@ -43,12 +45,18 @@ void chassis_task(void const *pvParameters) {
     chassis_relax_judge();
 
     switch (chassis.mode) {
-      case CHASSIS_ENABLE: {
+      case CHASSIS_ENABLED_LEG: {
+
+      }
+        break;
+
+      case CHASSIS_UNENABLED_LEG: {
 
       }
         break;
 
       case CHASSIS_OFF_GROUND: {
+
       }
         break;
 
@@ -65,7 +73,7 @@ void chassis_task(void const *pvParameters) {
 
 static void chassis_info_update() {
   chassis_angle_update();
-  chassis.mileage = chassis.mileage + 15 * 0.001 * (motor_RF_speed + motor_LF_speed) / 2;
+  chassis.mileage = chassis.mileage + CHASSIS_PERIOD * 0.001 * (motor_RF_speed + motor_LF_speed) / 2;
   if (chassis.move_speed_set_point.vx != 0) {
     chassis.mileage = 0;
   }
@@ -95,10 +103,10 @@ static void chassis_set_mode(struct Chassis *chassis) {
     chassis->mode = CHASSIS_DISABLE;
   } else if (switch_is_mid(get_rc_ctrl().rc.s[RC_s_R])) {
     chassis->last_mode = chassis->mode;
-    chassis->mode = CHASSIS_ENABLE;
+    chassis->mode = CHASSIS_UNENABLED_LEG;
   } else if (switch_is_up(get_rc_ctrl().rc.s[RC_s_R])) {
     chassis->last_mode = chassis->mode;
-    chassis->mode = CHASSIS_ENABLE;
+    chassis->mode = CHASSIS_ENABLED_LEG;
   }
 }
 
@@ -109,17 +117,15 @@ static void chassis_relax_handle() {
   chassis.mileage = 0;
 }
 
+static void chassis_unable_leg_handle(){
+
+}
+
 static void chassis_wheel_cal(fp32 vx, fp32 vw) {
   //以下两行注释为2023赛季平衡兵轮子转速线速度计算函数
   motor_LF_speed = chassis.motor_chassis[LF].motor_measure->speed_rpm * BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED;
   motor_RF_speed = -chassis.motor_chassis[RF].motor_measure->speed_rpm * BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED;
 
-}
-
-static void chassis_spin_handle() {
-  //以下两行注释为2023赛季平衡兵轮子转速线速度计算函数
-  motor_LF_speed = chassis.motor_chassis[LF].motor_measure->speed_rpm * BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED;
-  motor_RF_speed = -chassis.motor_chassis[RF].motor_measure->speed_rpm * BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED;
 }
 
 void chassis_device_offline_handle() {

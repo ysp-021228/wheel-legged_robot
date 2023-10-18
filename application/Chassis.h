@@ -40,7 +40,8 @@
 //枚举 结构体
 enum ChassisMode {
   CHASSIS_DISABLE,
-  CHASSIS_ENABLE,
+  CHASSIS_UNENABLED_LEG,
+  CHASSIS_ENABLED_LEG,
   CHASSIS_OFF_GROUND,
   CHASSIS_MODE_NUM,
 };
@@ -67,7 +68,7 @@ struct MoveSpeedSetPoint {
   fp32 vw;
 };
 
-struct StateVariable{
+struct StateVariable {
   fp32 theta;
   fp32 theta_dot;
   fp32 x;
@@ -129,14 +130,23 @@ struct InverseKinematics {
 };
 
 /*******************************************************************************
- *                                  Chassis                                    *
+ *                                   Robot                                     *
  *******************************************************************************/
+struct Wheel{
+  fp32 speed;
+  fp32 mileage;
+};
+
+struct Leg{
+  struct StateVariable state_variable;
+  struct ForwardKinematics forward_kinematics;
+  struct InverseKinematics inverse_kinematics;
+  struct Wheel wheel;
+};
+
 struct Chassis {
   enum ChassisMode mode;
   enum ChassisMode last_mode;
-
-  struct StateVariable state_variable_leg_L;
-  struct StateVariable state_variable_leg_R;
 
   struct Motor3508 motor_chassis[2];
   //joint motor
@@ -144,11 +154,8 @@ struct Chassis {
   struct IMUSetPoint imu_set_point;
   struct IMUReference imu_reference;
 
-  struct ForwardKinematics forward_kinematics_leg_L;
-  struct InverseKinematics inverse_kinematics_leg_L;
-
-  struct ForwardKinematics forward_kinematics_leg_R;
-  struct InverseKinematics inverse_kinematics_leg_R;
+  struct Leg leg_L;
+  struct Leg leg_R;
 
   pid_t chassis_vw_pid;
 
