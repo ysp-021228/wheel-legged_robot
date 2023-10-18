@@ -27,6 +27,7 @@ static void chassis_relax_judge();
 void chassis_device_offline_handle();
 static void chassis_off_ground_detection();
 static void chassis_info_update();
+static void chassis_motor_info_update();
 
 void chassis_task(void const *pvParameters) {
 
@@ -73,10 +74,15 @@ void chassis_task(void const *pvParameters) {
 
 static void chassis_info_update() {
   chassis_angle_update();
-  chassis.mileage = chassis.mileage + CHASSIS_PERIOD * 0.001 * (motor_RF_speed + motor_LF_speed) / 2;
+  chassis.mileage = chassis.mileage + CHASSIS_PERIOD * 0.001 * (chassis.leg_L.wheel.speed + chassis.leg_R.wheel.speed) / 2;//The state variable x should use this value
   if (chassis.move_speed_set_point.vx != 0) {
     chassis.mileage = 0;
   }
+}
+
+static void chassis_motor_info_update(){
+  chassis.leg_L.wheel.speed = chassis.motor_chassis[LF].motor_measure->speed_rpm * BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED;
+  chassis.leg_R.wheel.speed = -chassis.motor_chassis[RF].motor_measure->speed_rpm * BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED;
 }
 
 static void chassis_ctrl_info_get() {
