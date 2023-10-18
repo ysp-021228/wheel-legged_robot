@@ -48,6 +48,8 @@ void chassis_task(void const *pvParameters) {
 
     switch (chassis.mode) {
       case CHASSIS_ENABLED_LEG: {
+        chassis_enabled_leg_handle();
+
 
       }
         break;
@@ -123,6 +125,10 @@ static void chassis_relax_handle() {
   chassis.move_speed_set_point.vw = 0;
 
   chassis.mileage = 0;
+}
+
+static void chassis_enabled_leg_handle(){
+  chassis_forward_kinematics();
 }
 
 static void chassis_unable_leg_handle() {
@@ -262,7 +268,7 @@ static void chassis_relax_judge() {
     chassis.mode = CHASSIS_DISABLE;
   }
 }
-
+ 
 struct Chassis get_chassis() {
   return chassis;
 }
