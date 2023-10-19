@@ -32,7 +32,7 @@
 /**
  * @brief 电机数据结构体
  */
-struct MiMotorData{
+struct MiMotorData {
   CAN_HandleTypeDef canHandleTypeDef;
   uint8_t id;
   uint16_t data;
@@ -46,7 +46,7 @@ struct MiMotorData{
   uint8_t warning[4];
   uint8_t index[2];
   uint8_t ref[4];
-} mi_motor_data_t;
+};
 
 extern struct MiMotorData mi_motors_1[MI_MOTOR_SINGLE_NUM];
 extern struct MiMotorData mi_motors_2[MI_MOTOR_SINGLE_NUM];

@@ -10,8 +10,11 @@
 #include "arm_math.h"
 #include "Detection.h"
 #include "Atti.h"
+#include "CyberGear.h"
 
 struct Chassis chassis;
+extern CAN_HandleTypeDef hcan1;
+extern CAN_HandleTypeDef hcan2;
 
 fp32 motor_LF_speed, motor_RF_speed, chassis_speed;
 
@@ -36,8 +39,13 @@ void chassis_task(void const *pvParameters) {
 
   chassis_init(&chassis);
 
-  while (1) {
+  mi_motor_init(hcan1, CYBERGEAR_ID, &mi_motors_1[CYBERGEAR_ID]);
+  mi_motor_mode(&mi_motors_1[CYBERGEAR_ID], 3);
+  mi_motor_enable(&mi_motors_1[CYBERGEAR_ID]);
 
+  while (1) {
+//    mi_motor_control_mode(&mi_motors_1[CYBERGEAR_ID], 0.0, 0, 0, 0, 0);
+    mi_motor_write(&mi_motors_1[CYBERGEAR_ID],MI_MOTOR_IQ_REF_INDEX,0.5);
     chassis_info_update();
 
     chassis_ctrl_info_get();
@@ -49,7 +57,6 @@ void chassis_task(void const *pvParameters) {
     switch (chassis.mode) {
       case CHASSIS_ENABLED_LEG: {
         chassis_enabled_leg_handle();
-
 
       }
         break;
@@ -127,7 +134,7 @@ static void chassis_relax_handle() {
   chassis.mileage = 0;
 }
 
-static void chassis_enabled_leg_handle(){
+static void chassis_enabled_leg_handle() {
   chassis_forward_kinematics();
 }
 
@@ -268,7 +275,7 @@ static void chassis_relax_judge() {
     chassis.mode = CHASSIS_DISABLE;
   }
 }
- 
+
 struct Chassis get_chassis() {
   return chassis;
 }

@@ -37,14 +37,6 @@ typedef enum
     //电机控制 发送ID
     CAN_MOTOR_0x1FF_ID = 0x1FF,
     //0x1FF对应的电机的ID
-
-    CAN_LAUNCHER_3508_FIRE_L=0X205,
-    CAN_LAUNCHER_3508_FIRE_R=0X207,
-    CAN_LAUNCHER_2006_TRIGGER=0x208,
-
-    CAN_GIMBAL_6020_YAW=0x205,
-    CAN_GIMBAL_6020_PITCH=0x206,
-
     //电机控制 发送ID
     CAN_MOTOR_0x2FF_ID = 0x2FF,
     //0x2FF对应的电机的ID

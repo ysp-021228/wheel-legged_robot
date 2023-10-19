@@ -43,6 +43,8 @@
 #define L4 1.0f
 #define L5 1.0f
 
+#define CYBERGEAR_ID (0x7F)
+
 //枚举 结构体
 enum ChassisMode {
   CHASSIS_DISABLE,
@@ -139,12 +141,12 @@ struct InverseKinematics {
 /*******************************************************************************
  *                                   Robot                                     *
  *******************************************************************************/
-struct Wheel{
+struct Wheel {
   fp32 speed;
   fp32 mileage;
 };
 
-struct Leg{
+struct Leg {
   struct StateVariable state_variable;
   struct ForwardKinematics forward_kinematics;
   struct InverseKinematics inverse_kinematics;
