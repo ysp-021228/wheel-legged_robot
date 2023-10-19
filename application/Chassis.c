@@ -42,6 +42,8 @@ void chassis_task(void const *pvParameters) {
   mi_motor_init(hcan1, CYBERGEAR_ID, &mi_motors_1[CYBERGEAR_ID]);
   mi_motor_mode(&mi_motors_1[CYBERGEAR_ID], 3);
   mi_motor_enable(&mi_motors_1[CYBERGEAR_ID]);
+  mi_motor_write(&mi_motors_1[CYBERGEAR_ID],MI_MOTOR_CUR_KP_INDEX,0.01);
+  mi_motor_write(&mi_motors_1[CYBERGEAR_ID],MI_MOTOR_CUR_KI_INDEX,0.0);
 
   while (1) {
 //    mi_motor_control_mode(&mi_motors_1[CYBERGEAR_ID], 0.0, 0, 0, 0, 0);

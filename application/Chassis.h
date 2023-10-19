@@ -14,8 +14,6 @@
                                 osThreadResume(handle);                          \
                                 }                                                \
 
-//任务开始空闲一段时间
-
 #define CHASSIS_TASK_INIT_TIME 357
 
 #define CHASSIS_X_CHANNEL 1
@@ -30,7 +28,9 @@
 #define RC_TO_VX  (MAX_CHASSIS_VX_SPEED/660)
 #define RC_TO_VW 0.01f    //MAX_CHASSIS_VR_SPEED / RC_MAX_VALUE
 
-//底盘机械信息 mm
+/*******************************************************************************
+ *                         Robot physical parameters                           *
+ *******************************************************************************/
 #define M3508_MAX_RPM 710
 #define BALANCE_WHEEL_R 0.11 //平衡兵轮子半径
 #define BALANCE_TRACK 863.938f //平衡兵轮子周长
@@ -144,6 +144,7 @@ struct InverseKinematics {
 struct Wheel {
   fp32 speed;
   fp32 mileage;
+  struct Motor3508 motor_3508;
 };
 
 struct Leg {
