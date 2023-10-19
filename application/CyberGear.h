@@ -32,7 +32,7 @@
 /**
  * @brief 电机数据结构体
  */
-typedef struct {
+struct MiMotorData{
   CAN_HandleTypeDef canHandleTypeDef;
   uint8_t id;
   uint16_t data;
@@ -48,34 +48,34 @@ typedef struct {
   uint8_t ref[4];
 } mi_motor_data_t;
 
-extern mi_motor_data_t mi_motors_1[MI_MOTOR_SINGLE_NUM];
-extern mi_motor_data_t mi_motors_2[MI_MOTOR_SINGLE_NUM];
+extern struct MiMotorData mi_motors_1[MI_MOTOR_SINGLE_NUM];
+extern struct MiMotorData mi_motors_2[MI_MOTOR_SINGLE_NUM];
 
-extern void cyber_gear_can_send(CAN_HandleTypeDef canHandleTypeDef, mi_motor_data_t *mi_motor_data);
+extern void cyber_gear_can_send(CAN_HandleTypeDef canHandleTypeDef, struct MiMotorData *mi_motor_data);
 
-extern void mi_motor_id_get(mi_motor_data_t *mi_motor_data);
+extern void mi_motor_id_get(struct MiMotorData *mi_motor_data);
 
 extern void
-mi_motor_control_mode(mi_motor_data_t *mi_motor_data, float torque, float MechPosition, float speed, float kp,
+mi_motor_control_mode(struct MiMotorData *mi_motor_data, float torque, float MechPosition, float speed, float kp,
                       float kd);
 
-extern void mi_motor_init(CAN_HandleTypeDef canHandleTypeDef, uint8_t id, mi_motor_data_t *mi_motor_data);
+extern void mi_motor_init(CAN_HandleTypeDef canHandleTypeDef, uint8_t id, struct MiMotorData *mi_motor_data);
 
-extern void mi_motor_enable(mi_motor_data_t *mi_motor_data);
+extern void mi_motor_enable(struct MiMotorData *mi_motor_data);
 
-extern void mi_motor_disable(mi_motor_data_t *mi_motor_data);
+extern void mi_motor_disable(struct MiMotorData *mi_motor_data);
 
-extern void mi_motor_clear_err(mi_motor_data_t *mi_motor_data);
+extern void mi_motor_clear_err(struct MiMotorData *mi_motor_data);
 
-extern void mi_motor_set_zero(mi_motor_data_t *mi_motor_data);
+extern void mi_motor_set_zero(struct MiMotorData *mi_motor_data);
 
-extern void mi_motor_set_id(mi_motor_data_t *mi_motor_data, uint8_t set_id);
+extern void mi_motor_set_id(struct MiMotorData *mi_motor_data, uint8_t set_id);
 
-extern void mi_motor_read(mi_motor_data_t *mi_motor_data, uint16_t index);
+extern void mi_motor_read(struct MiMotorData *mi_motor_data, uint16_t index);
 
-extern void mi_motor_mode(mi_motor_data_t *mi_motor_data, uint8_t mode);
+extern void mi_motor_mode(struct MiMotorData *mi_motor_data, uint8_t mode);
 
-extern void mi_motor_write(mi_motor_data_t *mi_motor_data, uint16_t index, float ref);
+extern void mi_motor_write(struct MiMotorData *mi_motor_data, uint16_t index, float ref);
 
 extern void mi_motor_data_get(CAN_HandleTypeDef *hcan, CAN_RxHeaderTypeDef rx_header, const uint8_t rx_data[8]);
 
