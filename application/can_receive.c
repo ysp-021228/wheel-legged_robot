@@ -255,15 +255,15 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
   uint8_t rx_data[8];
 
   HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &rx_header, rx_data);
-  mi_motor_data_get(hcan,rx_header,rx_data);
+  mi_motor_data_get(hcan, rx_header, rx_data);
   if (hcan == &hcan1) {
     switch (rx_header.StdId) {
-      case CAN_BALANCE_MOTOR_L: {
-        get_balance_motor_force_measure(&motor_3508_measure[0], rx_data);
+      case CAN_CHASSIS_3508_MOTOR_1: {
+        get_motor_measure(&motor_3508_measure[0], rx_data);
       }
         break;
-      case CAN_BALANCE_MOTOR_R: {
-        get_balance_motor_force_measure(&motor_3508_measure[1], rx_data);
+      case CAN_CHASSIS_3508_MOTOR_2: {
+        get_motor_measure(&motor_3508_measure[1], rx_data);
       }
         break;
 
