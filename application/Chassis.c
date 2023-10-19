@@ -78,16 +78,19 @@ void chassis_task(void const *pvParameters) {
 
 static void chassis_info_update() {
   chassis_angle_update();
-  chassis.mileage = chassis.mileage + CHASSIS_PERIOD * 0.001 * (chassis.leg_L.wheel.speed + chassis.leg_R.wheel.speed)
-      / 2;//The state variable x should use this value
+  chassis_motor_info_update();
+  chassis.mileage =
+      (chassis.leg_L.wheel.mileage + chassis.leg_R.wheel.mileage) / 2;//The state variable x should use this value
   if (chassis.move_speed_set_point.vx != 0) {
     chassis.mileage = 0;
   }
 }
 
 static void chassis_motor_info_update() {
-  chassis.leg_L.wheel.speed = chassis.motor_chassis[LF].motor_measure->speed_rpm * BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED;
-  chassis.leg_R.wheel.speed = -chassis.motor_chassis[RF].motor_measure->speed_rpm * BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED;
+  chassis.leg_L.wheel.speed = motor_3508_measure[0].speed_rpm * BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED;
+  chassis.leg_R.wheel.speed = -motor_3508_measure[1].speed_rpm * BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED;
+  chassis.leg_L.wheel.mileage = chassis.leg_L.wheel.mileage + CHASSIS_PERIOD * 0.001 * (chassis.leg_L.wheel.speed);
+  chassis.leg_R.wheel.mileage = chassis.leg_R.wheel.mileage + CHASSIS_PERIOD * 0.001 * (chassis.leg_R.wheel.speed);
 }
 
 static void chassis_ctrl_info_get() {
@@ -101,8 +104,8 @@ static void chassis_init(struct Chassis *chassis) {
     return;
 
   chassis->mode = chassis->last_mode = CHASSIS_DISABLE;
-  chassis->leg_L.wheel.motor_3508.motor_measure=motor_3508_measure;
-  chassis->leg_R.wheel.motor_3508.motor_measure=motor_3508_measure+1;
+  chassis->leg_L.wheel.motor_3508.motor_measure = motor_3508_measure;
+  chassis->leg_R.wheel.motor_3508.motor_measure = motor_3508_measure + 1;
 
 }
 
@@ -140,8 +143,7 @@ static void chassis_unable_leg_handle() {
 
 static void chassis_wheel_cal(fp32 vx, fp32 vw) {
   //以下两行注释为2023赛季平衡兵轮子转速线速度计算函数
-  motor_LF_speed = chassis.motor_chassis[LF].motor_measure->speed_rpm * BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED;
-  motor_RF_speed = -chassis.motor_chassis[RF].motor_measure->speed_rpm * BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED;
+
 
 }
 

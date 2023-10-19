@@ -32,10 +32,9 @@
  *                         Robot physical parameters                           *
  *******************************************************************************/
 #define M3508_MAX_RPM 710
-#define BALANCE_WHEEL_R 0.11 //平衡兵轮子半径
-#define BALANCE_TRACK 863.938f //平衡兵轮子周长
-#define BALANCE_REDUCTION_RATIO 1.0f //平衡兵电机减速比
-#define BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED  (PI*BALANCE_WHEEL_R/180.0f) //平衡兵电机rpm转为轮子的转速m/s
+#define BALANCE_WHEEL_R 0.05 //平衡兵轮子半径m
+#define BALANCE_REDUCTION_RATIO (1.0f/19) //平衡兵电机减速比
+#define BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED  ((2 * PI  * BALANCE_WHEEL_R*BALANCE_REDUCTION_RATIO) / 60) //平衡兵电机rpm转为轮子的转速m/s
 
 #define L1 1.0f
 #define L2 1.0f
@@ -158,7 +157,6 @@ struct Chassis {
   enum ChassisMode mode;
   enum ChassisMode last_mode;
 
-  struct Motor3508 motor_chassis[2];
   //joint motor
 
   struct IMUSetPoint imu_set_point;
