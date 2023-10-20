@@ -32,6 +32,7 @@ static void chassis_off_ground_detection();
 static void chassis_info_update();
 static void chassis_motor_info_update();
 static void chassis_forward_kinematics();
+static void chassis_motor_cmd_send();
 
 void chassis_task(void const *pvParameters) {
 
@@ -48,15 +49,16 @@ void chassis_task(void const *pvParameters) {
 
     chassis_relax_judge();
 
+    chassis_device_offline_handle();
+
     switch (chassis.mode) {
       case CHASSIS_ENABLED_LEG: {
         chassis_enabled_leg_handle();
-
       }
         break;
 
       case CHASSIS_UNENABLED_LEG: {
-
+        chassis_unable_leg_handle();
       }
         break;
 
@@ -71,6 +73,8 @@ void chassis_task(void const *pvParameters) {
       }
         break;
     }
+
+    chassis_motor_cmd_send();
 
     vTaskDelay(CHASSIS_PERIOD);
   }
@@ -142,8 +146,6 @@ static void chassis_unable_leg_handle() {
 }
 
 static void chassis_wheel_cal(fp32 vx, fp32 vw) {
-  //以下两行注释为2023赛季平衡兵轮子转速线速度计算函数
-
 
 }
 
@@ -272,6 +274,15 @@ static void chassis_relax_judge() {
   if (ABS(chassis.imu_reference.pitch) > 32) {
     chassis.mode = CHASSIS_DISABLE;
   }
+}
+
+static void chassis_motor_cmd_send() {
+  CAN_cmd_motor(CAN_1,
+                CAN_MOTOR_0x1FF_ID,
+                chassis.leg_L.wheel.motor_3508.give_current,
+                chassis.leg_R.wheel.motor_3508.give_current,
+                0,
+                0);
 }
 
 struct Chassis get_chassis() {
