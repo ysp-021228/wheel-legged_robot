@@ -135,12 +135,12 @@ extern const fp32 *get_INS_quat_point(void);
 
 
 /**
-  * @brief          get the euler angle, 0:yaw, 1:pitch, 2:roll unit rad
+  * @brief          get the euler angle, 0:yaw_angle, 1:pitch_angle, 2:roll_angle unit rad
   * @param[in]      none
   * @retval         the point of INS_angle
   */
 /**
-  * @brief          获取欧拉角, 0:yaw, 1:pitch, 2:roll 单位 rad
+  * @brief          获取欧拉角, 0:yaw_angle, 1:pitch_angle, 2:roll_angle 单位 rad
   * @param[in]      none
   * @retval         INS_angle的指针
   */
@@ -148,7 +148,7 @@ extern const fp32 *get_INS_angle_point(void);
 
 
 /**
-  * @brief          get the rotation speed, 0:x-axis, 1:y-axis, 2:roll-axis,unit rad/s
+  * @brief          get the rotation speed, 0:x-axis, 1:y-axis, 2:roll_angle-axis,unit rad/s
   * @param[in]      none
   * @retval         the point of INS_gyro
   */
@@ -161,7 +161,7 @@ extern const fp32 *get_gyro_data_point(void);
 
 
 /**
-  * @brief          get aceel, 0:x-axis, 1:y-axis, 2:roll-axis unit m/s2
+  * @brief          get aceel, 0:x-axis, 1:y-axis, 2:roll_angle-axis unit m/s2
   * @param[in]      none
   * @retval         the point of INS_gyro
   */
@@ -173,7 +173,7 @@ extern const fp32 *get_gyro_data_point(void);
 extern const fp32 *get_accel_data_point(void);
 
 /**
-  * @brief          get mag, 0:x-axis, 1:y-axis, 2:roll-axis unit ut
+  * @brief          get mag, 0:x-axis, 1:y-axis, 2:roll_angle-axis unit ut
   * @param[in]      none
   * @retval         the point of INS_mag
   */

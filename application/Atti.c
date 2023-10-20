@@ -437,12 +437,12 @@ const fp32 *get_INS_quat_point(void) {
   return INS_quat;
 }
 /**
-  * @brief          get the euler angle, 0:yaw, 1:pitch, 2:roll unit rad
+  * @brief          get the euler angle, 0:yaw_angle, 1:pitch_angle, 2:roll_angle unit rad
   * @param[in]      none
   * @retval         the point of INS_angle
   */
 /**
-  * @brief          ��ȡŷ����, 0:yaw, 1:pitch, 2:roll ��λ rad
+  * @brief          ��ȡŷ����, 0:yaw_angle, 1:pitch_angle, 2:roll_angle ��λ rad
   * @param[in]      none
   * @retval         INS_angle��ָ��
   */
@@ -451,12 +451,12 @@ const fp32 *get_INS_angle_point(void) {
 }
 
 /**
-  * @brief          get the rotation speed, 0:x-axis, 1:y-axis, 2:roll-axis,unit rad/s
+  * @brief          get the rotation speed, 0:x-axis, 1:y-axis, 2:roll_angle-axis,unit rad/s
   * @param[in]      none
   * @retval         the point of INS_gyro
   */
 /**
-  * @brief          ��ȡ���ٶ�,0:x��, 1:y��, 2:roll�� ��λ rad/s
+  * @brief          ��ȡ���ٶ�,0:x��, 1:y��, 2:roll_angle�� ��λ rad/s
   * @param[in]      none
   * @retval         INS_gyro��ָ��
   */
@@ -464,12 +464,12 @@ extern const fp32 *get_gyro_data_point(void) {
   return INS_gyro;
 }
 /**
-  * @brief          get aceel, 0:x-axis, 1:y-axis, 2:roll-axis unit m/s2
+  * @brief          get aceel, 0:x-axis, 1:y-axis, 2:roll_angle-axis unit m/s2
   * @param[in]      none
   * @retval         the point of INS_accel
   */
 /**
-  * @brief          ��ȡ���ٶ�,0:x��, 1:y��, 2:roll�� ��λ m/s2
+  * @brief          ��ȡ���ٶ�,0:x��, 1:y��, 2:roll_angle�� ��λ m/s2
   * @param[in]      none
   * @retval         INS_accel��ָ��
   */
@@ -477,12 +477,12 @@ extern const fp32 *get_accel_data_point(void) {
   return INS_accel;
 }
 /**
-  * @brief          get mag, 0:x-axis, 1:y-axis, 2:roll-axis unit ut
+  * @brief          get mag, 0:x-axis, 1:y-axis, 2:roll_angle-axis unit ut
   * @param[in]      none
   * @retval         the point of INS_mag
   */
 /**
-  * @brief          ��ȡ���ٶ�,0:x��, 1:y��, 2:roll�� ��λ ut
+  * @brief          ��ȡ���ٶ�,0:x��, 1:y��, 2:roll_angle�� ��λ ut
   * @param[in]      none
   * @retval         INS_mag��ָ��
   */

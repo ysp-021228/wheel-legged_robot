@@ -161,9 +161,9 @@ void chassis_device_offline_handle() {
 }
 
 static void chassis_angle_update() {
-  chassis.imu_reference.pitch = *(get_ins_angle() + 1);
-  chassis.imu_reference.yaw = -*(get_ins_angle() + 0);
-  chassis.imu_reference.roll = *(get_ins_angle() + 2);
+  chassis.imu_reference.pitch_angle = *(get_ins_angle() + 1);
+  chassis.imu_reference.yaw_angle = -*(get_ins_angle() + 0);
+  chassis.imu_reference.roll_angle = *(get_ins_angle() + 2);
   //add gyro
 }
 
@@ -277,7 +277,7 @@ static void chassis_forward_kinematics() {
 }
 
 static void chassis_relax_judge() {
-  if (ABS(chassis.imu_reference.pitch) > 32) {
+  if (ABS(chassis.imu_reference.pitch_angle) > 32) {
     chassis.mode = CHASSIS_DISABLE;
   }
 }

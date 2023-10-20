@@ -100,7 +100,7 @@ void gimbal_task(void const *pvParameters) {
 
 //        CAN_cmd_motor(CAN_1,
 //                      CAN_MOTOR_0x1FF_ID,
-//                      gimbal.yaw.give_current,
+//                      gimbal.yaw_angle.give_current,
 //                      0,
 //                      0,
 //                      0);
@@ -115,7 +115,7 @@ void gimbal_task(void const *pvParameters) {
 //        CAN_cmd_motor(CAN_2,
 //                      CAN_MOTOR_0x1FF_ID,
 //                      launcher.fire_l.give_current,
-//                      gimbal.pitch.give_current,
+//                      gimbal.pitch_angle.give_current,
 //                      launcher.fire_r.give_current,
 //                      launcher.trigger.give_current);
 
@@ -182,7 +182,7 @@ static void gimbal_init() {
 
   //yaw轴和pitch轴电机的校准编码值
   gimbal.yaw.motor_measure->offset_ecd = 6738;
-  // gimbal.pitch.motor_measure->offset_ecd=1567;
+  // gimbal.pitch_angle.motor_measure->offset_ecd=1567;
 
 }
 
@@ -278,12 +278,12 @@ static void gimbal_mode_set() {
 //回中处理函数（判断云台是否回中，将标识符置1）
 static void gimbal_back_handle() {
 
-//    if(gimbal.yaw.relative_angle_get>-2&&gimbal.yaw.relative_angle_get<2)
+//    if(gimbal.yaw_angle.relative_angle_get>-2&&gimbal.yaw_angle.relative_angle_get<2)
 //    {
 //        gimbal.yaw_is_back=1;
 //    }
 //    else {
-//        gimbal.yaw.relative_angle_set=0;
+//        gimbal.yaw_angle.relative_angle_set=0;
 //    }
 //    gimbal.pitch_is_back=1;
 
@@ -314,15 +314,15 @@ static void gimbal_back_handle() {
                                        gimbal.pitch.gyro_set);//加负号为了电机反转
 
 //
-//    gimbal.yaw.gyro_set= pid_loop_calc(&gimbal.yaw.angle_p,
-//                                       gimbal.yaw.relative_angle_get,
-//                                       gimbal.yaw.relative_angle_set,
+//    gimbal.yaw_angle.gyro_set= pid_loop_calc(&gimbal.yaw_angle.angle_p,
+//                                       gimbal.yaw_angle.relative_angle_get,
+//                                       gimbal.yaw_angle.relative_angle_set,
 //                                       180,
 //                                       -180);
 //
-//    gimbal.yaw.give_current= pid_calc(&gimbal.yaw.speed_p,
-//                                      gimbal.yaw.motor_measure->speed_rpm,
-//                                      gimbal.yaw.gyro_set);
+//    gimbal.yaw_angle.give_current= pid_calc(&gimbal.yaw_angle.speed_p,
+//                                      gimbal.yaw_angle.motor_measure->speed_rpm,
+//                                      gimbal.yaw_angle.gyro_set);
   //在回中完成后yaw轴按照当前相对角为0度为初始角度控制
   gimbal.yaw.absolute_angle_set = gimbal.yaw.absolute_angle_get;
 
@@ -436,7 +436,7 @@ static void gimbal_ctrl_loop_cal() {
 
 //调试速度环用（注意角度环所输出的量级可能与单环时给的set不同，可能会导致在调角度环时的问题，建议双环一起调）
 //    first_order_filter_cali(&filter_yaw_gyro_in,gyro_yaw);
-//    gimbal.yaw.give_current= pid_calc(&gimbal.yaw.speed_p,
+//    gimbal.yaw_angle.give_current= pid_calc(&gimbal.yaw_angle.speed_p,
 //                                      filter_yaw_gyro_in.out,
 //                                      -rc_ctrl.rc.ch[YAW_CHANNEL]);
 
@@ -449,13 +449,13 @@ static void gimbal_ctrl_loop_cal() {
 
   first_order_filter_cali(&filter_pitch_gyro_in, gyro_pitch);
 
-//    first_order_filter_cali(&pitch_first_order_set,gimbal.pitch.gyro_set);
+//    first_order_filter_cali(&pitch_first_order_set,gimbal.pitch_angle.gyro_set);
 
   gimbal.pitch.give_current = -pid_calc(&gimbal.pitch.speed_p,
                                         gyro_pitch,
                                         gimbal.pitch.gyro_set);//加负号为了电机反转
 //调试速度环用（注意角度环所输出的量级可能与单环时给的set不同，可能会导致在调角度环时的问题，建议双环一起调）
-//    gimbal.pitch.give_current= pid_calc(&gimbal.pitch.speed_p,
+//    gimbal.pitch_angle.give_current= pid_calc(&gimbal.pitch_angle.speed_p,
 //                                        gyro_pitch,
 //                                      rc_ctrl.rc.ch[PITCH_CHANNEL]*radio_rc);
 
@@ -478,7 +478,7 @@ static void gimbal_angle_update() {
       -motor_ecd_to_angle_change(gimbal.yaw.motor_measure->ecd, gimbal.yaw.motor_measure->offset_ecd);
   Vision_send.yaw.value = gimbal.yaw.absolute_angle_get;
 
-  //roll 视觉需要roll
+  //roll_angle 视觉需要roll
   Vision_send.roll.value = INS_angle[2] * MOTOR_RAD_TO_ANGLE;
 
   if (Vision_info.frame_header.cmd != 0x31)

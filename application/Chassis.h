@@ -65,9 +65,12 @@ struct IMUSetPoint {
 };
 
 struct IMUReference {
-  fp32 pitch;
-  fp32 yaw;
-  fp32 roll;
+  fp32 pitch_angle;
+  fp32 yaw_angle;
+  fp32 roll_angle;
+  fp32 pitch_gyro;
+  fp32 yaw_gyro;
+  fp32 roll_gyro;
 };
 
 struct MoveSpeedSetPoint {
