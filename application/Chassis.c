@@ -34,6 +34,8 @@ static void chassis_motor_info_update();
 static void chassis_forward_kinematics();
 static void chassis_motor_cmd_send();
 
+fp32 unable_leg_K[6] = {0, 0, 0, 0, 0, 0};
+
 void chassis_task(void const *pvParameters) {
 
   vTaskDelay(CHASSIS_TASK_INIT_TIME);
@@ -142,7 +144,10 @@ static void chassis_enabled_leg_handle() {
 }
 
 static void chassis_unable_leg_handle() {
-
+//  chassis.leg_L.wheel.torque=(  unable_leg_K[0]*(chassis.mileage)+
+//      unable_leg_K[1]*(chassis.move_speed_reference.vx-chassis.move_speed_set_point.vx)+
+//      unable_leg_K[2]*()
+//      )
 }
 
 static void chassis_wheel_cal(fp32 vx, fp32 vw) {
@@ -156,9 +161,10 @@ void chassis_device_offline_handle() {
 }
 
 static void chassis_angle_update() {
-  chassis.imu_reference.pitch = *(get_ins_angle() + 1) * MOTOR_RAD_TO_ANGLE;
-  chassis.imu_reference.yaw = -*(get_ins_angle() + 0) * MOTOR_RAD_TO_ANGLE;
-  chassis.imu_reference.roll = *(get_ins_angle() + 2) * MOTOR_RAD_TO_ANGLE;
+  chassis.imu_reference.pitch = *(get_ins_angle() + 1);
+  chassis.imu_reference.yaw = -*(get_ins_angle() + 0);
+  chassis.imu_reference.roll = *(get_ins_angle() + 2);
+  //add gyro
 }
 
 static void chassis_forward_kinematics() {

@@ -75,6 +75,11 @@ struct MoveSpeedSetPoint {
   fp32 vw;
 };
 
+struct MoveSpeedReference{
+  fp32 vx;
+  fp32 vw;
+};
+
 struct StateVariable {
   fp32 theta;
   fp32 theta_dot;
@@ -143,6 +148,7 @@ struct InverseKinematics {
 struct Wheel {
   fp32 speed;
   fp32 mileage;
+  fp32 torque;
   struct Motor3508 motor_3508;
 };
 
@@ -168,6 +174,7 @@ struct Chassis {
   pid_t chassis_vw_pid;
 
   struct MoveSpeedSetPoint move_speed_set_point;
+  struct MoveSpeedReference move_speed_reference;
 
   fp32 mileage;
 };
