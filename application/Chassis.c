@@ -278,10 +278,8 @@ static void chassis_forward_kinematics() {
 }
 
 static void chassis_K_matrix_fitting(fp32 L0, fp32 K[6], const fp32 KL[6][4]) {
-  fp32 K_temp[6];
   for (int i = 0; i < 6; i++) {
-    K_temp[i] = KL[i][0] * pow(L0, 3) + KL[i][1] * pow(L0, 2) + KL[i][2] * pow(L0, 1) + KL[i][3] * pow(L0, 0);
-    K[i] = K_temp[i];
+    K[i] = KL[i][0] * pow(L0, 3) + KL[i][1] * pow(L0, 2) + KL[i][2] * pow(L0, 1) + KL[i][3] * pow(L0, 0);
   }
 }
 
