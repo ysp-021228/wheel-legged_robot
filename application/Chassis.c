@@ -33,6 +33,7 @@ static void chassis_info_update();
 static void chassis_motor_info_update();
 static void chassis_forward_kinematics();
 static void chassis_motor_cmd_send();
+static void chassis_K_matrix_fitting(fp32 L0, fp32 K[6], const fp32 KL[6][4]);
 
 fp32 unable_leg_K[6] = {0, 0, 0, 0, 0, 0};
 
@@ -274,6 +275,14 @@ static void chassis_forward_kinematics() {
   y = chassis.leg_R.forward_kinematics.fk_point_coordinates.c_y;
   x = chassis.leg_R.forward_kinematics.fk_point_coordinates.c_x - L5 * 0.5f;
   chassis.leg_R.forward_kinematics.fk_phi.phi0 = atan2(y, x);
+}
+
+static void chassis_K_matrix_fitting(fp32 L0, fp32 K[6], const fp32 KL[6][4]) {
+  fp32 K_temp[6];
+  for (int i = 0; i < 6; i++) {
+    K_temp[i] = KL[i][0] * pow(L0, 3) + KL[i][1] * pow(L0, 2) + KL[i][2] * pow(L0, 1) + KL[i][3] * pow(L0, 0);
+    K[i] = K_temp[i];
+  }
 }
 
 static void chassis_relax_judge() {

@@ -42,7 +42,6 @@
 #define L4 1.0f
 #define L5 1.0f
 
-#define CYBERGEAR_ID (0x7F)
 
 //枚举 结构体
 enum ChassisMode {
