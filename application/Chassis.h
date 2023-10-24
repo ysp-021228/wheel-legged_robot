@@ -7,6 +7,7 @@
 #include "PID.h"
 #include "remote.h"
 #include "user_lib.h"
+#include "CyberGear.h"
 
 /*define*/
 #define resume(handle)         if(osThreadGetState(handle)==osThreadSuspended)\
@@ -19,6 +20,11 @@
 #define CHASSIS_X_CHANNEL 1
 
 #define CHASSIS_Z_CHANNEL 2
+
+#define LF_MOTOR_ID (0x71)
+#define LB_MOTOR_ID (0x72)
+#define RB_MOTOR_ID (0x73)
+#define RF_MOTOR_ID (0x74)
 
 /**********************  平衡底盘  *************************/
 
@@ -159,6 +165,7 @@ struct Leg {
   struct ForwardKinematics forward_kinematics;
   struct InverseKinematics inverse_kinematics;
   struct Wheel wheel;
+  struct CyberGearData cyber_gear_data[2];
 };
 
 struct Chassis {

@@ -16,12 +16,12 @@
 /**
  * @brief 小米电机CAN1数据数组
  */
-struct MiMotorData mi_motors_1[MI_MOTOR_SINGLE_NUM];
+struct CyberGearData cybergears_1[MI_MOTOR_SINGLE_NUM];
 
 /**
  * @brief 小米电机CAN2数据数组
  */
-struct MiMotorData mi_motors_2[MI_MOTOR_SINGLE_NUM];
+struct CyberGearData cybergears_2[MI_MOTOR_SINGLE_NUM];
 
 /**
  * @brief 小米电机CAN 扩展帧ID信息联合体
@@ -40,7 +40,7 @@ static int float_to_uint(float x, float x_min, float x_max);
 
 static float uint_to_float(int x_int, float x_min, float x_max);
 
-static void mi_motor_can_send(struct MiMotorData *mi_motor_data);
+static void mi_motor_can_send(struct CyberGearData *mi_motor_data);
 
 /**
  * @brief 小米电机CAN数据转换函数
@@ -75,7 +75,7 @@ static float uint_to_float(int x_int, float x_min, float x_max) {
  * @brief 小米电机CAN发送函数
  * @param mi_motor_data 电机数据结构体
  */
-static void mi_motor_can_send(struct MiMotorData *mi_motor_data) {
+static void mi_motor_can_send(struct CyberGearData *mi_motor_data) {
   CAN_TxHeaderTypeDef tx_header;
   uint8_t tx_data[8];
   uint32_t send_mail_box;
@@ -99,7 +99,7 @@ static void mi_motor_can_send(struct MiMotorData *mi_motor_data) {
  * @brief 小米电机ID读取函数
  * @param mi_motor_data 电机数据结构体
  */
-void mi_motor_id_get(struct MiMotorData *mi_motor_data) {
+void mi_motor_id_get(struct CyberGearData *mi_motor_data) {
   mi_motor_data->mode = 0;
   union {
     uint16_t ex_data;
@@ -124,8 +124,8 @@ void mi_motor_id_get(struct MiMotorData *mi_motor_data) {
  * @param kp 位置环kp
  * @param kd 速度环kd
  */
-void mi_motor_control_mode(struct MiMotorData *mi_motor_data, float torque, float MechPosition, float speed, float kp,
-                           float kd) {
+void cyber_gear_control_mode(struct CyberGearData *mi_motor_data, float torque, float MechPosition, float speed, float kp,
+                             float kd) {
   mi_motor_data->mode = 1;
   mi_motor_data->data = float_to_uint(torque, MI_MOTOR_T_MIN, MI_MOTOR_T_MAX);
 
@@ -146,7 +146,7 @@ void mi_motor_control_mode(struct MiMotorData *mi_motor_data, float torque, floa
  * @param id 电机id
  * @param mi_motor_data 电机数据结构体
  */
-void mi_motor_init(CAN_HandleTypeDef canHandleTypeDef, uint8_t id, struct MiMotorData *mi_motor_data) {
+void cyber_gear_init(CAN_HandleTypeDef canHandleTypeDef, uint8_t id, struct CyberGearData *mi_motor_data) {
   union {
     uint16_t ex_data;
     struct {
@@ -166,7 +166,7 @@ void mi_motor_init(CAN_HandleTypeDef canHandleTypeDef, uint8_t id, struct MiMoto
  * @brief 小米电机使能函数
  * @param mi_motor_data 电机数据结构体
  */
-void mi_motor_enable(struct MiMotorData *mi_motor_data) {
+void cyber_gear_enable(struct CyberGearData *mi_motor_data) {
   mi_motor_data->mode = 3;
   union {
     uint16_t ex_data;
@@ -186,7 +186,7 @@ void mi_motor_enable(struct MiMotorData *mi_motor_data) {
  * @brief 小米电机失能函数
  * @param mi_motor_data 电机数据结构体
  */
-void mi_motor_disable(struct MiMotorData *mi_motor_data) {
+void mi_motor_disable(struct CyberGearData *mi_motor_data) {
   mi_motor_data->mode = 4;
   union {
     uint16_t ex_data;
@@ -206,7 +206,7 @@ void mi_motor_disable(struct MiMotorData *mi_motor_data) {
  * @brief 小米电机清除错误函数
  * @param mi_motor_data 电机数据结构体
  */
-void mi_motor_clear_err(struct MiMotorData *mi_motor_data) {
+void mi_motor_clear_err(struct CyberGearData *mi_motor_data) {
   mi_motor_data->mode = 4;
   union {
     uint16_t ex_data;
@@ -227,7 +227,7 @@ void mi_motor_clear_err(struct MiMotorData *mi_motor_data) {
  * @brief 小米电机设置零点函数
  * @param mi_motor_data 电机数据结构体
  */
-void mi_motor_set_zero(struct MiMotorData *mi_motor_data) {
+void mi_motor_set_zero(struct CyberGearData *mi_motor_data) {
   mi_motor_data->mode = 6;
   union {
     uint16_t ex_data;
@@ -249,7 +249,7 @@ void mi_motor_set_zero(struct MiMotorData *mi_motor_data) {
  * @param mi_motor_data 电机数据结构体
  * @param set_id 设置新的id值
  */
-void mi_motor_set_id(struct MiMotorData *mi_motor_data, uint8_t set_id) {
+void mi_motor_set_id(struct CyberGearData *mi_motor_data, uint8_t set_id) {
   mi_motor_data->mode = 7;
   union {
     uint16_t ex_data;
@@ -270,7 +270,7 @@ void mi_motor_set_id(struct MiMotorData *mi_motor_data, uint8_t set_id) {
  * @param mi_motor_data 电机数据结构体
  * @param index 参数
  */
-void mi_motor_read(struct MiMotorData *mi_motor_data, uint16_t index) {
+void mi_motor_read(struct CyberGearData *mi_motor_data, uint16_t index) {
   mi_motor_data->mode = 17;
   union {
     uint16_t ex_data;
@@ -292,7 +292,7 @@ void mi_motor_read(struct MiMotorData *mi_motor_data, uint16_t index) {
  * @param mi_motor_data 电机数据结构体
  * @param mode 模式 0:运控模式 1:位置模式 2:速度模式 3:电流模式
  */
-void mi_motor_mode(struct MiMotorData *mi_motor_data, uint8_t mode) {
+void cyber_gear_mode(struct CyberGearData *mi_motor_data, uint8_t mode) {
   uint16_t index = MI_MOTOR_RUN_MODE_INDEX;
   mi_motor_data->mode = 18;
   union {
@@ -317,7 +317,7 @@ void mi_motor_mode(struct MiMotorData *mi_motor_data, uint8_t mode) {
  * @param index 参数
  * @param ref   参数值
  */
-void mi_motor_write(struct MiMotorData *mi_motor_data, uint16_t index, float ref) {
+void mi_motor_write(struct CyberGearData *mi_motor_data, uint16_t index, float ref) {
   mi_motor_data->mode = 18;
   union {
     uint16_t ex_data;
@@ -353,49 +353,49 @@ void mi_motor_data_get(CAN_HandleTypeDef *hcan, CAN_RxHeaderTypeDef rx_header, c
   ex_data.ex_data = exCanIdInfo.data;
   if (hcan == &hcan1) {
     if (exCanIdInfo.mode == 2) {
-      mi_motors_1[ex_data.motor_id].id = ex_data.motor_id;
-      mi_motors_1[ex_data.motor_id].mode = exCanIdInfo.mode;
-      mi_motors_1[ex_data.motor_id].data = exCanIdInfo.data;
+      cybergears_1[ex_data.motor_id].id = ex_data.motor_id;
+      cybergears_1[ex_data.motor_id].mode = exCanIdInfo.mode;
+      cybergears_1[ex_data.motor_id].data = exCanIdInfo.data;
 
       uint16_t raw_angle = (int16_t) ((rx_data[0] << 8) | rx_data[1]);
       uint16_t raw_speed = (int16_t) ((rx_data[2] << 8) | rx_data[3]);
       uint16_t raw_torque = (int16_t) ((rx_data[4] << 8) | rx_data[5]);
       uint16_t raw_temp = (int16_t) ((rx_data[6] << 8) | rx_data[7]);
 
-      mi_motors_1[ex_data.motor_id].angle = uint_to_float(raw_angle, MI_MOTOR_P_MIN, MI_MOTOR_P_MAX);
-      mi_motors_1[ex_data.motor_id].speed = uint_to_float(raw_speed, MI_MOTOR_V_MIN, MI_MOTOR_V_MAX);
-      mi_motors_1[ex_data.motor_id].torque = uint_to_float(raw_torque, MI_MOTOR_T_MIN, MI_MOTOR_T_MAX);
-      mi_motors_1[ex_data.motor_id].temp = (float) raw_temp / 10.0f;
+      cybergears_1[ex_data.motor_id].angle = uint_to_float(raw_angle, MI_MOTOR_P_MIN, MI_MOTOR_P_MAX);
+      cybergears_1[ex_data.motor_id].speed = uint_to_float(raw_speed, MI_MOTOR_V_MIN, MI_MOTOR_V_MAX);
+      cybergears_1[ex_data.motor_id].torque = uint_to_float(raw_torque, MI_MOTOR_T_MIN, MI_MOTOR_T_MAX);
+      cybergears_1[ex_data.motor_id].temp = (float) raw_temp / 10.0f;
 
     } else if (exCanIdInfo.mode == 17) {
-      memcpy(mi_motors_1[ex_data.motor_id].index, rx_data, 2);
-      memcpy(mi_motors_1[ex_data.motor_id].ref, &rx_data[4], 4);
+      memcpy(cybergears_1[ex_data.motor_id].index, rx_data, 2);
+      memcpy(cybergears_1[ex_data.motor_id].ref, &rx_data[4], 4);
     } else if (exCanIdInfo.mode == 21) {
-      memcpy(mi_motors_1[ex_data.motor_id].fault, rx_data, 4);
-      memcpy(mi_motors_1[ex_data.motor_id].warning, &rx_data[4], 4);
+      memcpy(cybergears_1[ex_data.motor_id].fault, rx_data, 4);
+      memcpy(cybergears_1[ex_data.motor_id].warning, &rx_data[4], 4);
     }
   } else if (hcan == &hcan2) {
     if (exCanIdInfo.mode == 2) {
-      mi_motors_2[ex_data.motor_id].id = ex_data.motor_id;
-      mi_motors_2[ex_data.motor_id].mode = exCanIdInfo.mode;
-      mi_motors_2[ex_data.motor_id].data = exCanIdInfo.data;
+      cybergears_2[ex_data.motor_id].id = ex_data.motor_id;
+      cybergears_2[ex_data.motor_id].mode = exCanIdInfo.mode;
+      cybergears_2[ex_data.motor_id].data = exCanIdInfo.data;
 
       uint16_t raw_angle = (int16_t) ((rx_data[0] << 8) | rx_data[1]);
       uint16_t raw_speed = (int16_t) ((rx_data[2] << 8) | rx_data[3]);
       uint16_t raw_torque = (int16_t) ((rx_data[4] << 8) | rx_data[5]);
       uint16_t raw_temp = (int16_t) ((rx_data[6] << 8) | rx_data[7]);
 
-      mi_motors_2[ex_data.motor_id].angle = uint_to_float(raw_angle, MI_MOTOR_P_MIN, MI_MOTOR_P_MAX);
-      mi_motors_2[ex_data.motor_id].speed = uint_to_float(raw_speed, MI_MOTOR_V_MIN, MI_MOTOR_V_MAX);
-      mi_motors_2[ex_data.motor_id].torque = uint_to_float(raw_torque, MI_MOTOR_T_MIN, MI_MOTOR_T_MAX);
-      mi_motors_2[ex_data.motor_id].temp = (float) raw_temp / 10.0f;
+      cybergears_2[ex_data.motor_id].angle = uint_to_float(raw_angle, MI_MOTOR_P_MIN, MI_MOTOR_P_MAX);
+      cybergears_2[ex_data.motor_id].speed = uint_to_float(raw_speed, MI_MOTOR_V_MIN, MI_MOTOR_V_MAX);
+      cybergears_2[ex_data.motor_id].torque = uint_to_float(raw_torque, MI_MOTOR_T_MIN, MI_MOTOR_T_MAX);
+      cybergears_2[ex_data.motor_id].temp = (float) raw_temp / 10.0f;
 
     } else if (exCanIdInfo.mode == 17) {
-      memcpy(mi_motors_2[ex_data.motor_id].index, rx_data, 2);
-      memcpy(mi_motors_2[ex_data.motor_id].ref, &rx_data[4], 4);
+      memcpy(cybergears_2[ex_data.motor_id].index, rx_data, 2);
+      memcpy(cybergears_2[ex_data.motor_id].ref, &rx_data[4], 4);
     } else if (exCanIdInfo.mode == 21) {
-      memcpy(mi_motors_2[ex_data.motor_id].fault, rx_data, 4);
-      memcpy(mi_motors_2[ex_data.motor_id].warning, &rx_data[4], 4);
+      memcpy(cybergears_2[ex_data.motor_id].fault, rx_data, 4);
+      memcpy(cybergears_2[ex_data.motor_id].warning, &rx_data[4], 4);
     }
   }
 }

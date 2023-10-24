@@ -32,7 +32,7 @@
 /**
  * @brief 电机数据结构体
  */
-struct MiMotorData {
+struct CyberGearData {
   CAN_HandleTypeDef canHandleTypeDef;
   uint8_t id;
   uint16_t data;
@@ -46,36 +46,37 @@ struct MiMotorData {
   uint8_t warning[4];
   uint8_t index[2];
   uint8_t ref[4];
+  float  current;
 };
 
-extern struct MiMotorData mi_motors_1[MI_MOTOR_SINGLE_NUM];
-extern struct MiMotorData mi_motors_2[MI_MOTOR_SINGLE_NUM];
+extern struct CyberGearData cybergears_1[MI_MOTOR_SINGLE_NUM];
+extern struct CyberGearData cybergears_2[MI_MOTOR_SINGLE_NUM];
 
-extern void cyber_gear_can_send(CAN_HandleTypeDef canHandleTypeDef, struct MiMotorData *mi_motor_data);
+extern void cyber_gear_can_send(CAN_HandleTypeDef canHandleTypeDef, struct CyberGearData *mi_motor_data);
 
-extern void mi_motor_id_get(struct MiMotorData *mi_motor_data);
+extern void mi_motor_id_get(struct CyberGearData *mi_motor_data);
 
 extern void
-mi_motor_control_mode(struct MiMotorData *mi_motor_data, float torque, float MechPosition, float speed, float kp,
-                      float kd);
+cyber_gear_control_mode(struct CyberGearData *mi_motor_data, float torque, float MechPosition, float speed, float kp,
+                        float kd);
 
-extern void mi_motor_init(CAN_HandleTypeDef canHandleTypeDef, uint8_t id, struct MiMotorData *mi_motor_data);
+extern void cyber_gear_init(CAN_HandleTypeDef canHandleTypeDef, uint8_t id, struct CyberGearData *mi_motor_data);
 
-extern void mi_motor_enable(struct MiMotorData *mi_motor_data);
+extern void cyber_gear_enable(struct CyberGearData *mi_motor_data);
 
-extern void mi_motor_disable(struct MiMotorData *mi_motor_data);
+extern void mi_motor_disable(struct CyberGearData *mi_motor_data);
 
-extern void mi_motor_clear_err(struct MiMotorData *mi_motor_data);
+extern void mi_motor_clear_err(struct CyberGearData *mi_motor_data);
 
-extern void mi_motor_set_zero(struct MiMotorData *mi_motor_data);
+extern void mi_motor_set_zero(struct CyberGearData *mi_motor_data);
 
-extern void mi_motor_set_id(struct MiMotorData *mi_motor_data, uint8_t set_id);
+extern void mi_motor_set_id(struct CyberGearData *mi_motor_data, uint8_t set_id);
 
-extern void mi_motor_read(struct MiMotorData *mi_motor_data, uint16_t index);
+extern void mi_motor_read(struct CyberGearData *mi_motor_data, uint16_t index);
 
-extern void mi_motor_mode(struct MiMotorData *mi_motor_data, uint8_t mode);
+extern void cyber_gear_mode(struct CyberGearData *mi_motor_data, uint8_t mode);
 
-extern void mi_motor_write(struct MiMotorData *mi_motor_data, uint16_t index, float ref);
+extern void mi_motor_write(struct CyberGearData *mi_motor_data, uint16_t index, float ref);
 
 extern void mi_motor_data_get(CAN_HandleTypeDef *hcan, CAN_RxHeaderTypeDef rx_header, const uint8_t rx_data[8]);
 

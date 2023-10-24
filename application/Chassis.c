@@ -16,10 +16,7 @@ struct Chassis chassis;
 extern CAN_HandleTypeDef hcan1;
 extern CAN_HandleTypeDef hcan2;
 
-fp32 motor_LF_speed, motor_RF_speed, chassis_speed;
-
 static void chassis_init(struct Chassis *chassis);
-static void chassis_set_mode(struct Chassis *chassis);
 static void chassis_ctrl_info_get();
 static void chassis_relax_handle();
 static void chassis_enabled_leg_handle();
@@ -124,6 +121,21 @@ static void chassis_init(struct Chassis *chassis) {
   chassis->mode = chassis->last_mode = CHASSIS_DISABLE;
   chassis->leg_L.wheel.motor_3508.motor_measure = motor_3508_measure;
   chassis->leg_R.wheel.motor_3508.motor_measure = motor_3508_measure + 1;
+
+  cyber_gear_init(hcan1, LF_MOTOR_ID, &cybergears_1[LF_MOTOR_ID]);
+  cyber_gear_init(hcan1, LB_MOTOR_ID, &cybergears_1[LB_MOTOR_ID]);
+  cyber_gear_init(hcan1, RB_MOTOR_ID, &cybergears_1[RB_MOTOR_ID]);
+  cyber_gear_init(hcan1, RF_MOTOR_ID, &cybergears_1[RF_MOTOR_ID]);
+
+  cyber_gear_mode(&cybergears_1[LF_MOTOR_ID], 0);
+  cyber_gear_mode(&cybergears_1[LB_MOTOR_ID], 0);
+  cyber_gear_mode(&cybergears_1[RB_MOTOR_ID], 0);
+  cyber_gear_mode(&cybergears_1[RF_MOTOR_ID], 0);
+
+  cyber_gear_enable(&cybergears_1[LF_MOTOR_ID]);
+  cyber_gear_enable(&cybergears_1[LB_MOTOR_ID]);
+  cyber_gear_enable(&cybergears_1[RB_MOTOR_ID]);
+  cyber_gear_enable(&cybergears_1[RF_MOTOR_ID]);
 
 }
 
@@ -295,6 +307,11 @@ static void chassis_motor_cmd_send() {
                 chassis.leg_R.wheel.motor_3508.give_current,
                 0,
                 0);
+
+  cyber_gear_control_mode(&cybergears_1[LF_MOTOR_ID], chassis.leg_L.cyber_gear_data[0].torque, 0, 0, 0, 0);
+  cyber_gear_control_mode(&cybergears_1[LB_MOTOR_ID], chassis.leg_L.cyber_gear_data[1].torque, 0, 0, 0, 0);
+  cyber_gear_control_mode(&cybergears_1[RF_MOTOR_ID], chassis.leg_R.cyber_gear_data[0].torque, 0, 0, 0, 0);
+  cyber_gear_control_mode(&cybergears_1[RB_MOTOR_ID], chassis.leg_R.cyber_gear_data[1].torque, 0, 0, 0, 0);
 }
 
 struct Chassis get_chassis() {
