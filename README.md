@@ -1,4 +1,6 @@
 # 轮腿机器人相关图片
+## 整车图片
+![GitHub Logo](picture/1106d787874c910906931e404e03258.jpg)
 ## 方向定义
 ![GitHub Logo](picture/a1d76f37413b51fb99320a688ec3097.jpg)
 

@@ -36,7 +36,6 @@ static void chassis_inverse_kinematics();
 static void chassis_motor_cmd_send();
 static void chassis_K_matrix_fitting(fp32 L0, fp32 K[6], const fp32 KL[6][4]);
 
-
 fp32 unable_leg_K[6] = {0, 0, 0, 0, 0, 0};
 
 void chassis_task(void const *pvParameters) {
@@ -49,8 +48,6 @@ void chassis_task(void const *pvParameters) {
     chassis_info_update();
 
     chassis_ctrl_info_get();
-
-    chassis_set_mode(&chassis);
 
     chassis_relax_judge();
 
@@ -105,6 +102,17 @@ static void chassis_motor_info_update() {
 static void chassis_ctrl_info_get() {
   chassis.move_speed_set_point.vx = (float) (get_rc_ctrl().rc.ch[CHASSIS_X_CHANNEL]) * RC_TO_VX;
   chassis.move_speed_set_point.vw = (float) (get_rc_ctrl().rc.ch[CHASSIS_Z_CHANNEL]) * RC_TO_VW;
+
+  if (switch_is_down(get_rc_ctrl().rc.s[RC_s_L]) && switch_is_down(get_rc_ctrl().rc.s[RC_s_R])) {
+    chassis.last_mode = chassis.mode;
+    chassis.mode = CHASSIS_DISABLE;
+  } else if (switch_is_mid(get_rc_ctrl().rc.s[RC_s_R])) {
+    chassis.last_mode = chassis.mode;
+    chassis.mode = CHASSIS_UNENABLED_LEG;
+  } else if (switch_is_up(get_rc_ctrl().rc.s[RC_s_R])) {
+    chassis.last_mode = chassis.mode;
+    chassis.mode = CHASSIS_ENABLED_LEG;
+  }
 }
 
 static void chassis_init(struct Chassis *chassis) {
@@ -116,23 +124,6 @@ static void chassis_init(struct Chassis *chassis) {
   chassis->leg_L.wheel.motor_3508.motor_measure = motor_3508_measure;
   chassis->leg_R.wheel.motor_3508.motor_measure = motor_3508_measure + 1;
 
-}
-
-static void chassis_set_mode(struct Chassis *chassis) {
-
-  if (chassis == NULL)
-    return;
-
-  if (switch_is_down(get_rc_ctrl().rc.s[RC_s_L]) && switch_is_down(get_rc_ctrl().rc.s[RC_s_R])) {
-    chassis->last_mode = chassis->mode;
-    chassis->mode = CHASSIS_DISABLE;
-  } else if (switch_is_mid(get_rc_ctrl().rc.s[RC_s_R])) {
-    chassis->last_mode = chassis->mode;
-    chassis->mode = CHASSIS_UNENABLED_LEG;
-  } else if (switch_is_up(get_rc_ctrl().rc.s[RC_s_R])) {
-    chassis->last_mode = chassis->mode;
-    chassis->mode = CHASSIS_ENABLED_LEG;
-  }
 }
 
 static void chassis_relax_handle() {
@@ -147,6 +138,7 @@ static void chassis_enabled_leg_handle() {
 }
 
 static void chassis_unable_leg_handle() {
+  //todo: 不使用腿模式的LQR算法编写
 //  chassis.leg_L.wheel.torque=(  unable_leg_K[0]*(chassis.mileage)+
 //      unable_leg_K[1]*(chassis.move_speed_reference.vx-chassis.move_speed_set_point.vx)+
 //      unable_leg_K[2]*()
@@ -167,7 +159,7 @@ static void chassis_angle_update() {
   chassis.imu_reference.pitch_angle = *(get_ins_angle() + 1);
   chassis.imu_reference.yaw_angle = -*(get_ins_angle() + 0);
   chassis.imu_reference.roll_angle = *(get_ins_angle() + 2);
-  //add gyro
+  //todo： add gyro 判断是否要筛除重力加速度
 }
 
 static void chassis_forward_kinematics() {
@@ -279,7 +271,7 @@ static void chassis_forward_kinematics() {
   chassis.leg_R.forward_kinematics.fk_phi.phi0 = atan2(y, x);
 }
 
-static void chassis_inverse_kinematics(){
+static void chassis_inverse_kinematics() {
 
 }
 

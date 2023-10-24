@@ -780,7 +780,6 @@ void cap_percentage_draw()
 {
     ext_graphic_two_data_t ui_cap_percentage;
     {
-        //TODO:暂时这么先，等有电容后修改这部分
         if(KeyBoard.SHIFT.status==KEY_PRESS)
         {
             cap_percentage--;
