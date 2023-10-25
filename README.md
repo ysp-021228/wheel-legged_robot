@@ -7,6 +7,9 @@
 ## 底盘结构体从属关系
 ![GitHub Logo](picture/轮腿底盘结构.png)
 
+## 五连杆定义
+![GitHub Logo](picture/07c52b3ee6740b6f2b900d1f8a60eb2.jpg)
+
 # 嵌入式 C 风格指南
 
 本文档用于规定轮腿机器人嵌入式部的C编码规范。
