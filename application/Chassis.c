@@ -29,6 +29,7 @@ static void chassis_off_ground_detection();
 static void chassis_info_update();
 static void chassis_motor_info_update();
 static void leg_state_variable_get(struct Leg *leg);
+fp32 cal_leg_theta(fp32 phi0);
 static void chassis_forward_kinematics();
 static void chassis_inverse_kinematics();
 static void chassis_motor_cmd_send();
@@ -113,15 +114,36 @@ static void chassis_motor_info_update() {
   chassis.leg_R.wheel.speed = -motor_3508_measure[1].speed_rpm * BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED;
   chassis.leg_L.wheel.mileage = chassis.leg_L.wheel.mileage + CHASSIS_PERIOD * 0.001 * (chassis.leg_L.wheel.speed);
   chassis.leg_R.wheel.mileage = chassis.leg_R.wheel.mileage + CHASSIS_PERIOD * 0.001 * (chassis.leg_R.wheel.speed);
-  //todo 关节电机相关状态更新
+  //todo 关节电机相关状态更新,正运动学需要的量
 }
 
 static void leg_state_variable_get(struct Leg *leg) {
   if (leg == NULL) {
     return;
   }
-  leg->state_variable.theta_last=leg->state_variable.theta;
+  leg->state_variable.theta_last = leg->state_variable.theta;
   //todo cal_leg_theta_meas
+}
+
+fp32 cal_leg_theta(fp32 phi0) {
+  fp32 theta = 0, alpha = 0;//alpha is the Angle at which the virtual joint motor is turned
+
+  alpha = PI / 2 - phi0;
+
+  if (alpha * chassis.imu_reference.pitch_angle < 0) {
+    theta = ABS(alpha) + ABS(chassis.imu_reference.pitch_angle);
+    if ((alpha > 0) && (chassis.imu_reference.pitch_angle < 0)) {
+    } else {
+      theta *= -1;
+    }
+  } else {
+    theta = ABS(alpha) - ABS(chassis.imu_reference.pitch_angle);
+    if ((alpha < 0) && (chassis.imu_reference.pitch_angle < 0)) {
+      theta *= -1;
+    } else {
+    }
+  }
+  return theta;
 }
 
 static void chassis_ctrl_info_get() {
@@ -329,7 +351,7 @@ static void chassis_relax_judge() {
   }
 }
 
-static void chassis_off_ground_detection(){
+static void chassis_off_ground_detection() {
   //todo 跳跃离地和提起来切换失能模式
 }
 
