@@ -48,7 +48,6 @@
 #define L4 1.0f
 #define L5 1.0f
 
-
 //枚举 结构体
 enum ChassisMode {
   CHASSIS_DISABLE,
@@ -78,25 +77,27 @@ struct IMUReference {
   fp32 roll_gyro;
 };
 
-struct MoveSpeedSetPoint {
+struct ChassisMoveSpeedSetPoint {
   fp32 vx;
   fp32 vw;
 };
 
-struct MoveSpeedReference{
+struct ChassisMoveSpeedReference {
   fp32 vx;
   fp32 vw;
 };
 
 struct StateVariable {
   fp32 theta;
+  fp32 theta_last;
   fp32 theta_dot;
+  fp32 theta_dot_last;
+  fp32 theta_ddot;
   fp32 x;
   fp32 x_dot;
   fp32 phi;
   fp32 phi_dot;
 
-  fp32 theta_ddot;
 };
 
 /*******************************************************************************
@@ -110,7 +111,7 @@ struct FKL0 {
   fp32 L0_ddot;
 };
 
-struct FKPhi {
+struct FKPhi {//The phi Angle in the five-link
   fp32 phi0;
   fp32 phi1;
   fp32 phi2;
@@ -182,8 +183,8 @@ struct Chassis {
 
   pid_t chassis_vw_pid;
 
-  struct MoveSpeedSetPoint move_speed_set_point;
-  struct MoveSpeedReference move_speed_reference;
+  struct ChassisMoveSpeedSetPoint chassis_move_speed_set_point;
+  struct ChassisMoveSpeedReference chassis_move_speed_reference;
 
   fp32 mileage;
 };

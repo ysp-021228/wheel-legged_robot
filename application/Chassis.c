@@ -28,6 +28,7 @@ void chassis_device_offline_handle();
 static void chassis_off_ground_detection();
 static void chassis_info_update();
 static void chassis_motor_info_update();
+static void leg_state_variable_get(struct Leg *leg);
 static void chassis_forward_kinematics();
 static void chassis_inverse_kinematics();
 static void chassis_motor_cmd_send();
@@ -36,21 +37,21 @@ static void chassis_K_matrix_fitting(fp32 L0, fp32 K[6], const fp32 KL[6][4]);
 fp32 unable_leg_K[6] = {0, 0, 0, 0, 0, 0};
 fp32 wheel_K[6] = {0, 0, 0, 0, 0, 0};
 fp32 joint_K[6] = {0, 0, 0, 0, 0, 0};
-fp32 wheel_fitting_factor[6][4]={
-    {0,0,0,0},
-    {0,0,0,0},
-    {0,0,0,0},
-    {0,0,0,0},
-    {0,0,0,0},
-    {0,0,0,0},
+fp32 wheel_fitting_factor[6][4] = {
+    {0, 0, 0, 0},
+    {0, 0, 0, 0},
+    {0, 0, 0, 0},
+    {0, 0, 0, 0},
+    {0, 0, 0, 0},
+    {0, 0, 0, 0},
 };
-fp32 joint_fitting_factor[6][4]={
-    {0,0,0,0},
-    {0,0,0,0},
-    {0,0,0,0},
-    {0,0,0,0},
-    {0,0,0,0},
-    {0,0,0,0},
+fp32 joint_fitting_factor[6][4] = {
+    {0, 0, 0, 0},
+    {0, 0, 0, 0},
+    {0, 0, 0, 0},
+    {0, 0, 0, 0},
+    {0, 0, 0, 0},
+    {0, 0, 0, 0},
 };
 
 void chassis_task(void const *pvParameters) {
@@ -102,7 +103,7 @@ static void chassis_info_update() {
   chassis_motor_info_update();
   chassis.mileage =
       (chassis.leg_L.wheel.mileage + chassis.leg_R.wheel.mileage) / 2;//The state variable x should use this value
-  if (chassis.move_speed_set_point.vx != 0) {
+  if (chassis.chassis_move_speed_set_point.vx != 0) {
     chassis.mileage = 0;
   }
 }
@@ -115,9 +116,17 @@ static void chassis_motor_info_update() {
   //todo 关节电机相关状态更新
 }
 
+static void leg_state_variable_get(struct Leg *leg) {
+  if (leg == NULL) {
+    return;
+  }
+  leg->state_variable.theta_last=leg->state_variable.theta;
+  //todo cal_leg_theta_meas
+}
+
 static void chassis_ctrl_info_get() {
-  chassis.move_speed_set_point.vx = (float) (get_rc_ctrl().rc.ch[CHASSIS_X_CHANNEL]) * RC_TO_VX;
-  chassis.move_speed_set_point.vw = (float) (get_rc_ctrl().rc.ch[CHASSIS_Z_CHANNEL]) * RC_TO_VW;
+  chassis.chassis_move_speed_set_point.vx = (float) (get_rc_ctrl().rc.ch[CHASSIS_X_CHANNEL]) * RC_TO_VX;
+  chassis.chassis_move_speed_set_point.vw = (float) (get_rc_ctrl().rc.ch[CHASSIS_Z_CHANNEL]) * RC_TO_VW;
 
   if (switch_is_down(get_rc_ctrl().rc.s[RC_s_L]) && switch_is_down(get_rc_ctrl().rc.s[RC_s_R])) {
     chassis.last_mode = chassis.mode;
@@ -158,8 +167,8 @@ static void chassis_init(struct Chassis *chassis) {
 }
 
 static void chassis_relax_handle() {
-  chassis.move_speed_set_point.vx = 0;
-  chassis.move_speed_set_point.vw = 0;
+  chassis.chassis_move_speed_set_point.vx = 0;
+  chassis.chassis_move_speed_set_point.vw = 0;
 
   chassis.mileage = 0;
 }
@@ -167,22 +176,19 @@ static void chassis_relax_handle() {
 static void chassis_enabled_leg_handle() {
   chassis_forward_kinematics();
 
-  chassis_K_matrix_fitting(chassis.leg_L.forward_kinematics.fk_L0.L0,wheel_K,wheel_fitting_factor);
-  chassis_K_matrix_fitting(chassis.leg_L.forward_kinematics.fk_L0.L0,joint_K,joint_fitting_factor);
-  chassis_K_matrix_fitting(chassis.leg_R.forward_kinematics.fk_L0.L0,wheel_K,wheel_fitting_factor);
-  chassis_K_matrix_fitting(chassis.leg_R.forward_kinematics.fk_L0.L0,joint_K,joint_fitting_factor);
+  chassis_K_matrix_fitting(chassis.leg_L.forward_kinematics.fk_L0.L0, wheel_K, wheel_fitting_factor);
+  chassis_K_matrix_fitting(chassis.leg_L.forward_kinematics.fk_L0.L0, joint_K, joint_fitting_factor);
+  chassis_K_matrix_fitting(chassis.leg_R.forward_kinematics.fk_L0.L0, wheel_K, wheel_fitting_factor);
+  chassis_K_matrix_fitting(chassis.leg_R.forward_kinematics.fk_L0.L0, joint_K, joint_fitting_factor);
+
 }
 
 static void chassis_unable_leg_handle() {
   //todo: 不使用腿模式的LQR算法编写
 //  chassis.leg_L.wheel.torque=(  unable_leg_K[0]*(chassis.mileage)+
-//      unable_leg_K[1]*(chassis.move_speed_reference.vx-chassis.move_speed_set_point.vx)+
+//      unable_leg_K[1]*(chassis.chassis_move_speed_reference.vx-chassis.chassis_move_speed_set_point.vx)+
 //      unable_leg_K[2]*()
 //      )
-}
-
-static void chassis_wheel_cal(fp32 vx, fp32 vw) {
-
 }
 
 void chassis_device_offline_handle() {
@@ -321,6 +327,10 @@ static void chassis_relax_judge() {
   if (ABS(chassis.imu_reference.pitch_angle) > 32) {
     chassis.mode = CHASSIS_DISABLE;
   }
+}
+
+static void chassis_off_ground_detection(){
+  //todo 跳跃离地和提起来切换失能模式
 }
 
 static void chassis_motor_cmd_send() {
