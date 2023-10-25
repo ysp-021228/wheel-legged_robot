@@ -122,7 +122,17 @@ static void leg_state_variable_get(struct Leg *leg) {
     return;
   }
   leg->state_variable.theta_last = leg->state_variable.theta;
-  //todo cal_leg_theta_meas
+  leg->state_variable.theta = cal_leg_theta(leg->forward_kinematics.fk_phi.phi0);
+  leg->state_variable.theta_dot_last = leg->state_variable.theta_dot;
+  leg->state_variable.theta_dot =
+      (leg->state_variable.theta - leg->state_variable.theta_last) / (CHASSIS_PERIOD * 0.001f);
+  leg->state_variable.theta_ddot =
+      (leg->state_variable.theta_dot - leg->state_variable.theta_dot_last) / (CHASSIS_PERIOD * 0.001f);
+  leg->state_variable.x = 0;
+  leg->state_variable.x_dot = leg->wheel.speed;
+  leg->state_variable.phi = chassis.imu_reference.pitch_angle;
+  leg->state_variable.phi_dot = chassis.imu_reference.pitch_gyro;
+  //todo 对位移处理，提高刹车性能
 }
 
 fp32 cal_leg_theta(fp32 phi0) {
@@ -202,6 +212,9 @@ static void chassis_enabled_leg_handle() {
   chassis_K_matrix_fitting(chassis.leg_L.forward_kinematics.fk_L0.L0, joint_K, joint_fitting_factor);
   chassis_K_matrix_fitting(chassis.leg_R.forward_kinematics.fk_L0.L0, wheel_K, wheel_fitting_factor);
   chassis_K_matrix_fitting(chassis.leg_R.forward_kinematics.fk_L0.L0, joint_K, joint_fitting_factor);
+
+  leg_state_variable_get(&chassis.leg_L);
+  leg_state_variable_get(&chassis.leg_R);
 
 }
 
