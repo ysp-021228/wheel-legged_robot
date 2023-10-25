@@ -34,6 +34,24 @@ static void chassis_motor_cmd_send();
 static void chassis_K_matrix_fitting(fp32 L0, fp32 K[6], const fp32 KL[6][4]);
 
 fp32 unable_leg_K[6] = {0, 0, 0, 0, 0, 0};
+fp32 wheel_K[6] = {0, 0, 0, 0, 0, 0};
+fp32 joint_K[6] = {0, 0, 0, 0, 0, 0};
+fp32 wheel_fitting_factor[6][4]={
+    {0,0,0,0},
+    {0,0,0,0},
+    {0,0,0,0},
+    {0,0,0,0},
+    {0,0,0,0},
+    {0,0,0,0},
+};
+fp32 joint_fitting_factor[6][4]={
+    {0,0,0,0},
+    {0,0,0,0},
+    {0,0,0,0},
+    {0,0,0,0},
+    {0,0,0,0},
+    {0,0,0,0},
+};
 
 void chassis_task(void const *pvParameters) {
 
@@ -148,6 +166,11 @@ static void chassis_relax_handle() {
 
 static void chassis_enabled_leg_handle() {
   chassis_forward_kinematics();
+
+  chassis_K_matrix_fitting(chassis.leg_L.forward_kinematics.fk_L0.L0,wheel_K,wheel_fitting_factor);
+  chassis_K_matrix_fitting(chassis.leg_L.forward_kinematics.fk_L0.L0,joint_K,joint_fitting_factor);
+  chassis_K_matrix_fitting(chassis.leg_R.forward_kinematics.fk_L0.L0,wheel_K,wheel_fitting_factor);
+  chassis_K_matrix_fitting(chassis.leg_R.forward_kinematics.fk_L0.L0,joint_K,joint_fitting_factor);
 }
 
 static void chassis_unable_leg_handle() {
