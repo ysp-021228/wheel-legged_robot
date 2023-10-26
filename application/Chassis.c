@@ -28,7 +28,9 @@ void chassis_device_offline_handle();
 static void chassis_off_ground_detection();
 static void chassis_info_update();
 static void chassis_motor_info_update();
-static void leg_state_variable_get(struct Leg *leg);
+static void leg_state_variable_reference_get(struct Leg *leg);
+static void leg_state_variable_set_point_set(struct Leg *leg, fp32 vx);
+static void leg_state_variable_error_get(struct Leg *leg);
 fp32 cal_leg_theta(fp32 phi0);
 static void chassis_forward_kinematics();
 static void chassis_inverse_kinematics();
@@ -133,22 +135,39 @@ static void chassis_motor_info_update() {
   chassis.leg_R.cyber_gear_data[1].angle = cybergears_1[RF_MOTOR_ID].angle;
 }
 
-static void leg_state_variable_get(struct Leg *leg) {
+static void leg_state_variable_reference_get(struct Leg *leg) {
   if (leg == NULL) {
     return;
   }
-  leg->state_variable.theta_last = leg->state_variable.theta;
-  leg->state_variable.theta = cal_leg_theta(leg->forward_kinematics.fk_phi.phi0);
-  leg->state_variable.theta_dot_last = leg->state_variable.theta_dot;
-  leg->state_variable.theta_dot =
-      (leg->state_variable.theta - leg->state_variable.theta_last) / (CHASSIS_PERIOD * 0.001f);
-  leg->state_variable.theta_ddot =
-      (leg->state_variable.theta_dot - leg->state_variable.theta_dot_last) / (CHASSIS_PERIOD * 0.001f);
-  leg->state_variable.x = 0;
-  leg->state_variable.x_dot = leg->wheel.speed;
-  leg->state_variable.phi = chassis.imu_reference.pitch_angle;
-  leg->state_variable.phi_dot = chassis.imu_reference.pitch_gyro;
+  leg->state_variable_reference.theta_last = leg->state_variable_reference.theta;
+  leg->state_variable_reference.theta = cal_leg_theta(leg->forward_kinematics.fk_phi.phi0);
+  leg->state_variable_reference.theta_dot_last = leg->state_variable_reference.theta_dot;
+  leg->state_variable_reference.theta_dot =
+      (leg->state_variable_reference.theta - leg->state_variable_reference.theta_last) / (CHASSIS_PERIOD * 0.001f);
+  leg->state_variable_reference.theta_ddot =
+      (leg->state_variable_reference.theta_dot - leg->state_variable_reference.theta_dot_last)
+          / (CHASSIS_PERIOD * 0.001f);
+  leg->state_variable_reference.x = 0;
+  leg->state_variable_reference.x_dot = leg->wheel.speed;
+  leg->state_variable_reference.phi = chassis.imu_reference.pitch_angle;
+  leg->state_variable_reference.phi_dot = chassis.imu_reference.pitch_gyro;
   //todo 对位移处理，提高刹车性能
+}
+
+static void leg_state_variable_set_point_set(struct Leg *leg, fp32 vx) {
+  if (leg == NULL) {
+    return;
+  }
+  leg->state_variable_set_point.x = 0;
+  leg->state_variable_set_point.x_dot = vx;
+  leg->state_variable_set_point.theta = 0;
+  leg->state_variable_set_point.theta_dot = 0;
+  leg->state_variable_set_point.phi = 0;
+  leg->state_variable_set_point.phi_dot = 0;
+}
+
+static void leg_state_variable_error_get(struct Leg *leg){
+
 }
 
 fp32 cal_leg_theta(fp32 phi0) {
@@ -229,9 +248,15 @@ static void chassis_enabled_leg_handle() {
   chassis_K_matrix_fitting(chassis.leg_R.forward_kinematics.fk_L0.L0, wheel_K, wheel_fitting_factor);
   chassis_K_matrix_fitting(chassis.leg_R.forward_kinematics.fk_L0.L0, joint_K, joint_fitting_factor);
 
-  leg_state_variable_get(&chassis.leg_L);
-  leg_state_variable_get(&chassis.leg_R);
-  //todo Cal_Leg_Motors_Torque_tar
+  leg_state_variable_reference_get(&chassis.leg_L);
+  leg_state_variable_reference_get(&chassis.leg_R);
+  //todo 腿部设置速度需要再添加一个旋转速度
+  leg_state_variable_set_point_set(&chassis.leg_L,
+                                   -chassis.chassis_move_speed_set_point.vx
+                                       + chassis.chassis_move_speed_set_point.vw * CHASSIS_ROTATION_RADIUS);
+  leg_state_variable_set_point_set(&chassis.leg_R,
+                                   chassis.chassis_move_speed_set_point.vx
+                                       - chassis.chassis_move_speed_set_point.vw * CHASSIS_ROTATION_RADIUS);
 
 }
 

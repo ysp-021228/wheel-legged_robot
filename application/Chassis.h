@@ -48,6 +48,10 @@
 #define L4 0.11f
 #define L5 0.09f
 
+#define CHASSIS_ROTATION_RADIUS 157.7f
+
+#define MECHANICAL_LEG_LIMIT_ANGLE 0.10472
+
 #define GRAVITY_A 9.8f
 //枚举 结构体
 enum ChassisMode {
@@ -178,7 +182,9 @@ struct Wheel {
 };
 
 struct Leg {
-  struct StateVariable state_variable;
+  struct StateVariable state_variable_reference;
+  struct StateVariable state_variable_set_point;
+  struct StateVariable state_variable_error;
   struct ForwardKinematics forward_kinematics;
   struct InverseKinematics inverse_kinematics;
   struct Wheel wheel;
