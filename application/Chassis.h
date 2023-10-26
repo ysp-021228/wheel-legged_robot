@@ -21,10 +21,10 @@
 
 #define CHASSIS_Z_CHANNEL 2
 
-#define LF_MOTOR_ID (0x71)
-#define LB_MOTOR_ID (0x72)
-#define RB_MOTOR_ID (0x73)
-#define RF_MOTOR_ID (0x74)
+#define LF_MOTOR_ID (0x66)
+#define LB_MOTOR_ID (0x67)
+#define RB_MOTOR_ID (0x68)
+#define RF_MOTOR_ID (0x69)
 
 /**********************  平衡底盘  *************************/
 
@@ -42,11 +42,11 @@
 #define BALANCE_REDUCTION_RATIO (1.0f/19) //平衡兵电机减速比
 #define BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED  ((2 * PI  * BALANCE_WHEEL_R*BALANCE_REDUCTION_RATIO) / 60) //平衡兵电机rpm转为轮子的转速m/s
 
-#define L1 1.0f
-#define L2 1.0f
-#define L3 1.0f
-#define L4 1.0f
-#define L5 1.0f
+#define L1 0.11
+#define L2 0.18f
+#define L3 0.18f
+#define L4 0.11f
+#define L5 0.09f
 
 //枚举 结构体
 enum ChassisMode {

@@ -215,6 +215,7 @@ static void chassis_enabled_leg_handle() {
 
   leg_state_variable_get(&chassis.leg_L);
   leg_state_variable_get(&chassis.leg_R);
+  //todo Cal_Leg_Motors_Torque_tar
 
 }
 
@@ -365,7 +366,7 @@ static void chassis_relax_judge() {
 }
 
 static void chassis_off_ground_detection() {
-  //todo 跳跃离地和提起来切换失能模式
+  //todo 跳跃离地和 提起来切换失能模式
 }
 
 static void chassis_motor_cmd_send() {
