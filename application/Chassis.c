@@ -22,7 +22,7 @@ static void chassis_relax_handle();
 static void chassis_enabled_leg_handle();
 static void chassis_unable_leg_handle();
 static void chassis_wheel_cal(fp32 vx, fp32 vw);
-static void chassis_angle_update();
+static void chassis_imu_info_update();
 static void chassis_relax_judge();
 void chassis_device_offline_handle();
 static void chassis_off_ground_detection();
@@ -100,7 +100,7 @@ void chassis_task(void const *pvParameters) {
 }
 
 static void chassis_info_update() {
-  chassis_angle_update();
+  chassis_imu_info_update();
   chassis_motor_info_update();
   chassis.mileage =
       (chassis.leg_L.wheel.mileage + chassis.leg_R.wheel.mileage) / 2;//The state variable x should use this value
@@ -233,11 +233,17 @@ void chassis_device_offline_handle() {
   }
 }
 
-static void chassis_angle_update() {
+static void chassis_imu_info_update() {
   chassis.imu_reference.pitch_angle = *(get_ins_angle() + 1);
   chassis.imu_reference.yaw_angle = -*(get_ins_angle() + 0);
   chassis.imu_reference.roll_angle = *(get_ins_angle() + 2);
-  //todo： add gyro 判断是否要筛除重力加速度
+
+  chassis.imu_reference.pitch_gyro = *(get_ins_gyro() + 1);
+  chassis.imu_reference.yaw_gyro = -*(get_ins_gyro() + 2);
+  chassis.imu_reference.roll_gyro = *(get_ins_gyro() + 0);
+
+  //todo 三轴重力加速度确定
+  //todo 重力加速度筛除
 }
 
 static void chassis_forward_kinematics() {

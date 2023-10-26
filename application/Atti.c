@@ -624,3 +624,7 @@ fp32 *get_ins_gyro() {
   return INS_gyro;
 }
 
+fp32 *get_ins_accel() {
+  return INS_accel;
+}
+

@@ -69,12 +69,27 @@ struct IMUSetPoint {
 };
 
 struct IMUReference {
+  //Triaxial Angle
   fp32 pitch_angle;
   fp32 yaw_angle;
   fp32 roll_angle;
+
+  //Triaxial angular velocity
   fp32 pitch_gyro;
   fp32 yaw_gyro;
   fp32 roll_gyro;
+
+  //Triaxial acceleration
+  fp32 ax;
+  fp32 ay;
+  fp32 az;
+
+  //The triaxial acceleration removes the gravitational acceleration
+  fp32 ax_filtered;
+  fp32 ay_filtered;
+  fp32 az_filtered;
+
+  fp32 robot_az;
 };
 
 struct ChassisMoveSpeedSetPoint {
