@@ -48,6 +48,7 @@
 #define L4 0.11f
 #define L5 0.09f
 
+#define GRAVITY_A 9.8f
 //枚举 结构体
 enum ChassisMode {
   CHASSIS_DISABLE,

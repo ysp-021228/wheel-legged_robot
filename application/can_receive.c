@@ -134,24 +134,6 @@ void CAN_msg_send(CAN_TYPE can_type, can_msg_id_e CMD_ID, Vector_msg msg) {
       break;
     }
 
-    case CAN_CHASSIS_MODE_0X101_ID: {
-      tx_message.DLC = 0x02;
-
-      can_send_data[0] = msg.mode.data[0];
-      can_send_data[1] = msg.mode.data[1];
-      break;
-    }
-
-    case CAN_CHASSIS_ANGLE_0x103_ID: {
-      tx_message.DLC = 0x04;
-
-      can_send_data[0] = msg.angle.data[0];
-      can_send_data[1] = msg.angle.data[1];
-      can_send_data[2] = msg.angle.data[2];
-      can_send_data[3] = msg.angle.data[3];
-      break;
-    }
-
     default: {
       tx_message.DLC = 0x08;
       can_send_data[0] = 0;
@@ -203,24 +185,6 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
         vector_receive_msg.vw.data[2] = rx_data[6];
         vector_receive_msg.vw.data[3] = rx_data[7];
 
-        break;
-      }
-
-      case CAN_CHASSIS_MODE_0X101_ID: {
-        vector_receive_msg.mode.data[0] = rx_data[0];
-        vector_receive_msg.mode.data[1] = rx_data[1];
-        vector_receive_msg.yaw_relative_angle_get.data[0] = rx_data[2];
-        vector_receive_msg.yaw_relative_angle_get.data[1] = rx_data[3];
-        vector_receive_msg.yaw_relative_angle_get.data[2] = rx_data[4];
-        vector_receive_msg.yaw_relative_angle_get.data[3] = rx_data[5];
-        break;
-      }
-
-      case CAN_CHASSIS_RUN_0X102_ID: {
-        vector_receive_msg.run.data[0] = rx_data[0];
-        vector_receive_msg.run.data[1] = rx_data[1];
-        vector_receive_msg.run.data[2] = rx_data[2];
-        vector_receive_msg.run.data[3] = rx_data[3];
         break;
       }
 

@@ -73,11 +73,19 @@ void chassis_task(void const *pvParameters) {
     switch (chassis.mode) {
       case CHASSIS_ENABLED_LEG: {
         chassis_enabled_leg_handle();
+        cyber_gear_control_mode(&cybergears_1[LF_MOTOR_ID], -0.5, 0, 0, 0, 0);//lb
+        cyber_gear_control_mode(&cybergears_1[LB_MOTOR_ID], 0.5, 0, 0, 0, 0);
+        cyber_gear_control_mode(&cybergears_1[RF_MOTOR_ID], 0.5, 0, 0, 0, 0);
+        cyber_gear_control_mode(&cybergears_1[RB_MOTOR_ID], -0.5, 0, 0, 0, 0);//rf
       }
         break;
 
       case CHASSIS_UNENABLED_LEG: {
         chassis_unable_leg_handle();
+        cyber_gear_control_mode(&cybergears_1[LF_MOTOR_ID], 0.9, 0, 0, 0, 0);//lb
+        cyber_gear_control_mode(&cybergears_1[LB_MOTOR_ID], -0.9, 0, 0, 0, 0);
+        cyber_gear_control_mode(&cybergears_1[RF_MOTOR_ID], -0.9, 0, 0, 0, 0);
+        cyber_gear_control_mode(&cybergears_1[RB_MOTOR_ID], 0.9, 0, 0, 0, 0);//rf
       }
         break;
 
@@ -87,13 +95,17 @@ void chassis_task(void const *pvParameters) {
         break;
 
       case CHASSIS_DISABLE: {
+        cyber_gear_control_mode(&cybergears_1[LF_MOTOR_ID], 0, 0, 0, 0, 0);//lb
+        cyber_gear_control_mode(&cybergears_1[LB_MOTOR_ID], 0, 0, 0, 0, 0);
+        cyber_gear_control_mode(&cybergears_1[RF_MOTOR_ID], 0, 0, 0, 0, 0);
+        cyber_gear_control_mode(&cybergears_1[RB_MOTOR_ID], 0, 0, 0, 0, 0);//rf
         chassis_relax_handle();
         chassis_init(&chassis);
       }
         break;
     }
 
-    chassis_motor_cmd_send();
+//    chassis_motor_cmd_send();
 
     vTaskDelay(CHASSIS_PERIOD);
   }
@@ -114,7 +126,11 @@ static void chassis_motor_info_update() {
   chassis.leg_R.wheel.speed = -motor_3508_measure[1].speed_rpm * BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED;
   chassis.leg_L.wheel.mileage = chassis.leg_L.wheel.mileage + CHASSIS_PERIOD * 0.001 * (chassis.leg_L.wheel.speed);
   chassis.leg_R.wheel.mileage = chassis.leg_R.wheel.mileage + CHASSIS_PERIOD * 0.001 * (chassis.leg_R.wheel.speed);
-  //todo 关节电机相关状态更新,正运动学需要的量
+  //todo 关节电机相关状态更新,正运动学需要的量phi1 phi4
+  chassis.leg_L.cyber_gear_data[0].angle = cybergears_1[LF_MOTOR_ID].angle;
+  chassis.leg_L.cyber_gear_data[1].angle = cybergears_1[LB_MOTOR_ID].angle;
+  chassis.leg_R.cyber_gear_data[0].angle = cybergears_1[RB_MOTOR_ID].angle;
+  chassis.leg_R.cyber_gear_data[1].angle = cybergears_1[RF_MOTOR_ID].angle;
 }
 
 static void leg_state_variable_get(struct Leg *leg) {
@@ -241,9 +257,21 @@ static void chassis_imu_info_update() {
   chassis.imu_reference.pitch_gyro = *(get_ins_gyro() + 1);
   chassis.imu_reference.yaw_gyro = -*(get_ins_gyro() + 2);
   chassis.imu_reference.roll_gyro = *(get_ins_gyro() + 0);
+  //todo 三轴重力加速度对应数组确定
+  chassis.imu_reference.ax = *(get_ins_accel() + 0);
+  chassis.imu_reference.ay = *(get_ins_accel() + 1);
+  chassis.imu_reference.az = *(get_ins_accel() + 2);
 
-  //todo 三轴重力加速度确定
-  //todo 重力加速度筛除
+  chassis.imu_reference.ax_filtered = chassis.imu_reference.ax - GRAVITY_A * sin(chassis.imu_reference.pitch_angle);
+  chassis.imu_reference.ay_filtered = chassis.imu_reference.ay
+      - GRAVITY_A * cos(chassis.imu_reference.pitch_angle) * sin(chassis.imu_reference.roll_angle);
+  chassis.imu_reference.az_filtered = chassis.imu_reference.az
+      - GRAVITY_A * cos(chassis.imu_reference.pitch_angle) * cos(chassis.imu_reference.roll_angle);
+  chassis.imu_reference.robot_az = chassis.imu_reference.ax_filtered * sin(chassis.imu_reference.pitch_angle)
+      + chassis.imu_reference.ay_filtered * sin(-chassis.imu_reference.roll_angle)
+          * cos(chassis.imu_reference.pitch_angle)
+      + chassis.imu_reference.az_filtered * cos(chassis.imu_reference.pitch_angle)
+          * cos(chassis.imu_reference.roll_angle);
 }
 
 static void chassis_forward_kinematics() {
@@ -383,10 +411,16 @@ static void chassis_motor_cmd_send() {
                 0,
                 0);
 
-  cyber_gear_control_mode(&cybergears_1[LF_MOTOR_ID], chassis.leg_L.cyber_gear_data[0].torque, 0, 0, 0, 0);
-  cyber_gear_control_mode(&cybergears_1[LB_MOTOR_ID], chassis.leg_L.cyber_gear_data[1].torque, 0, 0, 0, 0);
-  cyber_gear_control_mode(&cybergears_1[RF_MOTOR_ID], chassis.leg_R.cyber_gear_data[0].torque, 0, 0, 0, 0);
-  cyber_gear_control_mode(&cybergears_1[RB_MOTOR_ID], chassis.leg_R.cyber_gear_data[1].torque, 0, 0, 0, 0);
+//  cyber_gear_control_mode(&cybergears_1[LF_MOTOR_ID], chassis.leg_L.cyber_gear_data[0].torque, 0, 0, 0, 0);
+//  cyber_gear_control_mode(&cybergears_1[LB_MOTOR_ID], chassis.leg_L.cyber_gear_data[1].torque, 0, 0, 0, 0);
+//  cyber_gear_control_mode(&cybergears_1[RF_MOTOR_ID], chassis.leg_R.cyber_gear_data[0].torque, 0, 0, 0, 0);
+//  cyber_gear_control_mode(&cybergears_1[RB_MOTOR_ID], chassis.leg_R.cyber_gear_data[1].torque, 0, 0, 0, 0);
+
+  cyber_gear_control_mode(&cybergears_1[LF_MOTOR_ID], 0, 0, 0, 0, 0);//lb
+  cyber_gear_control_mode(&cybergears_1[LB_MOTOR_ID], 0, 0, 0, 0, 0);
+  cyber_gear_control_mode(&cybergears_1[RF_MOTOR_ID], 0, 0, 0, 0, 0);
+  cyber_gear_control_mode(&cybergears_1[RB_MOTOR_ID], 0, 0, 0, 0, 0);//rf
+
 }
 
 struct Chassis get_chassis() {

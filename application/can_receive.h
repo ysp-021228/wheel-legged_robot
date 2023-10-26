@@ -19,20 +19,12 @@
 //CAN_ID 该枚举不区分CAN_1还是CAN_2
 typedef enum
 {
-//    balance电机回复命令的报文格式如下:
-//    标识符:0x140 + ID(1~4)
-    CAN_BALANCE_MOTOR_L = 0x141,
-    CAN_BALANCE_MOTOR_R = 0x142,
-
     //电机控制 发送ID
     CAN_MOTOR_0x200_ID = 0x200,
     //0X200对应的电机ID
     CAN_CHASSIS_3508_MOTOR_1=0x201,
     CAN_CHASSIS_3508_MOTOR_2=0x202,
     CAN_VECTOR_XYZ_0X100_ID=0x100,
-    CAN_CHASSIS_MODE_0X101_ID=0x101,
-    CAN_CHASSIS_RUN_0X102_ID=0x102,
-    CAN_CHASSIS_ANGLE_0x103_ID=0x103,
 
     //电机控制 发送ID
     CAN_MOTOR_0x1FF_ID = 0x1FF,
