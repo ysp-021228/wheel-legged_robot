@@ -45,6 +45,7 @@ static void Matrix_multiply(int rows1, int cols1, double matrix1[rows1][cols1],
 static void vmc_inverse_solution(struct Leg *leg);
 static void Vmc_Negative_Kinematics(struct VMC *vmc, fp32 w1, fp32 w4);
 static void Vmc_Negative_Dynamics(struct VMC *vmc, fp32 T1, fp32 T4);
+static void leg_fn_cal(struct Leg *leg, fp32 az);
 
 fp32 unable_leg_K[6] = {0, 0, 0, 0, 0, 0};
 fp32 wheel_K[6] = {0, 0, 0, 0, 0, 0};
@@ -348,7 +349,7 @@ static void Vmc_Negative_Dynamics(struct VMC *vmc, fp32 T1, fp32 T4) {
   vmc->J_T_to_F.E.x2_2 = cos(vmc->forward_kinematics.fk_phi.phi0 - vmc->forward_kinematics.fk_phi.phi3)
       / (L4 * sin(vmc->forward_kinematics.fk_phi.phi3 - vmc->forward_kinematics.fk_phi.phi4));
 
-  Matrix_multiply(2,2,vmc->J_T_to_F.array,2,1,vmc->T1_T4_fdb.array,vmc->Fxy_fdb.array);
+  Matrix_multiply(2, 2, vmc->J_T_to_F.array, 2, 1, vmc->T1_T4_fdb.array, vmc->Fxy_fdb.array);
 }
 
 static void chassis_ctrl_info_get() {
@@ -426,6 +427,9 @@ static void chassis_enabled_leg_handle() {
 
   vmc_inverse_solution(&chassis.leg_L);
   vmc_inverse_solution(&chassis.leg_R);
+
+  leg_fn_cal(&chassis.leg_L,chassis.imu_reference.robot_az);
+  leg_fn_cal(&chassis.leg_R,chassis.imu_reference.robot_az);
 
 }
 
@@ -607,6 +611,26 @@ static void chassis_relax_judge() {
 
 static void chassis_off_ground_detection() {
   //todo 跳跃离地和 提起来切换失能模式
+}
+
+static void leg_fn_cal(struct Leg *leg, fp32 az) {
+  if (leg == NULL) {
+    return;
+  }
+  fp32 P;
+  P = leg->vmc.Fxy_fdb.E.Tp_fdb * sin(leg->state_variable_reference.theta) / leg->vmc.forward_kinematics.fk_L0.L0
+      + leg->vmc.Fxy_fdb.E.Fy_fdb * cos(leg->state_variable_reference.theta);
+
+  leg->wheel.imu_reference.az =
+      az - leg->vmc.forward_kinematics.fk_L0.L0_ddot * cos(leg->state_variable_reference.theta)
+          + 2 * leg->vmc.forward_kinematics.fk_L0.L0_dot * leg->state_variable_reference.theta_dot
+              * sin(leg->state_variable_reference.theta)
+          + leg->vmc.forward_kinematics.fk_L0.L0 * leg->state_variable_reference.theta_ddot
+              * sin(leg->state_variable_reference.theta)
+          + leg->vmc.forward_kinematics.fk_L0.L0 * leg->state_variable_reference.theta_dot
+              * leg->state_variable_reference.theta_dot * cos(leg->state_variable_reference.theta);
+
+  leg->Fn=P+WHEEL_WEIGHT*9.8+WHEEL_WEIGHT*leg->wheel.imu_reference.az;
 }
 
 static void chassis_motor_cmd_send() {

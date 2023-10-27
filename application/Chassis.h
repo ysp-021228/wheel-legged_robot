@@ -50,6 +50,7 @@
 
 #define CHASSIS_ROTATION_RADIUS 157.7f
 #define BODY_WEIGHT 2.839f
+#define WHEEL_WEIGHT 0.183f
 
 #define MECHANICAL_LEG_LIMIT_ANGLE 0.10472
 
@@ -260,6 +261,7 @@ struct Wheel {
   fp32 speed;
   fp32 mileage;
   fp32 torque;
+  struct IMUReference imu_reference;
   struct Motor3508 motor_3508;
 };
 
@@ -272,6 +274,7 @@ struct Leg {
   struct VMC vmc;
   pid_t pid;
   fp32 L0_set_point;
+  fp32 Fn;
 };
 
 struct Chassis {
