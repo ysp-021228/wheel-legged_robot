@@ -49,6 +49,7 @@
 #define L5 0.09f
 
 #define CHASSIS_ROTATION_RADIUS 157.7f
+#define BODY_WEIGHT 2.839f
 
 #define MECHANICAL_LEG_LIMIT_ANGLE 0.10472
 
@@ -171,6 +172,86 @@ struct InverseKinematics {
   fp32 Fn;
 };
 
+struct VMC {
+  union {
+    double array[2][1];
+    struct {
+      fp32 w1_fdb;
+      fp32 w4_fdb;
+    } E;
+  } W_fdb;
+
+  union {
+    fp32 array[2][1];
+    struct {
+      fp32 w0_fdb;
+      fp32 vy_fdb;
+    } E;
+  } V_fdb;
+
+  union {
+    fp32 array[2][1];
+    struct {
+      fp32 T1_fdb;
+      fp32 T4_fdb;
+    } E;
+  } T1_T4_fdb;
+
+  union {
+    fp32 array[2][1];
+    struct {
+      fp32 T1_set_point;
+      fp32 T4_set_point;
+    } E;
+  } T1_T4_set_point;
+
+  union {
+    fp32 array[2][1];
+    struct {
+      fp32 Tp_fdb;
+      fp32 Fy_fdb;
+    } E;
+  } Fxy_fdb;
+
+  union {
+    fp32 array[2][1];
+    struct {
+      fp32 Tp_set_point;
+      fp32 Fy_set_point;
+    } E;
+  } Fxy_set_point;
+
+  union {
+    fp32 array[2][1];
+    struct {
+      fp32 x1_1;
+      fp32 x1_2;
+      fp32 x2_1;
+      fp32 x2_2;
+    } E;
+  } J_w_to_v;
+
+  union {
+    fp32 array[2][1];
+    struct {
+      fp32 x1_1;
+      fp32 x1_2;
+      fp32 x2_1;
+      fp32 x2_2;
+    } E;
+  } J_F_to_T;
+
+  union {
+    fp32 array[2][1];
+    struct {
+      fp32 x1_1;
+      fp32 x1_2;
+      fp32 x2_1;
+      fp32 x2_2;
+    } E;
+  } J_T_to_F;
+};
+
 /*******************************************************************************
  *                                   Robot                                     *
  *******************************************************************************/
@@ -189,6 +270,9 @@ struct Leg {
   struct InverseKinematics inverse_kinematics;
   struct Wheel wheel;
   struct CyberGearData cyber_gear_data[2];
+  struct VMC vmc;
+  pid_t pid;
+  fp32 L0_set_point;
 };
 
 struct Chassis {

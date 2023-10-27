@@ -31,11 +31,14 @@ static void chassis_motor_info_update();
 static void leg_state_variable_reference_get(struct Leg *leg);
 static void leg_state_variable_set_point_set(struct Leg *leg, fp32 vx);
 static void leg_state_variable_error_get(struct Leg *leg);
+static void chassis_motors_torque_set_point_cal(struct Leg *leg);
+static void joint_motors_torque_set_point_cal(struct Leg *leg);
+static void wheel_motors_torque_set_point_cal(struct Leg *leg);
 fp32 cal_leg_theta(fp32 phi0);
 static void chassis_forward_kinematics();
-static void chassis_inverse_kinematics();
 static void chassis_motor_cmd_send();
 static void chassis_K_matrix_fitting(fp32 L0, fp32 K[6], const fp32 KL[6][4]);
+static void VMC_positive_dynamics(struct VMC* vmc,fp32 Tp,fp32 Fy);
 
 fp32 unable_leg_K[6] = {0, 0, 0, 0, 0, 0};
 fp32 wheel_K[6] = {0, 0, 0, 0, 0, 0};
@@ -107,7 +110,7 @@ void chassis_task(void const *pvParameters) {
         break;
     }
 
-//    chassis_motor_cmd_send();
+    chassis_motor_cmd_send();
 
     vTaskDelay(CHASSIS_PERIOD);
   }
@@ -177,6 +180,36 @@ static void leg_state_variable_error_get(struct Leg *leg) {
       leg->state_variable_reference.theta_dot - leg->state_variable_set_point.theta_dot;
   leg->state_variable_error.phi = leg->state_variable_reference.phi - leg->state_variable_set_point.phi;
   leg->state_variable_error.phi_dot = leg->state_variable_reference.phi_dot - leg->state_variable_set_point.phi_dot;
+}
+
+static void chassis_motors_torque_set_point_cal(struct Leg *leg) {
+  joint_motors_torque_set_point_cal(leg);
+  wheel_motors_torque_set_point_cal(leg);
+}
+
+static void joint_motors_torque_set_point_cal(struct Leg *leg) {
+  if (leg == NULL) {
+    return;
+  }
+  leg->vmc.Fxy_set_point.E.Tp_set_point = 0;
+  leg->vmc.Fxy_set_point.E.Tp_set_point += leg->state_variable_error.theta * joint_K[0];
+  leg->vmc.Fxy_set_point.E.Tp_set_point += leg->state_variable_error.theta_dot * joint_K[1];
+  leg->vmc.Fxy_set_point.E.Tp_set_point += leg->state_variable_error.x * joint_K[2];
+  leg->vmc.Fxy_set_point.E.Tp_set_point += leg->state_variable_error.x_dot * joint_K[3];
+  leg->vmc.Fxy_set_point.E.Tp_set_point += leg->state_variable_error.phi * joint_K[4];
+  leg->vmc.Fxy_set_point.E.Tp_set_point += leg->state_variable_error.phi_dot * joint_K[5];
+  //todo 加限幅
+  pid_calc(&leg->pid,leg->forward_kinematics.fk_L0.L0,leg->L0_set_point);
+  leg->vmc.Fxy_set_point.E.Fy_set_point=leg->pid.out+BODY_WEIGHT*9.8;
+
+  VMC_positive_dynamics(&leg->vmc,leg->vmc.Fxy_set_point.E.Tp_set_point,leg->vmc.Fxy_set_point.E.Fy_set_point);
+}
+
+static void VMC_positive_dynamics(struct VMC* vmc,fp32 Tp,fp32 Fy){
+  if(vmc==NULL){return;}
+  vmc->Fxy_set_point.E.Tp_set_point=Tp;
+  vmc->Fxy_set_point.E.Fy_set_point=Fy;
+
 }
 
 fp32 cal_leg_theta(fp32 phi0) {
@@ -463,7 +496,5 @@ static void chassis_motor_cmd_send() {
 struct Chassis get_chassis() {
   return chassis;
 }
-
-//遥控离线刹车原地不动
-//电机离线直接全部失能
+//todo 遥控离线刹车原地不动电机离线直接全部失能
 
