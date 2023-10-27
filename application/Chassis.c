@@ -85,19 +85,11 @@ void chassis_task(void const *pvParameters) {
     switch (chassis.mode) {
       case CHASSIS_ENABLED_LEG: {
         chassis_enabled_leg_handle();
-        cyber_gear_control_mode(&cybergears_1[LF_MOTOR_ID], -0.5, 0, 0, 0, 0);//lb
-        cyber_gear_control_mode(&cybergears_1[LB_MOTOR_ID], 0.5, 0, 0, 0, 0);
-        cyber_gear_control_mode(&cybergears_1[RF_MOTOR_ID], 0.5, 0, 0, 0, 0);
-        cyber_gear_control_mode(&cybergears_1[RB_MOTOR_ID], -0.5, 0, 0, 0, 0);//rf
       }
         break;
 
       case CHASSIS_UNENABLED_LEG: {
         chassis_unable_leg_handle();
-        cyber_gear_control_mode(&cybergears_1[LF_MOTOR_ID], 0.9, 0, 0, 0, 0);//lb
-        cyber_gear_control_mode(&cybergears_1[LB_MOTOR_ID], -0.9, 0, 0, 0, 0);
-        cyber_gear_control_mode(&cybergears_1[RF_MOTOR_ID], -0.9, 0, 0, 0, 0);
-        cyber_gear_control_mode(&cybergears_1[RB_MOTOR_ID], 0.9, 0, 0, 0, 0);//rf
       }
         break;
 
@@ -107,10 +99,6 @@ void chassis_task(void const *pvParameters) {
         break;
 
       case CHASSIS_DISABLE: {
-        cyber_gear_control_mode(&cybergears_1[LF_MOTOR_ID], 0, 0, 0, 0, 0);//lb
-        cyber_gear_control_mode(&cybergears_1[LB_MOTOR_ID], 0, 0, 0, 0, 0);
-        cyber_gear_control_mode(&cybergears_1[RF_MOTOR_ID], 0, 0, 0, 0, 0);
-        cyber_gear_control_mode(&cybergears_1[RB_MOTOR_ID], 0, 0, 0, 0, 0);//rf
         chassis_relax_handle();
         chassis_init(&chassis);
       }
