@@ -173,6 +173,7 @@ struct InverseKinematics {
 };
 
 struct VMC {
+  struct ForwardKinematics forward_kinematics;
   union {
     double array[2][1];
     struct {
@@ -266,10 +267,8 @@ struct Leg {
   struct StateVariable state_variable_reference;
   struct StateVariable state_variable_set_point;
   struct StateVariable state_variable_error;
-  struct ForwardKinematics forward_kinematics;
-  struct InverseKinematics inverse_kinematics;
   struct Wheel wheel;
-  struct CyberGearData cyber_gear_data[2];
+  struct CyberGearData cyber_gear_data[3];
   struct VMC vmc;
   pid_t pid;
   fp32 L0_set_point;
