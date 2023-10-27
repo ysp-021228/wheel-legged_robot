@@ -166,8 +166,17 @@ static void leg_state_variable_set_point_set(struct Leg *leg, fp32 vx) {
   leg->state_variable_set_point.phi_dot = 0;
 }
 
-static void leg_state_variable_error_get(struct Leg *leg){
-
+static void leg_state_variable_error_get(struct Leg *leg) {
+  if (leg == NULL) {
+    return;
+  }
+  leg->state_variable_error.x = leg->state_variable_reference.x - leg->state_variable_set_point.x;
+  leg->state_variable_error.x_dot = leg->state_variable_reference.x_dot - leg->state_variable_set_point.x_dot;
+  leg->state_variable_error.theta = leg->state_variable_reference.theta - leg->state_variable_set_point.theta;
+  leg->state_variable_error.theta_dot =
+      leg->state_variable_reference.theta_dot - leg->state_variable_set_point.theta_dot;
+  leg->state_variable_error.phi = leg->state_variable_reference.phi - leg->state_variable_set_point.phi;
+  leg->state_variable_error.phi_dot = leg->state_variable_reference.phi_dot - leg->state_variable_set_point.phi_dot;
 }
 
 fp32 cal_leg_theta(fp32 phi0) {
@@ -258,6 +267,8 @@ static void chassis_enabled_leg_handle() {
                                    chassis.chassis_move_speed_set_point.vx
                                        - chassis.chassis_move_speed_set_point.vw * CHASSIS_ROTATION_RADIUS);
 
+  leg_state_variable_error_get(&chassis.leg_L);
+  leg_state_variable_error_get(&chassis.leg_R);
 
 }
 
@@ -442,10 +453,10 @@ static void chassis_motor_cmd_send() {
 //  cyber_gear_control_mode(&cybergears_1[RF_MOTOR_ID], chassis.leg_R.cyber_gear_data[0].torque, 0, 0, 0, 0);
 //  cyber_gear_control_mode(&cybergears_1[RB_MOTOR_ID], chassis.leg_R.cyber_gear_data[1].torque, 0, 0, 0, 0);
 
-  cyber_gear_control_mode(&cybergears_1[LF_MOTOR_ID], 0, 0, 0, 0, 0);//lb
+  cyber_gear_control_mode(&cybergears_1[LF_MOTOR_ID], 0, 0, 0, 0, 0);
   cyber_gear_control_mode(&cybergears_1[LB_MOTOR_ID], 0, 0, 0, 0, 0);
   cyber_gear_control_mode(&cybergears_1[RF_MOTOR_ID], 0, 0, 0, 0, 0);
-  cyber_gear_control_mode(&cybergears_1[RB_MOTOR_ID], 0, 0, 0, 0, 0);//rf
+  cyber_gear_control_mode(&cybergears_1[RB_MOTOR_ID], 0, 0, 0, 0, 0);
 
 }
 
