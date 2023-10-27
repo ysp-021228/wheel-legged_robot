@@ -79,6 +79,7 @@ static void mi_motor_can_send(struct CyberGearData *mi_motor_data) {
   CAN_TxHeaderTypeDef tx_header;
   uint8_t tx_data[8];
   uint32_t send_mail_box;
+  send_mail_box=get_free_can_mailbox();
 
   exCanIdInfo.mode = mi_motor_data->mode;
   exCanIdInfo.id = mi_motor_data->id;

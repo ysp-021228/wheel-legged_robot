@@ -258,6 +258,7 @@ static void chassis_enabled_leg_handle() {
                                    chassis.chassis_move_speed_set_point.vx
                                        - chassis.chassis_move_speed_set_point.vw * CHASSIS_ROTATION_RADIUS);
 
+
 }
 
 static void chassis_unable_leg_handle() {

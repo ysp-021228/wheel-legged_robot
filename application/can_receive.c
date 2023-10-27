@@ -56,6 +56,7 @@ motor_measure_t motor_2006_measure[1];//TRIGGER
 
 static CAN_TxHeaderTypeDef tx_message;
 static uint8_t can_send_data[8];
+uint32_t get_free_can_mailbox();
 extern struct Chassis chassis;
 Vector_msg vector_receive_msg;//
 TOF_msg tof_msg;
@@ -238,4 +239,11 @@ fp32 motor_ecd_to_angle_change(uint16_t ecd, uint16_t offset_ecd) {
   return (fp32) tmp / 8192.f * 360;
 }
 
-
+uint32_t get_free_can_mailbox() {
+  if ((hcan1.Instance->TSR & CAN_TSR_TME0) != RESET) {
+    return CAN_TX_MAILBOX0;
+  } else if ((hcan1.Instance->TSR & CAN_TSR_TME1)
+      != RESET) { return CAN_TX_MAILBOX1; }
+  else if ((hcan1.Instance->TSR & CAN_TSR_TME2) != RESET) { return CAN_TX_MAILBOX2; }
+  else { return 0; }
+}

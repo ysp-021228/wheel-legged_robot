@@ -182,4 +182,6 @@ extern fp32 motor_ecd_to_rad_change(uint16_t ecd, uint16_t offset_ecd);
 
 extern fp32 motor_ecd_to_angle_change(uint16_t ecd,uint16_t offset_ecd);
 
+uint32_t get_free_can_mailbox();
+
 #endif //AVG_INFANTRY_CAN_RECEIVE_H

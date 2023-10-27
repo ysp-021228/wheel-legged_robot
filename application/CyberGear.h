@@ -3,6 +3,7 @@
 
 #include "main.h"
 #include "string.h"
+#include "can_receive.h"
 
 #define MI_MOTOR_MASTER_ID 0x10
 #define MI_MOTOR_SINGLE_NUM 256
