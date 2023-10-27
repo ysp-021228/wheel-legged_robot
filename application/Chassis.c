@@ -42,6 +42,9 @@ static void VMC_positive_dynamics(struct VMC *vmc, fp32 Tp, fp32 Fy);
 static void Matrix_multiply(int rows1, int cols1, double matrix1[rows1][cols1],
                             int rows2, int cols2, double matrix2[rows2][cols2],
                             double result[rows1][cols2]);
+static void vmc_inverse_solution(struct Leg *leg);
+static void Vmc_Negative_Kinematics(struct VMC *vmc, fp32 w1, fp32 w4);
+static void Vmc_Negative_Dynamics(struct VMC *vmc, fp32 T1, fp32 T4);
 
 fp32 unable_leg_K[6] = {0, 0, 0, 0, 0, 0};
 fp32 wheel_K[6] = {0, 0, 0, 0, 0, 0};
@@ -286,6 +289,68 @@ fp32 cal_leg_theta(fp32 phi0) {
   return theta;
 }
 
+static void vmc_inverse_solution(struct Leg *leg) {
+  if (leg == NULL) {
+    return;
+  }
+  Vmc_Negative_Kinematics(&leg->vmc, leg->cyber_gear_data[0].speed, leg->cyber_gear_data[1].speed);
+  //todo 看看电机怎么获取实际扭矩
+  Vmc_Negative_Dynamics(&leg->vmc, leg->vmc.T1_T4_set_point.E.T1_set_point, leg->vmc.T1_T4_set_point.E.T4_set_point);
+}
+
+static void Vmc_Negative_Kinematics(struct VMC *vmc, fp32 w1, fp32 w4) {
+  if (vmc == NULL) {
+    return;
+  }
+  vmc->W_fdb.E.w1_fdb = w1;
+  vmc->W_fdb.E.w4_fdb = w4;
+
+  vmc->J_w_to_v.E.x1_1 = (L1 * sin(vmc->forward_kinematics.fk_phi.phi0) * sin(vmc->forward_kinematics.fk_phi.phi3)
+      * sin(vmc->forward_kinematics.fk_phi.phi1 - vmc->forward_kinematics.fk_phi.phi2)
+      - L4 * cos(vmc->forward_kinematics.fk_phi.phi0) * sin(vmc->forward_kinematics.fk_phi.phi2)
+          * sin(vmc->forward_kinematics.fk_phi.phi3 - vmc->forward_kinematics.fk_phi.phi4))
+      / sin(vmc->forward_kinematics.fk_phi.phi2 - vmc->forward_kinematics.fk_phi.phi3);
+  vmc->J_w_to_v.E.x1_2 = (L1 * cos(vmc->forward_kinematics.fk_phi.phi0) * sin(vmc->forward_kinematics.fk_phi.phi3)
+      * sin(vmc->forward_kinematics.fk_phi.phi1 - vmc->forward_kinematics.fk_phi.phi2)
+      + L4 * sin(vmc->forward_kinematics.fk_phi.phi0) * sin(vmc->forward_kinematics.fk_phi.phi2)
+          * sin(vmc->forward_kinematics.fk_phi.phi3 - vmc->forward_kinematics.fk_phi.phi4))
+      / sin(vmc->forward_kinematics.fk_phi.phi2 - vmc->forward_kinematics.fk_phi.phi3);
+  vmc->J_w_to_v.E.x2_1 = (-L1 * sin(vmc->forward_kinematics.fk_phi.phi0) * cos(vmc->forward_kinematics.fk_phi.phi3)
+      * sin(vmc->forward_kinematics.fk_phi.phi1 - vmc->forward_kinematics.fk_phi.phi2)
+      + L4 * cos(vmc->forward_kinematics.fk_phi.phi0) * cos(vmc->forward_kinematics.fk_phi.phi2)
+          * sin(vmc->forward_kinematics.fk_phi.phi3 - vmc->forward_kinematics.fk_phi.phi4))
+      / sin(vmc->forward_kinematics.fk_phi.phi2 - vmc->forward_kinematics.fk_phi.phi3);
+  vmc->J_w_to_v.E.x2_2 = -(L1 * cos(vmc->forward_kinematics.fk_phi.phi0) * cos(vmc->forward_kinematics.fk_phi.phi3)
+      * sin(vmc->forward_kinematics.fk_phi.phi1 - vmc->forward_kinematics.fk_phi.phi2) * L4
+      * sin(vmc->forward_kinematics.fk_phi.phi0) * cos(vmc->forward_kinematics.fk_phi.phi2)
+      * sin(vmc->forward_kinematics.fk_phi.phi3 - vmc->forward_kinematics.fk_phi.phi4))
+      / sin(vmc->forward_kinematics.fk_phi.phi2 - vmc->forward_kinematics.fk_phi.phi3);
+
+  Matrix_multiply(2, 2, vmc->J_w_to_v.array, 2, 1, vmc->W_fdb.array, vmc->V_fdb.array);
+  vmc->V_fdb.E.w0_fdb /= vmc->forward_kinematics.fk_L0.L0;
+}
+
+static void Vmc_Negative_Dynamics(struct VMC *vmc, fp32 T1, fp32 T4) {
+  if (vmc == NULL) {
+    return;
+  }
+  vmc->T1_T4_fdb.E.T1_fdb = T1;
+  vmc->T1_T4_fdb.E.T4_fdb = T4;
+
+  vmc->J_T_to_F.E.x1_1 =
+      vmc->forward_kinematics.fk_L0.L0 * sin(vmc->forward_kinematics.fk_phi.phi0 - vmc->forward_kinematics.fk_phi.phi2)
+          / (L1 * sin(vmc->forward_kinematics.fk_phi.phi1 - vmc->forward_kinematics.fk_phi.phi2));
+  vmc->J_T_to_F.E.x1_2 =
+      vmc->forward_kinematics.fk_L0.L0 * sin(vmc->forward_kinematics.fk_phi.phi0 - vmc->forward_kinematics.fk_phi.phi3)
+          / (L4 * sin(vmc->forward_kinematics.fk_phi.phi4 - vmc->forward_kinematics.fk_phi.phi3));
+  vmc->J_T_to_F.E.x2_1 = cos(vmc->forward_kinematics.fk_phi.phi0 - vmc->forward_kinematics.fk_phi.phi2)
+      / (L1 * sin(vmc->forward_kinematics.fk_phi.phi2 - vmc->forward_kinematics.fk_phi.phi1));
+  vmc->J_T_to_F.E.x2_2 = cos(vmc->forward_kinematics.fk_phi.phi0 - vmc->forward_kinematics.fk_phi.phi3)
+      / (L4 * sin(vmc->forward_kinematics.fk_phi.phi3 - vmc->forward_kinematics.fk_phi.phi4));
+
+  Matrix_multiply(2,2,vmc->J_T_to_F.array,2,1,vmc->T1_T4_fdb.array,vmc->Fxy_fdb.array);
+}
+
 static void chassis_ctrl_info_get() {
   chassis.chassis_move_speed_set_point.vx = (float) (get_rc_ctrl().rc.ch[CHASSIS_X_CHANNEL]) * RC_TO_VX;
   chassis.chassis_move_speed_set_point.vw = (float) (get_rc_ctrl().rc.ch[CHASSIS_Z_CHANNEL]) * RC_TO_VW;
@@ -358,6 +423,10 @@ static void chassis_enabled_leg_handle() {
 
   chassis_motors_torque_set_point_cal(&chassis.leg_L);
   chassis_motors_torque_set_point_cal(&chassis.leg_R);
+
+  vmc_inverse_solution(&chassis.leg_L);
+  vmc_inverse_solution(&chassis.leg_R);
+
 }
 
 static void chassis_unable_leg_handle() {
