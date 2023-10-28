@@ -74,11 +74,11 @@ void chassis_task(void const *pvParameters) {
   chassis_init(&chassis);
 
   while (1) {
-    chassis_info_update();
+    chassis_info_update();//verified to be correct
 
     chassis_ctrl_info_get();
 
-    chassis_relax_judge();
+//    chassis_relax_judge();
 
     chassis_device_offline_handle();
 
@@ -99,7 +99,8 @@ void chassis_task(void const *pvParameters) {
         break;
 
       case CHASSIS_DISABLE: {
-        chassis_relax_handle();
+//        chassis_relax_handle();
+        chassis_enabled_leg_handle();
       }
         break;
     }
@@ -139,7 +140,7 @@ static void chassis_motor_info_update() {
       PI - (chassis.leg_R.cyber_gear_data[0].angle - MECHANICAL_LEG_LIMIT_ANGLE);
   chassis.leg_R.vmc.forward_kinematics.fk_phi.phi4 =
       -chassis.leg_R.cyber_gear_data[1].angle - MECHANICAL_LEG_LIMIT_ANGLE;
-}//
+}//verified to be correct
 
 static void leg_state_variable_reference_get(struct Leg *leg) {
   if (leg == NULL) {
@@ -415,7 +416,7 @@ static void chassis_relax_handle() {
 }
 
 static void chassis_enabled_leg_handle() {
-  chassis_forward_kinematics();
+  chassis_forward_kinematics();//verified to be correct
 
   chassis_K_matrix_fitting(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0, wheel_K, wheel_fitting_factor);
   chassis_K_matrix_fitting(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0, joint_K, joint_fitting_factor);
@@ -468,7 +469,7 @@ static void chassis_imu_info_update() {
   chassis.imu_reference.pitch_gyro = *(get_ins_gyro() + 1);
   chassis.imu_reference.yaw_gyro = -*(get_ins_gyro() + 2);
   chassis.imu_reference.roll_gyro = *(get_ins_gyro() + 0);
-  //todo 三轴重力加速度对应数组确定
+
   chassis.imu_reference.ax = *(get_ins_accel() + 0);
   chassis.imu_reference.ay = *(get_ins_accel() + 1);
   chassis.imu_reference.az = *(get_ins_accel() + 2);
