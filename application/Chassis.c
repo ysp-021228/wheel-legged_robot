@@ -100,7 +100,6 @@ void chassis_task(void const *pvParameters) {
 
       case CHASSIS_DISABLE: {
         chassis_relax_handle();
-        chassis_init(&chassis);
       }
         break;
     }
@@ -370,15 +369,32 @@ static void chassis_init(struct Chassis *chassis) {
   cyber_gear_init(hcan1, RB_MOTOR_ID, &cybergears_1[RB_MOTOR_ID]);
   cyber_gear_init(hcan1, RF_MOTOR_ID, &cybergears_1[RF_MOTOR_ID]);
 
-  cyber_gear_mode(&cybergears_1[LF_MOTOR_ID], 0);
-  cyber_gear_mode(&cybergears_1[LB_MOTOR_ID], 0);
-  cyber_gear_mode(&cybergears_1[RB_MOTOR_ID], 0);
-  cyber_gear_mode(&cybergears_1[RF_MOTOR_ID], 0);
+  mi_motor_disable(&cybergears_1[LF_MOTOR_ID]);
+  osDelay(1);
+  mi_motor_disable(&cybergears_1[LB_MOTOR_ID]);
+  osDelay(1);
+  mi_motor_disable(&cybergears_1[RB_MOTOR_ID]);
+  osDelay(1);
+  mi_motor_disable(&cybergears_1[RF_MOTOR_ID]);
+  osDelay(100);
+
+  mi_motor_set_zero(&cybergears_1[LF_MOTOR_ID]);
+  osDelay(1);
+  mi_motor_set_zero(&cybergears_1[LB_MOTOR_ID]);
+  osDelay(1);
+  mi_motor_set_zero(&cybergears_1[RB_MOTOR_ID]);
+  osDelay(1);
+  mi_motor_set_zero(&cybergears_1[RF_MOTOR_ID]);
+  osDelay(1);
 
   cyber_gear_enable(&cybergears_1[LF_MOTOR_ID]);
+  osDelay(1);
   cyber_gear_enable(&cybergears_1[LB_MOTOR_ID]);
+  osDelay(1);
   cyber_gear_enable(&cybergears_1[RB_MOTOR_ID]);
+  osDelay(1);
   cyber_gear_enable(&cybergears_1[RF_MOTOR_ID]);
+  osDelay(1);
 
 }
 
@@ -629,14 +645,18 @@ static void chassis_motor_cmd_send() {
                 0,
                 0);
 
+
 //  cyber_gear_control_mode(&cybergears_1[LF_MOTOR_ID], chassis.leg_L.cyber_gear_data[0].torque, 0, 0, 0, 0);
 //  cyber_gear_control_mode(&cybergears_1[LB_MOTOR_ID], chassis.leg_L.cyber_gear_data[1].torque, 0, 0, 0, 0);
 //  cyber_gear_control_mode(&cybergears_1[RF_MOTOR_ID], chassis.leg_R.cyber_gear_data[0].torque, 0, 0, 0, 0);
 //  cyber_gear_control_mode(&cybergears_1[RB_MOTOR_ID], chassis.leg_R.cyber_gear_data[1].torque, 0, 0, 0, 0);
 
   cyber_gear_control_mode(&cybergears_1[LF_MOTOR_ID], 0, 0, 0, 0, 0);
+  osDelay(1);
   cyber_gear_control_mode(&cybergears_1[LB_MOTOR_ID], 0, 0, 0, 0, 0);
+  osDelay(1);
   cyber_gear_control_mode(&cybergears_1[RF_MOTOR_ID], 0, 0, 0, 0, 0);
+  osDelay(1);
   cyber_gear_control_mode(&cybergears_1[RB_MOTOR_ID], 0, 0, 0, 0, 0);
 
 }
