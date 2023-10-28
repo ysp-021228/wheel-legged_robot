@@ -126,11 +126,20 @@ static void chassis_motor_info_update() {
   chassis.leg_L.wheel.mileage = chassis.leg_L.wheel.mileage + CHASSIS_PERIOD * 0.001 * (chassis.leg_L.wheel.speed);
   chassis.leg_R.wheel.mileage = chassis.leg_R.wheel.mileage + CHASSIS_PERIOD * 0.001 * (chassis.leg_R.wheel.speed);
   //todo 关节电机相关状态更新,正运动学需要的量phi1 phi4
-  chassis.leg_L.cyber_gear_data[0].angle = cybergears_1[LF_MOTOR_ID].angle;
-  chassis.leg_L.cyber_gear_data[1].angle = cybergears_1[LB_MOTOR_ID].angle;
-  chassis.leg_R.cyber_gear_data[0].angle = cybergears_1[RB_MOTOR_ID].angle;
-  chassis.leg_R.cyber_gear_data[1].angle = cybergears_1[RF_MOTOR_ID].angle;
-}
+  chassis.leg_L.cyber_gear_data[0].angle = cybergears_1[LB_MOTOR_ID].angle;
+  chassis.leg_L.cyber_gear_data[1].angle = cybergears_1[LF_MOTOR_ID].angle;
+  chassis.leg_R.cyber_gear_data[0].angle = cybergears_1[RF_MOTOR_ID].angle;
+  chassis.leg_R.cyber_gear_data[1].angle = cybergears_1[RB_MOTOR_ID].angle;
+
+  chassis.leg_L.vmc.forward_kinematics.fk_phi.phi1 =
+      PI - (chassis.leg_L.cyber_gear_data[0].angle - MECHANICAL_LEG_LIMIT_ANGLE);
+  chassis.leg_L.vmc.forward_kinematics.fk_phi.phi4 =
+      -chassis.leg_L.cyber_gear_data[1].angle - MECHANICAL_LEG_LIMIT_ANGLE;
+  chassis.leg_R.vmc.forward_kinematics.fk_phi.phi1 =
+      PI - (chassis.leg_R.cyber_gear_data[0].angle - MECHANICAL_LEG_LIMIT_ANGLE);
+  chassis.leg_R.vmc.forward_kinematics.fk_phi.phi4 =
+      -chassis.leg_R.cyber_gear_data[1].angle - MECHANICAL_LEG_LIMIT_ANGLE;
+}//
 
 static void leg_state_variable_reference_get(struct Leg *leg) {
   if (leg == NULL) {
@@ -212,8 +221,8 @@ static void joint_motors_torque_set_point_cal(struct Leg *leg) {
   VMC_positive_dynamics(&leg->vmc, leg->vmc.Fxy_set_point.E.Tp_set_point, leg->vmc.Fxy_set_point.E.Fy_set_point);
 
   leg->cyber_gear_data[2].torque = leg->vmc.Fxy_set_point.E.Tp_set_point;
-  leg->cyber_gear_data[0].torque = leg->vmc.T1_T4_set_point.E.T1_set_point;
-  leg->cyber_gear_data[1].torque = leg->vmc.T1_T4_set_point.E.T4_set_point;
+  leg->cyber_gear_data[0].torque = leg->vmc.T1_T4_set_point.E.T1_set_point;//F
+  leg->cyber_gear_data[1].torque = leg->vmc.T1_T4_set_point.E.T4_set_point;//B
 }
 
 static void VMC_positive_dynamics(struct VMC *vmc, fp32 Tp, fp32 Fy) {
@@ -432,8 +441,8 @@ static void chassis_enabled_leg_handle() {
   vmc_inverse_solution(&chassis.leg_L);
   vmc_inverse_solution(&chassis.leg_R);
 
-  leg_fn_cal(&chassis.leg_L,chassis.imu_reference.robot_az);
-  leg_fn_cal(&chassis.leg_R,chassis.imu_reference.robot_az);
+  leg_fn_cal(&chassis.leg_L, chassis.imu_reference.robot_az);
+  leg_fn_cal(&chassis.leg_R, chassis.imu_reference.robot_az);
 
 }
 
@@ -634,7 +643,7 @@ static void leg_fn_cal(struct Leg *leg, fp32 az) {
           + leg->vmc.forward_kinematics.fk_L0.L0 * leg->state_variable_reference.theta_dot
               * leg->state_variable_reference.theta_dot * cos(leg->state_variable_reference.theta);
 
-  leg->Fn=P+WHEEL_WEIGHT*9.8+WHEEL_WEIGHT*leg->wheel.imu_reference.az;
+  leg->Fn = P + WHEEL_WEIGHT * 9.8 + WHEEL_WEIGHT * leg->wheel.imu_reference.az;
 }
 
 static void chassis_motor_cmd_send() {

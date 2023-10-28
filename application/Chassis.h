@@ -42,7 +42,7 @@
 #define BALANCE_REDUCTION_RATIO (1.0f/19) //平衡兵电机减速比
 #define BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED  ((2 * PI  * BALANCE_WHEEL_R*BALANCE_REDUCTION_RATIO) / 60) //平衡兵电机rpm转为轮子的转速m/s
 
-#define L1 0.11
+#define L1 0.11f
 #define L2 0.18f
 #define L3 0.18f
 #define L4 0.11f
@@ -52,7 +52,7 @@
 #define BODY_WEIGHT 2.839f
 #define WHEEL_WEIGHT 0.183f
 
-#define MECHANICAL_LEG_LIMIT_ANGLE 0.10472
+#define MECHANICAL_LEG_LIMIT_ANGLE 0.10472f
 
 #define GRAVITY_A 9.8f
 //枚举 结构体
