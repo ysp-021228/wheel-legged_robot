@@ -197,6 +197,15 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
 
     switch (rx_header.StdId) {
 
+      case CAN_CHASSIS_3508_MOTOR_1: {
+        get_motor_measure(&motor_3508_measure[0], rx_data);
+      }
+        break;
+      case CAN_CHASSIS_3508_MOTOR_2: {
+        get_motor_measure(&motor_3508_measure[1], rx_data);
+      }
+        break;
+
       case 0x20A: {
         tof_msg.distance.data[0] = rx_data[0];
         tof_msg.distance.data[1] = rx_data[1];

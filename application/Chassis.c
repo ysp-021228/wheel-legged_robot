@@ -127,10 +127,10 @@ static void chassis_motor_info_update() {
   chassis.leg_L.wheel.mileage = chassis.leg_L.wheel.mileage + CHASSIS_PERIOD * 0.001 * (chassis.leg_L.wheel.speed);
   chassis.leg_R.wheel.mileage = chassis.leg_R.wheel.mileage + CHASSIS_PERIOD * 0.001 * (chassis.leg_R.wheel.speed);
 
-  chassis.leg_L.cyber_gear_data[0].angle = cybergears_1[LB_MOTOR_ID].angle;
-  chassis.leg_L.cyber_gear_data[1].angle = cybergears_1[LF_MOTOR_ID].angle;
-  chassis.leg_R.cyber_gear_data[0].angle = cybergears_1[RF_MOTOR_ID].angle;
-  chassis.leg_R.cyber_gear_data[1].angle = cybergears_1[RB_MOTOR_ID].angle;
+  chassis.leg_L.cyber_gear_data[0].angle = cybergears_2[LB_MOTOR_ID].angle;
+  chassis.leg_L.cyber_gear_data[1].angle = cybergears_2[LF_MOTOR_ID].angle;
+  chassis.leg_R.cyber_gear_data[0].angle = cybergears_2[RF_MOTOR_ID].angle;
+  chassis.leg_R.cyber_gear_data[1].angle = cybergears_2[RB_MOTOR_ID].angle;
 
   chassis.leg_L.vmc.forward_kinematics.fk_phi.phi1 =
       PI - (chassis.leg_L.cyber_gear_data[0].angle - MECHANICAL_LEG_LIMIT_ANGLE);
@@ -382,36 +382,36 @@ static void chassis_init(struct Chassis *chassis) {
   chassis->leg_L.leg_index = L;
   chassis->leg_R.leg_index = R;
 
-  cyber_gear_init(hcan1, LF_MOTOR_ID, &cybergears_1[LF_MOTOR_ID]);
-  cyber_gear_init(hcan1, LB_MOTOR_ID, &cybergears_1[LB_MOTOR_ID]);
-  cyber_gear_init(hcan1, RB_MOTOR_ID, &cybergears_1[RB_MOTOR_ID]);
-  cyber_gear_init(hcan1, RF_MOTOR_ID, &cybergears_1[RF_MOTOR_ID]);
+  cyber_gear_init(hcan2, LF_MOTOR_ID, &cybergears_2[LF_MOTOR_ID]);
+  cyber_gear_init(hcan2, LB_MOTOR_ID, &cybergears_2[LB_MOTOR_ID]);
+  cyber_gear_init(hcan2, RB_MOTOR_ID, &cybergears_2[RB_MOTOR_ID]);
+  cyber_gear_init(hcan2, RF_MOTOR_ID, &cybergears_2[RF_MOTOR_ID]);
 
-  mi_motor_disable(&cybergears_1[LF_MOTOR_ID]);
+  mi_motor_disable(&cybergears_2[LF_MOTOR_ID]);
   osDelay(1);
-  mi_motor_disable(&cybergears_1[LB_MOTOR_ID]);
+  mi_motor_disable(&cybergears_2[LB_MOTOR_ID]);
   osDelay(1);
-  mi_motor_disable(&cybergears_1[RB_MOTOR_ID]);
+  mi_motor_disable(&cybergears_2[RB_MOTOR_ID]);
   osDelay(1);
-  mi_motor_disable(&cybergears_1[RF_MOTOR_ID]);
+  mi_motor_disable(&cybergears_2[RF_MOTOR_ID]);
   osDelay(100);
 
-  mi_motor_set_zero(&cybergears_1[LF_MOTOR_ID]);
+  mi_motor_set_zero(&cybergears_2[LF_MOTOR_ID]);
   osDelay(1);
-  mi_motor_set_zero(&cybergears_1[LB_MOTOR_ID]);
+  mi_motor_set_zero(&cybergears_2[LB_MOTOR_ID]);
   osDelay(1);
-  mi_motor_set_zero(&cybergears_1[RB_MOTOR_ID]);
+  mi_motor_set_zero(&cybergears_2[RB_MOTOR_ID]);
   osDelay(1);
-  mi_motor_set_zero(&cybergears_1[RF_MOTOR_ID]);
+  mi_motor_set_zero(&cybergears_2[RF_MOTOR_ID]);
   osDelay(1);
 
-  cyber_gear_enable(&cybergears_1[LF_MOTOR_ID]);
+  cyber_gear_enable(&cybergears_2[LF_MOTOR_ID]);
   osDelay(1);
-  cyber_gear_enable(&cybergears_1[LB_MOTOR_ID]);
+  cyber_gear_enable(&cybergears_2[LB_MOTOR_ID]);
   osDelay(1);
-  cyber_gear_enable(&cybergears_1[RB_MOTOR_ID]);
+  cyber_gear_enable(&cybergears_2[RB_MOTOR_ID]);
   osDelay(1);
-  cyber_gear_enable(&cybergears_1[RF_MOTOR_ID]);
+  cyber_gear_enable(&cybergears_2[RF_MOTOR_ID]);
   osDelay(1);
 
 }
@@ -617,10 +617,6 @@ static void chassis_forward_kinematics() {
   chassis.leg_R.vmc.forward_kinematics.fk_phi.phi0 = atan2(y, x);
 }
 
-static void chassis_inverse_kinematics() {
-
-}
-
 static void chassis_K_matrix_fitting(fp32 L0, fp32 K[6], const fp32 KL[6][4]) {
   for (int i = 0; i < 6; i++) {
     K[i] = KL[i][0] * pow(L0, 3) + KL[i][1] * pow(L0, 2) + KL[i][2] * pow(L0, 1) + KL[i][3] * pow(L0, 0);
@@ -665,19 +661,13 @@ static void chassis_motor_cmd_send() {
                 0,
                 0);
 
-
-//  cyber_gear_control_mode(&cybergears_1[LF_MOTOR_ID], chassis.leg_L.cyber_gear_data[0].torque, 0, 0, 0, 0);
-//  cyber_gear_control_mode(&cybergears_1[LB_MOTOR_ID], chassis.leg_L.cyber_gear_data[1].torque, 0, 0, 0, 0);
-//  cyber_gear_control_mode(&cybergears_1[RF_MOTOR_ID], chassis.leg_R.cyber_gear_data[0].torque, 0, 0, 0, 0);
-//  cyber_gear_control_mode(&cybergears_1[RB_MOTOR_ID], chassis.leg_R.cyber_gear_data[1].torque, 0, 0, 0, 0);
-
-  cyber_gear_control_mode(&cybergears_1[LF_MOTOR_ID], 0, 0, 0, 0, 0);
+  cyber_gear_control_mode(&cybergears_2[LF_MOTOR_ID], 0, 0, 0, 0, 0);
   osDelay(1);
-  cyber_gear_control_mode(&cybergears_1[LB_MOTOR_ID], 0, 0, 0, 0, 0);
+  cyber_gear_control_mode(&cybergears_2[LB_MOTOR_ID], 0, 0, 0, 0, 0);
   osDelay(1);
-  cyber_gear_control_mode(&cybergears_1[RF_MOTOR_ID], 0, 0, 0, 0, 0);
+  cyber_gear_control_mode(&cybergears_2[RF_MOTOR_ID], 0, 0, 0, 0, 0);
   osDelay(1);
-  cyber_gear_control_mode(&cybergears_1[RB_MOTOR_ID], 0, 0, 0, 0, 0);
+  cyber_gear_control_mode(&cybergears_2[RB_MOTOR_ID], 0, 0, 0, 0, 0);
 
 }
 
