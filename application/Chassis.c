@@ -126,7 +126,7 @@ static void chassis_motor_info_update() {
   chassis.leg_R.wheel.speed = -motor_3508_measure[1].speed_rpm * BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED;
   chassis.leg_L.wheel.mileage = chassis.leg_L.wheel.mileage + CHASSIS_PERIOD * 0.001 * (chassis.leg_L.wheel.speed);
   chassis.leg_R.wheel.mileage = chassis.leg_R.wheel.mileage + CHASSIS_PERIOD * 0.001 * (chassis.leg_R.wheel.speed);
-  //todo 关节电机相关状态更新,正运动学需要的量phi1 phi4
+
   chassis.leg_L.cyber_gear_data[0].angle = cybergears_1[LB_MOTOR_ID].angle;
   chassis.leg_L.cyber_gear_data[1].angle = cybergears_1[LF_MOTOR_ID].angle;
   chassis.leg_R.cyber_gear_data[0].angle = cybergears_1[RF_MOTOR_ID].angle;
@@ -425,7 +425,7 @@ static void chassis_enabled_leg_handle() {
 
   leg_state_variable_reference_get(&chassis.leg_L);
   leg_state_variable_reference_get(&chassis.leg_R);
-  //todo 腿部设置速度需要再添加一个旋转速度
+
   leg_state_variable_set_point_set(&chassis.leg_L,
                                    -chassis.chassis_move_speed_set_point.vx
                                        + chassis.chassis_move_speed_set_point.vw * CHASSIS_ROTATION_RADIUS);

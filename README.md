@@ -2,7 +2,7 @@
 ## 整车图片
 ![GitHub Logo](picture/f1f453ee73a97a37a0b2060098c7de4.jpg)
 ## 正方向定义
-![GitHub Logo](picture/a1d76f37413b51fb99320a688ec3097.jpg)
+![GitHub Logo](picture/ff65c25e0d2f40eff2681336d576bb9.jpg)
 
 ## 底盘结构体从属关系
 ![GitHub Logo](picture/轮腿底盘结构.png)
