@@ -115,14 +115,14 @@ static void chassis_info_update() {
   chassis_imu_info_update();
   chassis_motor_info_update();
   chassis.mileage =
-      (chassis.leg_L.wheel.mileage + chassis.leg_R.wheel.mileage) / 2;//The state variable x should use this value
+      (-chassis.leg_L.wheel.mileage + chassis.leg_R.wheel.mileage) / 2;//The state variable x should use this value
   if (chassis.chassis_move_speed_set_point.vx != 0) {
     chassis.mileage = 0;
   }
 }
 
 static void chassis_motor_info_update() {
-  chassis.leg_L.wheel.speed = motor_3508_measure[0].speed_rpm * BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED;
+  chassis.leg_L.wheel.speed = -motor_3508_measure[0].speed_rpm * BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED;
   chassis.leg_R.wheel.speed = -motor_3508_measure[1].speed_rpm * BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED;
   chassis.leg_L.wheel.mileage = chassis.leg_L.wheel.mileage + CHASSIS_PERIOD * 0.001 * (chassis.leg_L.wheel.speed);
   chassis.leg_R.wheel.mileage = chassis.leg_R.wheel.mileage + CHASSIS_PERIOD * 0.001 * (chassis.leg_R.wheel.speed);
@@ -154,10 +154,15 @@ static void leg_state_variable_reference_get(struct Leg *leg) {
   leg->state_variable_reference.theta_ddot =
       (leg->state_variable_reference.theta_dot - leg->state_variable_reference.theta_dot_last)
           / (CHASSIS_PERIOD * 0.001f);
-  leg->state_variable_reference.x = 0;
+  leg->state_variable_reference.x = leg->wheel.mileage;
   leg->state_variable_reference.x_dot = leg->wheel.speed;
-  leg->state_variable_reference.phi = chassis.imu_reference.pitch_angle;
-  leg->state_variable_reference.phi_dot = chassis.imu_reference.pitch_gyro;
+  if (leg->leg_index == L) {
+    leg->state_variable_reference.phi = -chassis.imu_reference.pitch_angle;
+    leg->state_variable_reference.phi_dot = -chassis.imu_reference.pitch_gyro;
+  } else if (leg->leg_index == R) {
+    leg->state_variable_reference.phi = chassis.imu_reference.pitch_angle;
+    leg->state_variable_reference.phi_dot = chassis.imu_reference.pitch_gyro;
+  }
   //todo 对位移处理，提高刹车性能
 }
 
@@ -374,6 +379,9 @@ static void chassis_init(struct Chassis *chassis) {
   chassis->leg_L.wheel.motor_3508.motor_measure = motor_3508_measure;
   chassis->leg_R.wheel.motor_3508.motor_measure = motor_3508_measure + 1;
 
+  chassis->leg_L.leg_index = L;
+  chassis->leg_R.leg_index = R;
+
   cyber_gear_init(hcan1, LF_MOTOR_ID, &cybergears_1[LF_MOTOR_ID]);
   cyber_gear_init(hcan1, LB_MOTOR_ID, &cybergears_1[LB_MOTOR_ID]);
   cyber_gear_init(hcan1, RB_MOTOR_ID, &cybergears_1[RB_MOTOR_ID]);
@@ -413,15 +421,17 @@ static void chassis_relax_handle() {
   chassis.chassis_move_speed_set_point.vw = 0;
 
   chassis.mileage = 0;
+  chassis.leg_L.wheel.mileage = 0;
+  chassis.leg_R.wheel.mileage = 0;
 }
 
 static void chassis_enabled_leg_handle() {
   chassis_forward_kinematics();//verified to be correct
 
-  chassis_K_matrix_fitting(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0*0.5, wheel_K, wheel_fitting_factor);
-  chassis_K_matrix_fitting(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0*0.5, joint_K, joint_fitting_factor);
-  chassis_K_matrix_fitting(chassis.leg_R.vmc.forward_kinematics.fk_L0.L0*0.5, wheel_K, wheel_fitting_factor);
-  chassis_K_matrix_fitting(chassis.leg_R.vmc.forward_kinematics.fk_L0.L0*0.5, joint_K, joint_fitting_factor);
+  chassis_K_matrix_fitting(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0 * 0.5, wheel_K, wheel_fitting_factor);
+  chassis_K_matrix_fitting(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0 * 0.5, joint_K, joint_fitting_factor);
+  chassis_K_matrix_fitting(chassis.leg_R.vmc.forward_kinematics.fk_L0.L0 * 0.5, wheel_K, wheel_fitting_factor);
+  chassis_K_matrix_fitting(chassis.leg_R.vmc.forward_kinematics.fk_L0.L0 * 0.5, joint_K, joint_fitting_factor);
 
   leg_state_variable_reference_get(&chassis.leg_L);
   leg_state_variable_reference_get(&chassis.leg_R);

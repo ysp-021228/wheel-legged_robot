@@ -64,9 +64,9 @@ enum ChassisMode {
   CHASSIS_MODE_NUM,
 };
 
-enum ChassisMotorIndex {
-  RF = 1,
-  LF = 0,
+enum LegIndex {
+  R = 1,
+  L = 0,
 };
 
 struct IMUSetPoint {
@@ -266,6 +266,7 @@ struct Wheel {
 };
 
 struct Leg {
+  enum LegIndex leg_index;
   struct StateVariable state_variable_reference;
   struct StateVariable state_variable_set_point;
   struct StateVariable state_variable_error;
