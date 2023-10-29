@@ -34,7 +34,7 @@ static void leg_state_variable_error_get(struct Leg *leg);
 static void chassis_motors_torque_set_point_cal(struct Leg *leg);
 static void joint_motors_torque_set_point_cal(struct Leg *leg);
 static void wheel_motors_torque_set_point_cal(struct Leg *leg);
-fp32 cal_leg_theta(fp32 phi0);
+fp32 cal_leg_theta(fp32 phi0, fp32 phi);
 static void chassis_forward_kinematics();
 static void chassis_motor_cmd_send();
 static void chassis_K_matrix_fitting(fp32 L0, fp32 K[6], const fp32 KL[6][4]);
@@ -147,7 +147,13 @@ static void leg_state_variable_reference_get(struct Leg *leg) {
     return;
   }
   leg->state_variable_reference.theta_last = leg->state_variable_reference.theta;
-  leg->state_variable_reference.theta = cal_leg_theta(leg->vmc.forward_kinematics.fk_phi.phi0);
+  if (leg->leg_index == L) {
+    leg->state_variable_reference.theta =
+        cal_leg_theta(leg->vmc.forward_kinematics.fk_phi.phi0, chassis.imu_reference.pitch_angle);
+  } else if (leg->leg_index == R) {
+    leg->state_variable_reference.theta =
+        cal_leg_theta(leg->vmc.forward_kinematics.fk_phi.phi0, -chassis.imu_reference.pitch_angle);
+  }
   leg->state_variable_reference.theta_dot_last = leg->state_variable_reference.theta_dot;
   leg->state_variable_reference.theta_dot =
       (leg->state_variable_reference.theta - leg->state_variable_reference.theta_last) / (CHASSIS_PERIOD * 0.001f);
@@ -271,20 +277,20 @@ static void Matrix_multiply(int rows1, int cols1, double matrix1[rows1][cols1],
   }
 }
 
-fp32 cal_leg_theta(fp32 phi0) {
+fp32 cal_leg_theta(fp32 phi0, fp32 phi) {
   fp32 theta = 0, alpha = 0;//alpha is the Angle at which the virtual joint motor is turned
 
   alpha = PI / 2 - phi0;
 
-  if (alpha * chassis.imu_reference.pitch_angle < 0) {
-    theta = ABS(alpha) + ABS(chassis.imu_reference.pitch_angle);
-    if ((alpha > 0) && (chassis.imu_reference.pitch_angle < 0)) {
+  if (alpha * phi < 0) {
+    theta = ABS(alpha) - ABS(phi);
+    if ((alpha > 0) && (phi < 0)) {
     } else {
       theta *= -1;
     }
   } else {
-    theta = ABS(alpha) - ABS(chassis.imu_reference.pitch_angle);
-    if ((alpha < 0) && (chassis.imu_reference.pitch_angle < 0)) {
+    theta = ABS(alpha) + ABS(phi);
+    if ((alpha < 0) && (phi < 0)) {
       theta *= -1;
     } else {
     }
@@ -371,7 +377,7 @@ static void chassis_ctrl_info_get() {
 }
 
 static void chassis_init(struct Chassis *chassis) {
-
+//todo 加入腿长pid初始化
   if (chassis == NULL)
     return;
 
@@ -434,7 +440,7 @@ static void chassis_enabled_leg_handle() {
   chassis_K_matrix_fitting(chassis.leg_R.vmc.forward_kinematics.fk_L0.L0 * 0.5, joint_K, joint_fitting_factor);
 
   leg_state_variable_reference_get(&chassis.leg_L);
-  leg_state_variable_reference_get(&chassis.leg_R);
+  leg_state_variable_reference_get(&chassis.leg_R);//verified to be correct
 
   leg_state_variable_set_point_set(&chassis.leg_L,
                                    -chassis.chassis_move_speed_set_point.vx
