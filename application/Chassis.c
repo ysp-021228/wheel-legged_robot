@@ -364,6 +364,9 @@ static void chassis_ctrl_info_get() {
   chassis.chassis_move_speed_set_point.vx = (float) (get_rc_ctrl().rc.ch[CHASSIS_X_CHANNEL]) * RC_TO_VX;
   chassis.chassis_move_speed_set_point.vw = (float) (get_rc_ctrl().rc.ch[CHASSIS_Z_CHANNEL]) * RC_TO_VW;
 
+  chassis.chassis_move_speed_set_point.vx=0;
+  chassis.chassis_move_speed_set_point.vw=0;
+
   if (switch_is_down(get_rc_ctrl().rc.s[RC_s_L]) && switch_is_down(get_rc_ctrl().rc.s[RC_s_R])) {
     chassis.last_mode = chassis.mode;
     chassis.mode = CHASSIS_DISABLE;
@@ -447,10 +450,10 @@ static void chassis_enabled_leg_handle() {
                                        + chassis.chassis_move_speed_set_point.vw * CHASSIS_ROTATION_RADIUS);
   leg_state_variable_set_point_set(&chassis.leg_R,
                                    chassis.chassis_move_speed_set_point.vx
-                                       - chassis.chassis_move_speed_set_point.vw * CHASSIS_ROTATION_RADIUS);
+                                       - chassis.chassis_move_speed_set_point.vw * CHASSIS_ROTATION_RADIUS);//verified to be correct
 
   leg_state_variable_error_get(&chassis.leg_L);
-  leg_state_variable_error_get(&chassis.leg_R);
+  leg_state_variable_error_get(&chassis.leg_R);//verified to be correct
 
   chassis_motors_torque_set_point_cal(&chassis.leg_L);
   chassis_motors_torque_set_point_cal(&chassis.leg_R);
