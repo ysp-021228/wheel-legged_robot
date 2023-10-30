@@ -216,7 +216,7 @@ struct VMC {
   } Fxy_fdb;
 
   union {
-    fp32 array[2][1];
+    fp32 array[2][2];
     struct {
       fp32 Tp_set_point;
       fp32 Fy_set_point;
@@ -224,7 +224,7 @@ struct VMC {
   } Fxy_set_point;
 
   union {
-    fp32 array[2][1];
+    fp32 array[2][2];
     struct {
       fp32 x1_1;
       fp32 x1_2;
@@ -234,7 +234,7 @@ struct VMC {
   } J_w_to_v;
 
   union {
-    fp32 array[2][1];
+    fp32 array[2][2];
     struct {
       fp32 x1_1;
       fp32 x1_2;
@@ -244,7 +244,7 @@ struct VMC {
   } J_F_to_T;
 
   union {
-    fp32 array[2][1];
+    fp32 array[2][2];
     struct {
       fp32 x1_1;
       fp32 x1_2;
