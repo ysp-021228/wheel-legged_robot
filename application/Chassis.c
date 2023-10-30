@@ -51,20 +51,20 @@ fp32 unable_leg_K[6] = {0, 0, 0, 0, 0, 0};
 fp32 wheel_K[6] = {0, 0, 0, 0, 0, 0};
 fp32 joint_K[6] = {0, 0, 0, 0, 0, 0};
 fp32 wheel_fitting_factor[6][4] = {
-    {0, 0, 0, 0},
-    {0, 0, 0, 0},
-    {0, 0, 0, 0},
-    {0, 0, 0, 0},
-    {0, 0, 0, 0},
-    {0, 0, 0, 0},
+    {-966.617584157009, 123.970021022983, -22.1752515904542, -0.197757346434176},
+    {-10.4041512465795, -4.33035244287742, -0.273507992176593, -0.0328713090642078},
+    {404.710802547718, -60.6015426138930, 2.84154935396338, -0.0705435537004712},
+    {765.217447039503, -114.125303879585, 5.36727239830969, -0.133771760716758},
+    {454.263167215635, -57.5753812211042, 1.08554266112256, 0.597158320784961},
+    {-82.4664796379596, 13.7117745831243, -0.931899231071093, 0.0867394317423466},
 };
 fp32 joint_fitting_factor[6][4] = {
-    {0, 0, 0, 0},
-    {0, 0, 0, 0},
-    {0, 0, 0, 0},
-    {0, 0, 0, 0},
-    {0, 0, 0, 0},
-    {0, 0, 0, 0},
+    {3522.14060060298, -838.599755562839, 86.8149751961125, -0.225298817319770},
+    {352.121886099867, -54.8520412563735, 4.32510556286388, 0.0177993025342412},
+    {811.560064494179, -114.906904889499, 5.16767862489437, 0.130670683386591},
+    {1354.25236102667, -190.758037165095, 8.47640650962283, 0.240521769398122},
+    {-9583.48042756980, 1397.04873796146, -61.4847153835330, 1.21814585345263},
+    {-1006.51549857222, 141.616410880356, -5.81875735565575, 0.0539920988885911},
 };
 
 void chassis_task(void const *pvParameters) {
@@ -213,6 +213,7 @@ static void wheel_motors_torque_set_point_cal(struct Leg *leg) {
   leg->wheel.torque += leg->state_variable_error.x_dot * wheel_K[3];
   leg->wheel.torque += leg->state_variable_error.phi * wheel_K[4];
   leg->wheel.torque += leg->state_variable_error.phi_dot * wheel_K[5];
+
 }
 
 static void joint_motors_torque_set_point_cal(struct Leg *leg) {
@@ -437,19 +438,22 @@ static void chassis_relax_handle() {
   chassis.leg_L.wheel.mileage = 0;
   chassis.leg_R.wheel.mileage = 0;
 
-  chassis.leg_R.cyber_gear_data[0].torque=0;
-  chassis.leg_R.cyber_gear_data[1].torque=0;
-  chassis.leg_L.cyber_gear_data[0].torque=0;
-  chassis.leg_L.cyber_gear_data[1].torque=0;
+  chassis.leg_R.cyber_gear_data[0].torque = 0;
+  chassis.leg_R.cyber_gear_data[1].torque = 0;
+  chassis.leg_L.cyber_gear_data[0].torque = 0;
+  chassis.leg_L.cyber_gear_data[1].torque = 0;
+
+  chassis.leg_L.wheel.motor_3508.give_current=0;
+  chassis.leg_R.wheel.motor_3508.give_current=0;
 }
 
 static void chassis_enabled_leg_handle() {
   chassis_forward_kinematics();//verified to be correct
 
-  chassis_K_matrix_fitting(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0 * 0.5, wheel_K, wheel_fitting_factor);
-  chassis_K_matrix_fitting(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0 * 0.5, joint_K, joint_fitting_factor);
-  chassis_K_matrix_fitting(chassis.leg_R.vmc.forward_kinematics.fk_L0.L0 * 0.5, wheel_K, wheel_fitting_factor);
-  chassis_K_matrix_fitting(chassis.leg_R.vmc.forward_kinematics.fk_L0.L0 * 0.5, joint_K, joint_fitting_factor);
+  chassis_K_matrix_fitting(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0 * 0.2, wheel_K, wheel_fitting_factor);
+  chassis_K_matrix_fitting(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0 * 0.2, joint_K, joint_fitting_factor);
+  chassis_K_matrix_fitting(chassis.leg_R.vmc.forward_kinematics.fk_L0.L0 * 0.2, wheel_K, wheel_fitting_factor);
+  chassis_K_matrix_fitting(chassis.leg_R.vmc.forward_kinematics.fk_L0.L0 * 0.2, joint_K, joint_fitting_factor);
 
   leg_state_variable_reference_get(&chassis.leg_L);
   leg_state_variable_reference_get(&chassis.leg_R);//verified to be correct
@@ -467,6 +471,9 @@ static void chassis_enabled_leg_handle() {
 
   chassis_motors_torque_set_point_cal(&chassis.leg_L);
   chassis_motors_torque_set_point_cal(&chassis.leg_R);
+
+  chassis.leg_L.wheel.motor_3508.give_current=-chassis.leg_L.wheel.torque*MOTOR_3508_TORQUE_TO_DATA;
+  chassis.leg_R.wheel.motor_3508.give_current=-chassis.leg_R.wheel.torque*MOTOR_3508_TORQUE_TO_DATA;
 
   vmc_inverse_solution(&chassis.leg_L);
   vmc_inverse_solution(&chassis.leg_R);
@@ -673,28 +680,37 @@ static void leg_fn_cal(struct Leg *leg, fp32 az) {
 }
 
 static void chassis_motor_cmd_send() {
+
+
   CAN_cmd_motor(CAN_1,
-                CAN_MOTOR_0x1FF_ID,
+                CAN_MOTOR_0x200_ID,
                 chassis.leg_L.wheel.motor_3508.give_current,
                 chassis.leg_R.wheel.motor_3508.give_current,
                 0,
                 0);
 
-//  cyber_gear_control_mode(&cybergears_2[LF_MOTOR_ID], 0, 0, 0, 0, 0);
-//  osDelay(1);
-//  cyber_gear_control_mode(&cybergears_2[LB_MOTOR_ID], 0, 0, 0, 0, 0);
-//  osDelay(1);
-//  cyber_gear_control_mode(&cybergears_2[RB_MOTOR_ID], 0, 0, 0, 0, 0);
-//  osDelay(1);
-//  cyber_gear_control_mode(&cybergears_2[RF_MOTOR_ID], 0, 0, 0, 0, 0);
+//  CAN_cmd_motor(CAN_1,
+//                CAN_MOTOR_0x200_ID,
+//                0,
+//                0,
+//                0,
+//                0);
 
-  cyber_gear_control_mode(&cybergears_2[LF_MOTOR_ID], chassis.leg_L.cyber_gear_data[0].torque, 0, 0, 0, 0);
+  cyber_gear_control_mode(&cybergears_2[LF_MOTOR_ID], 0, 0, 0, 0, 0);
   osDelay(1);
-  cyber_gear_control_mode(&cybergears_2[LB_MOTOR_ID], chassis.leg_L.cyber_gear_data[1].torque, 0, 0, 0, 0);
+  cyber_gear_control_mode(&cybergears_2[LB_MOTOR_ID], 0, 0, 0, 0, 0);
   osDelay(1);
-  cyber_gear_control_mode(&cybergears_2[RB_MOTOR_ID], -chassis.leg_R.cyber_gear_data[1].torque, 0, 0, 0, 0);
+  cyber_gear_control_mode(&cybergears_2[RB_MOTOR_ID], 0, 0, 0, 0, 0);
   osDelay(1);
-  cyber_gear_control_mode(&cybergears_2[RF_MOTOR_ID], -chassis.leg_R.cyber_gear_data[0].torque, 0, 0, 0, 0);
+  cyber_gear_control_mode(&cybergears_2[RF_MOTOR_ID], 0, 0, 0, 0, 0);
+
+//  cyber_gear_control_mode(&cybergears_2[LF_MOTOR_ID], chassis.leg_L.cyber_gear_data[0].torque, 0, 0, 0, 0);
+//  osDelay(1);
+//  cyber_gear_control_mode(&cybergears_2[LB_MOTOR_ID], chassis.leg_L.cyber_gear_data[1].torque, 0, 0, 0, 0);
+//  osDelay(1);
+//  cyber_gear_control_mode(&cybergears_2[RB_MOTOR_ID], -chassis.leg_R.cyber_gear_data[1].torque, 0, 0, 0, 0);
+//  osDelay(1);
+//  cyber_gear_control_mode(&cybergears_2[RF_MOTOR_ID], -chassis.leg_R.cyber_gear_data[0].torque, 0, 0, 0, 0);
 
 }
 

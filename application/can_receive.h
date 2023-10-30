@@ -14,6 +14,7 @@
 #define MOTOR_ECD_TO_ANGLE 0.0439453125     //        360  /8192
 #define MOTOR_RAD_TO_ANGLE 57.29577951308238 // 360*2PI
 #define MOTOR_ANGLE_TO_RAD  0.0174532925199433f
+#define MOTOR_3508_TORQUE_TO_DATA (16384/6.0f)
 /******************** struct *******************/
 
 //CAN_ID 该枚举不区分CAN_1还是CAN_2
