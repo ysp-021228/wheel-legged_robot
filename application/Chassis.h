@@ -55,6 +55,17 @@
 #define MECHANICAL_LEG_LIMIT_ANGLE 0.10472f
 
 #define GRAVITY_A 9.8f
+
+/*******************************************************************************
+ *                                PID parameters                               *
+ *******************************************************************************/
+#define CHASSIS_LEG_LO_PID_P 0
+#define CHASSIS_LEG_L0_PID_I 0
+#define CHASSIS_LEG_L0_PID_D 0
+#define CHASSIS_LEG_L0_PID_IOUT_LIMIT 2
+#define CHASSIS_LEG_L0_PID_OUT_LIMIT 10
+
+
 //枚举 结构体
 enum ChassisMode {
   CHASSIS_DISABLE,

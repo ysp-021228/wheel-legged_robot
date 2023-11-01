@@ -6,7 +6,6 @@
 #include "remote.h"
 #include "can_receive.h"
 #include "user_lib.h"
-#include "ramp.h"
 #include "arm_math.h"
 #include "Detection.h"
 #include "Atti.h"
@@ -21,7 +20,6 @@ static void chassis_ctrl_info_get();
 static void chassis_relax_handle();
 static void chassis_enabled_leg_handle();
 static void chassis_unable_leg_handle();
-static void chassis_wheel_cal(fp32 vx, fp32 vw);
 static void chassis_imu_info_update();
 static void chassis_relax_judge();
 void chassis_device_offline_handle();
@@ -47,25 +45,24 @@ static void Vmc_Negative_Kinematics(struct VMC *vmc, fp32 w1, fp32 w4);
 static void Vmc_Negative_Dynamics(struct VMC *vmc, fp32 T1, fp32 T4);
 static void leg_fn_cal(struct Leg *leg, fp32 az);
 
-fp32 unable_leg_K[6] = {0, 0, 0, 0, 0, 0};
 fp32 wheel_K[6] = {0, 0, 0, 0, 0, 0};
 fp32 joint_K[6] = {0, 0, 0, 0, 0, 0};
 fp32 wheel_fitting_factor[6][4] = {
-    {-1839.621069,394.642921,-54.764631,-0.750207},
-    {87.613243,-10.294154,-1.852408,-0.296230},
-    {565.066870,-77.196512,2.827773,-0.372237},
-    {2230.520603,-314.887634,14.750007,-0.781768},
-    {-308.679939,51.372421,-12.791539,2.050992},
-    {-58.588756,9.468221,-2.278913,0.371984}
+    {-1839.621069, 394.642921, -54.764631, -0.750207},
+    {87.613243, -10.294154, -1.852408, -0.296230},
+    {565.066870, -77.196512, 2.827773, -0.372237},
+    {2230.520603, -314.887634, 14.750007, -0.781768},
+    {-308.679939, 51.372421, -12.791539, 2.050992},
+    {-58.588756, 9.468221, -2.278913, 0.371984}
 
 };
 fp32 joint_fitting_factor[6][4] = {
-    {6053.549322,-1080.561792,66.293214,0.823005},
-    {161.009529,-26.904659,-0.734860,0.533104},
-    {1383.726597,-196.441164,7.310001,0.307304},
-    {513.452115,-56.646505,-2.408178,0.752113},
-    {-710.131518,30.565546,14.204575,2.538320},
-    {-132.438471,6.242968,2.539015,0.457919}
+    {6053.549322, -1080.561792, 66.293214, 0.823005},
+    {161.009529, -26.904659, -0.734860, 0.533104},
+    {1383.726597, -196.441164, 7.310001, 0.307304},
+    {513.452115, -56.646505, -2.408178, 0.752113},
+    {-710.131518, 30.565546, 14.204575, 2.538320},
+    {-132.438471, 6.242968, 2.539015, 0.457919}
 };
 
 void chassis_task(void const *pvParameters) {
@@ -101,7 +98,6 @@ void chassis_task(void const *pvParameters) {
 
       case CHASSIS_DISABLE: {
         chassis_relax_handle();
-//        chassis_enabled_leg_handle();
       }
         break;
     }
@@ -161,7 +157,7 @@ static void leg_state_variable_reference_get(struct Leg *leg) {
   leg->state_variable_reference.theta_ddot =
       (leg->state_variable_reference.theta_dot - leg->state_variable_reference.theta_dot_last)
           / (CHASSIS_PERIOD * 0.001f);
-  leg->state_variable_reference.x = leg->wheel.mileage;//todo 检查一下这里是不是没有区分左右腿
+  leg->state_variable_reference.x = leg->wheel.mileage;
   leg->state_variable_reference.x_dot = leg->wheel.speed;
   if (leg->leg_index == L) {
     leg->state_variable_reference.phi = -chassis.imu_reference.pitch_angle;
@@ -402,7 +398,6 @@ static void chassis_ctrl_info_get() {
 }
 
 static void chassis_init(struct Chassis *chassis) {
-//todo 加入腿长pid初始化
   if (chassis == NULL)
     return;
 
@@ -444,6 +439,20 @@ static void chassis_init(struct Chassis *chassis) {
   osDelay(1);
   cyber_gear_enable(&cybergears_2[RF_MOTOR_ID]);
   osDelay(1);
+
+  pid_init(&chassis->leg_L.pid,
+           CHASSIS_LEG_L0_PID_OUT_LIMIT,
+           CHASSIS_LEG_L0_PID_IOUT_LIMIT,
+           CHASSIS_LEG_LO_PID_P,
+           CHASSIS_LEG_L0_PID_I,
+           CHASSIS_LEG_L0_PID_D);
+
+  pid_init(&chassis->leg_R.pid,
+           CHASSIS_LEG_L0_PID_OUT_LIMIT,
+           CHASSIS_LEG_L0_PID_IOUT_LIMIT,
+           CHASSIS_LEG_LO_PID_P,
+           CHASSIS_LEG_L0_PID_I,
+           CHASSIS_LEG_L0_PID_D);
 
 }
 
@@ -501,11 +510,7 @@ static void chassis_enabled_leg_handle() {
 }
 
 static void chassis_unable_leg_handle() {
-  //todo: 不使用腿模式的LQR算法编写
-//  chassis.leg_L.wheel.torque=(  unable_leg_K[0]*(chassis.mileage)+
-//      unable_leg_K[1]*(chassis.chassis_move_speed_reference.vx-chassis.chassis_move_speed_set_point.vx)+
-//      unable_leg_K[2]*()
-//      )
+
 }
 
 void chassis_device_offline_handle() {
