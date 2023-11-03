@@ -15,7 +15,7 @@
                                 osThreadResume(handle);                          \
                                 }                                                \
 
-#define CHASSIS_TASK_INIT_TIME 357
+#define CHASSIS_TASK_INIT_TIME 50
 
 #define CHASSIS_X_CHANNEL 1
 
@@ -28,7 +28,7 @@
 
 /**********************  平衡底盘  *************************/
 
-#define CHASSIS_PERIOD 15 // 单位为ms 底盘任务运行周期
+#define CHASSIS_PERIOD 10 // 单位为ms 底盘任务运行周期
 #define MAX_CHASSIS_VX_SPEED 12.f
 
 #define RC_TO_VX  (MAX_CHASSIS_VX_SPEED/660)
@@ -40,7 +40,7 @@
 #define M3508_MAX_RPM 710
 #define BALANCE_WHEEL_R 0.05 //平衡兵轮子半径m
 #define BALANCE_REDUCTION_RATIO (1.0f/19) //平衡兵电机减速比
-#define BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED  ((2 * PI  * BALANCE_WHEEL_R*BALANCE_REDUCTION_RATIO) / 60) //平衡兵电机rpm转为轮子的转速m/s
+#define BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED  ((2 * PI  * BALANCE_WHEEL_R*BALANCE_REDUCTION_RATIO) / 60.0f) //平衡兵电机rpm转为轮子的转速m/s
 
 #define L1 0.11f
 #define L2 0.18f
@@ -59,12 +59,17 @@
 /*******************************************************************************
  *                                PID parameters                               *
  *******************************************************************************/
-#define CHASSIS_LEG_LO_PID_P 0
-#define CHASSIS_LEG_L0_PID_I 0
-#define CHASSIS_LEG_L0_PID_D 0
+#define CHASSIS_LEG_LO_PID_P 300
+#define CHASSIS_LEG_L0_PID_I 10
+#define CHASSIS_LEG_L0_PID_D 10
 #define CHASSIS_LEG_L0_PID_IOUT_LIMIT 2
-#define CHASSIS_LEG_L0_PID_OUT_LIMIT 10
+#define CHASSIS_LEG_L0_PID_OUT_LIMIT 30
 
+//#define CHASSIS_LEG_LO_PID_P 0
+//#define CHASSIS_LEG_L0_PID_I 0
+//#define CHASSIS_LEG_L0_PID_D 0
+//#define CHASSIS_LEG_L0_PID_IOUT_LIMIT 2
+//#define CHASSIS_LEG_L0_PID_OUT_LIMIT 30
 
 //枚举 结构体
 enum ChassisMode {
@@ -187,7 +192,7 @@ struct InverseKinematics {
 struct VMC {
   struct ForwardKinematics forward_kinematics;
   union {
-    double array[2][1];
+    fp32 array[2][1];
     struct {
       fp32 w1_fdb;
       fp32 w4_fdb;
