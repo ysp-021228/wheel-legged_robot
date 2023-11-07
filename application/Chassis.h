@@ -60,16 +60,16 @@
  *                                PID parameters                               *
  *******************************************************************************/
 #define CHASSIS_LEG_LO_PID_P 300
-#define CHASSIS_LEG_L0_PID_I 10
-#define CHASSIS_LEG_L0_PID_D 10
+#define CHASSIS_LEG_L0_PID_I 50
+#define CHASSIS_LEG_L0_PID_D 1050
 #define CHASSIS_LEG_L0_PID_IOUT_LIMIT 2
 #define CHASSIS_LEG_L0_PID_OUT_LIMIT 30
 
-#define CHASSIS_VW_PID_P 8
+#define CHASSIS_VW_PID_P 100
 #define CHASSIS_VW_PID_I 0
-#define CHASSIS_VW_PID_D 8
-#define CHASSIS_VW_PID_IOUT_LIMIT 0.2
-#define CHASSIS_VW_PID_OUT_LIMIT 1
+#define CHASSIS_VW_PID_D 10
+#define CHASSIS_VW_PID_IOUT_LIMIT 20
+#define CHASSIS_VW_PID_OUT_LIMIT 100
 
 //枚举 结构体
 enum ChassisMode {
