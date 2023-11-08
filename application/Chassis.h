@@ -29,7 +29,7 @@
 /**********************  平衡底盘  *************************/
 
 #define CHASSIS_PERIOD 10 // 单位为ms 底盘任务运行周期
-#define MAX_CHASSIS_VX_SPEED 12.f
+#define MAX_CHASSIS_VX_SPEED 1.f
 
 #define RC_TO_VX  (MAX_CHASSIS_VX_SPEED/660)
 #define RC_TO_VW 0.01f    //MAX_CHASSIS_VR_SPEED / RC_MAX_VALUE
@@ -59,17 +59,17 @@
 /*******************************************************************************
  *                                PID parameters                               *
  *******************************************************************************/
-#define CHASSIS_LEG_LO_PID_P 300
-#define CHASSIS_LEG_L0_PID_I 50
-#define CHASSIS_LEG_L0_PID_D 1050
+#define CHASSIS_LEG_LO_PID_P 500
+#define CHASSIS_LEG_L0_PID_I 0
+#define CHASSIS_LEG_L0_PID_D 100
 #define CHASSIS_LEG_L0_PID_IOUT_LIMIT 2
-#define CHASSIS_LEG_L0_PID_OUT_LIMIT 30
+#define CHASSIS_LEG_L0_PID_OUT_LIMIT 100
 
-#define CHASSIS_VW_PID_P 100
+#define CHASSIS_VW_PID_P -1000
 #define CHASSIS_VW_PID_I 0
-#define CHASSIS_VW_PID_D 10
-#define CHASSIS_VW_PID_IOUT_LIMIT 20
-#define CHASSIS_VW_PID_OUT_LIMIT 100
+#define CHASSIS_VW_PID_D 0
+#define CHASSIS_VW_PID_IOUT_LIMIT 0
+#define CHASSIS_VW_PID_OUT_LIMIT 2
 
 //枚举 结构体
 enum ChassisMode {
@@ -297,8 +297,6 @@ struct Leg {
 struct Chassis {
   enum ChassisMode mode;
   enum ChassisMode last_mode;
-
-  //joint motor
 
   struct IMUSetPoint imu_set_point;
   struct IMUReference imu_reference;
