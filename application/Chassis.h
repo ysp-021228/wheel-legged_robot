@@ -30,9 +30,13 @@
 
 #define CHASSIS_PERIOD 10 // 单位为ms 底盘任务运行周期
 #define MAX_CHASSIS_VX_SPEED 1.f
+#define MAX_CHASSIS_VW_TORQUE 0.5f
+#define MIN_L0 0.08f
+#define MAX_L0 0.27f
 
 #define RC_TO_VX  (MAX_CHASSIS_VX_SPEED/660)
-#define RC_TO_VW 0.01f    //MAX_CHASSIS_VR_SPEED / RC_MAX_VALUE
+#define RC_TO_VW  (MAX_CHASSIS_VW_TORQUE/660)
+#define RC_TO_L0  ((MAX_L0-MIN_L0)/1320)
 
 /*******************************************************************************
  *                         Robot physical parameters                           *
@@ -59,17 +63,17 @@
 /*******************************************************************************
  *                                PID parameters                               *
  *******************************************************************************/
-#define CHASSIS_LEG_LO_PID_P 500
-#define CHASSIS_LEG_L0_PID_I 0
-#define CHASSIS_LEG_L0_PID_D 100
-#define CHASSIS_LEG_L0_PID_IOUT_LIMIT 2
+#define CHASSIS_LEG_LO_PID_P 150
+#define CHASSIS_LEG_L0_PID_I 0.5
+#define CHASSIS_LEG_L0_PID_D 1000
+#define CHASSIS_LEG_L0_PID_IOUT_LIMIT 10
 #define CHASSIS_LEG_L0_PID_OUT_LIMIT 100
 
-#define CHASSIS_VW_PID_P -1000
+#define CHASSIS_VW_PID_P -0.5
 #define CHASSIS_VW_PID_I 0
 #define CHASSIS_VW_PID_D 0
 #define CHASSIS_VW_PID_IOUT_LIMIT 0
-#define CHASSIS_VW_PID_OUT_LIMIT 2
+#define CHASSIS_VW_PID_OUT_LIMIT 1
 
 //枚举 结构体
 enum ChassisMode {
