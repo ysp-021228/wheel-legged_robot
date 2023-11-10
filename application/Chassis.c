@@ -45,8 +45,8 @@ static void Vmc_Negative_Kinematics(struct VMC *vmc, fp32 w1, fp32 w4);
 static void Vmc_Negative_Dynamics(struct VMC *vmc, fp32 T1, fp32 T4);
 static void leg_fn_cal(struct Leg *leg, fp32 az);
 
-fp32 wheel_K[6] = {-2.999201, -0.204226, -0.046454, -0.110180, 0.193266, 0.069071};
-fp32 joint_K[6] = {4.178352, 0.313840, 0.120231, 0.278284, 6.250164, 4.915544};
+fp32 wheel_K_L[6] = {-2.999201, -0.204226, -0.046454, -0.110180, 0.193266, 0.069071};
+fp32 joint_K_L[6] = {4.178352, 0.313840, 0.120231, 0.278284, 6.250164, 4.915544};
 
 fp32 wheel_K_R[6] = {0, 0, 0, 0, 0, 0};
 fp32 joint_K_R[6] = {0, 0, 0, 0, 0, 0};
@@ -145,8 +145,8 @@ static void chassis_info_update() {
       (-chassis.leg_L.wheel.mileage + chassis.leg_R.wheel.mileage) / 2;//The state variable x should use this value
   if (chassis.chassis_move_speed_set_point.vx != 0 || chassis.chassis_move_speed_set_point.vw != 0) {
     chassis.mileage = 0;
-    chassis.leg_L.wheel.mileage=0;
-    chassis.leg_R.wheel.mileage=0;
+    chassis.leg_L.wheel.mileage = 0;
+    chassis.leg_R.wheel.mileage = 0;
   }
 }
 
@@ -246,15 +246,23 @@ static void wheel_motors_torque_set_point_cal(struct Leg *leg) {
   if (leg == NULL) {
     return;
   }
-
-  leg->wheel.torque = 0;
-  leg->wheel.torque += leg->state_variable_error.theta * wheel_K[0];//
-  leg->wheel.torque += leg->state_variable_error.theta_dot * wheel_K[1];//
-  leg->wheel.torque += leg->state_variable_error.x * wheel_K[2];
-  leg->wheel.torque += leg->state_variable_error.x_dot * wheel_K[3];
-  leg->wheel.torque += leg->state_variable_error.phi * wheel_K[4];//
-  leg->wheel.torque += leg->state_variable_error.phi_dot * wheel_K[5];
-
+  if (leg->leg_index == L) {
+    leg->wheel.torque = 0;
+    leg->wheel.torque += leg->state_variable_error.theta * wheel_K_L[0];//
+    leg->wheel.torque += leg->state_variable_error.theta_dot * wheel_K_L[1];//
+    leg->wheel.torque += leg->state_variable_error.x * wheel_K_L[2];
+    leg->wheel.torque += leg->state_variable_error.x_dot * wheel_K_L[3];
+    leg->wheel.torque += leg->state_variable_error.phi * wheel_K_L[4];//
+    leg->wheel.torque += leg->state_variable_error.phi_dot * wheel_K_L[5];
+  } else if (leg->leg_index == R) {
+    leg->wheel.torque = 0;
+    leg->wheel.torque += leg->state_variable_error.theta * wheel_K_R[0];//
+    leg->wheel.torque += leg->state_variable_error.theta_dot * wheel_K_R[1];//
+    leg->wheel.torque += leg->state_variable_error.x * wheel_K_R[2];
+    leg->wheel.torque += leg->state_variable_error.x_dot * wheel_K_R[3];
+    leg->wheel.torque += leg->state_variable_error.phi * wheel_K_R[4];//
+    leg->wheel.torque += leg->state_variable_error.phi_dot * wheel_K_R[5];
+  }
   if (leg->leg_index == R) {
     leg->wheel.torque *= -1;
   }
@@ -274,19 +282,19 @@ static void joint_motors_torque_set_point_cal() {
   chassis.leg_L.vmc.Fxy_set_point.E.Tp_set_point = 0;
   chassis.leg_R.vmc.Fxy_set_point.E.Tp_set_point = 0;
 //R
-  chassis.leg_R.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_R.state_variable_error.theta * joint_K[0];//
-  chassis.leg_R.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_R.state_variable_error.theta_dot * joint_K[1];//
-  chassis.leg_R.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_R.state_variable_error.x * joint_K[2];//
-  chassis.leg_R.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_R.state_variable_error.x_dot * joint_K[3];//
-  chassis.leg_R.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_R.state_variable_error.phi * joint_K[4];//
-  chassis.leg_R.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_R.state_variable_error.phi_dot * joint_K[5];//
+  chassis.leg_R.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_R.state_variable_error.theta * joint_K_R[0];//
+  chassis.leg_R.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_R.state_variable_error.theta_dot * joint_K_R[1];//
+  chassis.leg_R.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_R.state_variable_error.x * joint_K_R[2];//
+  chassis.leg_R.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_R.state_variable_error.x_dot * joint_K_R[3];//
+  chassis.leg_R.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_R.state_variable_error.phi * joint_K_R[4];//
+  chassis.leg_R.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_R.state_variable_error.phi_dot * joint_K_R[5];//
 //L
-  chassis.leg_L.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_L.state_variable_error.theta * joint_K[0];//
-  chassis.leg_L.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_L.state_variable_error.theta_dot * joint_K[1];//
-  chassis.leg_L.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_L.state_variable_error.x * joint_K[2];//
-  chassis.leg_L.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_L.state_variable_error.x_dot * joint_K[3];//
-  chassis.leg_L.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_L.state_variable_error.phi * joint_K[4];//
-  chassis.leg_L.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_L.state_variable_error.phi_dot * joint_K[5];//
+  chassis.leg_L.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_L.state_variable_error.theta * joint_K_L[0];//
+  chassis.leg_L.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_L.state_variable_error.theta_dot * joint_K_L[1];//
+  chassis.leg_L.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_L.state_variable_error.x * joint_K_L[2];//
+  chassis.leg_L.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_L.state_variable_error.x_dot * joint_K_L[3];//
+  chassis.leg_L.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_L.state_variable_error.phi * joint_K_L[4];//
+  chassis.leg_L.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_L.state_variable_error.phi_dot * joint_K_L[5];//
 
   pid_calc(&chassis.leg_L.pid, chassis.leg_L.vmc.forward_kinematics.fk_L0.L0, chassis.leg_L.L0_set_point);
   chassis.leg_L.vmc.Fxy_set_point.E.Fy_set_point = chassis.leg_L.pid.out + BODY_WEIGHT * 9.8 * 0.5;
@@ -551,12 +559,13 @@ static void chassis_relax_handle() {
 
 static void chassis_enabled_leg_handle() {
   chassis_forward_kinematics();//verified to be correct
-//todo 两条腿别用同一个k
 
-  chassis_K_matrix_fitting(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0 * 0.2, wheel_K, wheel_fitting_factor);
-  chassis_K_matrix_fitting(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0 * 0.2, joint_K, joint_fitting_factor);
-  chassis_K_matrix_fitting(chassis.leg_R.vmc.forward_kinematics.fk_L0.L0 * 0.2, wheel_K, wheel_fitting_factor);
-  chassis_K_matrix_fitting(chassis.leg_R.vmc.forward_kinematics.fk_L0.L0 * 0.2, joint_K, joint_fitting_factor);
+  chassis_K_matrix_fitting(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0 * 0.2, wheel_K_L, wheel_fitting_factor);
+  chassis_K_matrix_fitting(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0 * 0.2, joint_K_L, joint_fitting_factor);
+//  chassis_K_matrix_fitting(0.18f, wheel_K_L, wheel_fitting_factor);
+//  chassis_K_matrix_fitting(0.18f, joint_K_L, joint_fitting_factor);
+  chassis_K_matrix_fitting(chassis.leg_R.vmc.forward_kinematics.fk_L0.L0 * 0.2, wheel_K_R, wheel_fitting_factor);
+  chassis_K_matrix_fitting(chassis.leg_R.vmc.forward_kinematics.fk_L0.L0 * 0.2, joint_K_R, joint_fitting_factor);
 
   leg_state_variable_reference_get(&chassis.leg_L);
   leg_state_variable_reference_get(&chassis.leg_R);
@@ -775,33 +784,34 @@ static void leg_fn_cal(struct Leg *leg, fp32 az) {
 
 static void chassis_motor_cmd_send() {
 
-  CAN_cmd_motor(CAN_1,
-                CAN_MOTOR_0x200_ID,
-                chassis.leg_L.wheel.motor_3508.give_current,
-                chassis.leg_R.wheel.motor_3508.give_current,
-                0,
-                0);
-
 //  CAN_cmd_motor(CAN_1,
 //                CAN_MOTOR_0x200_ID,
-//                0,
-//                0,
+//                chassis.leg_L.wheel.motor_3508.give_current,
+//                chassis.leg_R.wheel.motor_3508.give_current,
 //                0,
 //                0);
 
-//  cyber_gear_control_mode(&cybergears_2[LF_MOTOR_ID], 0, 0, 0, 0, 0);
-////  osDelay(1);
-//  cyber_gear_control_mode(&cybergears_2[LB_MOTOR_ID], 0, 0, 0, 0, 0);
-////  osDelay(1);
-//  cyber_gear_control_mode(&cybergears_2[RB_MOTOR_ID], 0, 0, 0, 0, 0);
-//  osDelay(1);
-//  cyber_gear_control_mode(&cybergears_2[RF_MOTOR_ID], 0, 0, 0, 0, 0);
+  CAN_cmd_motor(CAN_1,
+                CAN_MOTOR_0x200_ID,
+                0,
+                0,
+                0,
+                0);
 
-  cyber_gear_control_mode(&cybergears_2[LF_MOTOR_ID], chassis.leg_L.cyber_gear_data[0].torque, 0, 0, 0, 0);
-  cyber_gear_control_mode(&cybergears_2[LB_MOTOR_ID], chassis.leg_L.cyber_gear_data[1].torque, 0, 0, 0, 0);
-  osDelay(2);
-  cyber_gear_control_mode(&cybergears_2[RB_MOTOR_ID], -chassis.leg_R.cyber_gear_data[1].torque, 0, 0, 0, 0);
-  cyber_gear_control_mode(&cybergears_2[RF_MOTOR_ID], -chassis.leg_R.cyber_gear_data[0].torque, 0, 0, 0, 0);
+  cyber_gear_control_mode(&cybergears_2[LF_MOTOR_ID], 0, 0, 0, 0, 0);
+  osDelay(1);
+  cyber_gear_control_mode(&cybergears_2[LB_MOTOR_ID], 0, 0, 0, 0, 0);
+  osDelay(1);
+  cyber_gear_control_mode(&cybergears_2[RB_MOTOR_ID], 0, 0, 0, 0, 0);
+  osDelay(1);
+  cyber_gear_control_mode(&cybergears_2[RF_MOTOR_ID], 0, 0, 0, 0, 0);
+
+//  cyber_gear_control_mode(&cybergears_2[LF_MOTOR_ID], chassis.leg_L.cyber_gear_data[0].torque, 0, 0, 0, 0);
+//  cyber_gear_control_mode(&cybergears_2[LB_MOTOR_ID], chassis.leg_L.cyber_gear_data[1].torque, 0, 0, 0, 0);
+//  osDelay(2);
+//  cyber_gear_control_mode(&cybergears_2[RB_MOTOR_ID], -chassis.leg_R.cyber_gear_data[1].torque, 0, 0, 0, 0);
+//  cyber_gear_control_mode(&cybergears_2[RF_MOTOR_ID], -chassis.leg_R.cyber_gear_data[0].torque, 0, 0, 0, 0);
+//  osDelay(2);
 
 }
 
