@@ -28,7 +28,7 @@
 
 /**********************  平衡底盘  *************************/
 
-#define CHASSIS_PERIOD 10 // 单位为ms 底盘任务运行周期
+#define CHASSIS_PERIOD 5 // 单位为ms 底盘任务运行周期
 #define MAX_CHASSIS_VX_SPEED 1.f
 #define MAX_CHASSIS_VW_TORQUE 0.5f
 #define MIN_L0 0.08f
@@ -53,7 +53,7 @@
 #define L5 0.09f
 
 #define CHASSIS_ROTATION_RADIUS 0.1577f
-#define BODY_WEIGHT 2.839f
+#define BODY_WEIGHT 3.239f
 #define WHEEL_WEIGHT 0.183f
 
 #define MECHANICAL_LEG_LIMIT_ANGLE 0.10472f
@@ -63,11 +63,11 @@
 /*******************************************************************************
  *                                PID parameters                               *
  *******************************************************************************/
-#define CHASSIS_LEG_LO_PID_P 150
-#define CHASSIS_LEG_L0_PID_I 0.5
-#define CHASSIS_LEG_L0_PID_D 1000
+#define CHASSIS_LEG_LO_PID_P 200
+#define CHASSIS_LEG_L0_PID_I 0
+#define CHASSIS_LEG_L0_PID_D 10000
 #define CHASSIS_LEG_L0_PID_IOUT_LIMIT 10
-#define CHASSIS_LEG_L0_PID_OUT_LIMIT 100
+#define CHASSIS_LEG_L0_PID_OUT_LIMIT 1000
 
 #define CHASSIS_VW_PID_P -0.5
 #define CHASSIS_VW_PID_I 0
