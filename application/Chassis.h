@@ -71,9 +71,9 @@
 
 #define CHASSIS_VW_PID_P -0.5
 #define CHASSIS_VW_PID_I 0
-#define CHASSIS_VW_PID_D 0
-#define CHASSIS_VW_PID_IOUT_LIMIT 0
-#define CHASSIS_VW_PID_OUT_LIMIT 1
+#define CHASSIS_VW_PID_D -20
+#define CHASSIS_VW_PID_IOUT_LIMIT 0.2
+#define CHASSIS_VW_PID_OUT_LIMIT 0.5
 
 //枚举 结构体
 enum ChassisMode {
