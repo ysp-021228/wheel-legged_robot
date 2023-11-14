@@ -53,7 +53,7 @@
 #define L5 0.09f
 
 #define CHASSIS_ROTATION_RADIUS 0.1577f
-#define BODY_WEIGHT 3.239f
+#define BODY_WEIGHT 3.446f
 #define WHEEL_WEIGHT 0.183f
 
 #define MECHANICAL_LEG_LIMIT_ANGLE 0.10472f
@@ -63,11 +63,11 @@
 /*******************************************************************************
  *                                PID parameters                               *
  *******************************************************************************/
-#define CHASSIS_LEG_LO_PID_P 200
+#define CHASSIS_LEG_LO_PID_P 300
 #define CHASSIS_LEG_L0_PID_I 0
-#define CHASSIS_LEG_L0_PID_D 10000
-#define CHASSIS_LEG_L0_PID_IOUT_LIMIT 10
-#define CHASSIS_LEG_L0_PID_OUT_LIMIT 1000
+#define CHASSIS_LEG_L0_PID_D 15000
+#define CHASSIS_LEG_L0_PID_IOUT_LIMIT 2
+#define CHASSIS_LEG_L0_PID_OUT_LIMIT 20
 
 #define CHASSIS_VW_PID_P -0.5
 #define CHASSIS_VW_PID_I 0

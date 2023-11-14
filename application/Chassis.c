@@ -409,8 +409,6 @@ static void vmc_inverse_solution(struct Leg *leg) {
     return;
   }
   Vmc_Negative_Kinematics(&leg->vmc, leg->cyber_gear_data[0].speed, leg->cyber_gear_data[1].speed);
-  //todo 看看电机怎么获取实际扭矩
-//  Vmc_Negative_Dynamics(&leg->vmc, leg->vmc.T1_T4_set_point.E.T1_set_point, leg->vmc.T1_T4_set_point.E.T4_set_point);
   Vmc_Negative_Dynamics(&leg->vmc, leg->cyber_gear_data[0].torque, leg->cyber_gear_data[1].torque);
 
 }
