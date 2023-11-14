@@ -96,24 +96,24 @@ fp32 joint_K_R[6] = {0, 0, 0, 0, 0, 0};
 //};
 
 fp32 wheel_fitting_factor[6][4] = {
-    {-1612.430414, 239.414987, -50.707000, -0.530614},
-    {128.466197, -34.590136, -0.948374, -0.158462},
+    {-1646.924405,213.914414,-48.404761,-0.591737},
+    {132.643205,-38.349908,-0.852857,-0.172735},
 
-    {733.238290, -109.281441, 3.453489, -0.380706},
-    {2239.542493, -329.824553, 12.535706, -0.886958},
+    {1108.147318,-170.632047,5.865122,-0.498328},
+    {2769.004713,-414.553082,16.788342,-0.930631},
 
-    {1008.791393, -267.506867, -0.922214, 5.219884},
-    {-74.479049, 6.052902, -1.324127, 0.389697}
+    {120.632950,-148.900646,-3.510030,5.506320},
+    {-151.748316,17.059403,-1.704834,0.406821}
 };
 fp32 joint_fitting_factor[6][4] = {
-    {39391.444224, -8363.967995, 667.454008, 7.261945},
-    {-148.477653, -118.431909, 18.229010, 2.924640},
+    {47907.722195,-9892.085410,788.070850,9.756630},
+    {-564.792576,-81.727188,18.329920,4.059584},
 
-    {5432.214802, -933.567796, 30.525859, 5.347891},
-    {-2408.849204, 82.823272, -41.792552, 12.876866},
+    {6837.153119,-1212.766774,43.244902,7.985787},
+    {-11512.091221,1386.097877,-106.456406,15.819744},
 
-    {-43192.061016, 6532.756336, -35.984827, 35.344668},
-    {-2308.981385, 353.581855, 0.910418, 1.308916}
+    {-33315.577466,5602.029788,2.956268,28.679460},
+    {-1209.772314,217.708476,7.609868,0.813373}
 };
 
 void chassis_task(void const *pvParameters) {
@@ -165,7 +165,7 @@ static void chassis_info_update() {
   chassis_motor_info_update();
   chassis.mileage =
       (-chassis.leg_L.wheel.mileage + chassis.leg_R.wheel.mileage) / 2;//The state variable x should use this value
-  if (chassis.chassis_move_speed_set_point.vx != 0 || chassis.chassis_move_speed_set_point.vw != 0) {
+  if (chassis.chassis_move_speed_set_point.vx != 0 || get_rc_ctrl().rc.ch[CHASSIS_Z_CHANNEL] != 0) {
     chassis.mileage = 0;
     chassis.leg_L.wheel.mileage = 0;
     chassis.leg_R.wheel.mileage = 0;
@@ -293,11 +293,11 @@ static void wheel_motors_torque_set_point_cal(struct Leg *leg) {
 
   VAL_LIMIT(leg->wheel.torque, -5, 5);
 
-  if (leg->wheel.torque > 0) {
-    leg->wheel.torque += 0.1f;
-  } else {
-    leg->wheel.torque -= 0.1f;
-  }
+//  if (leg->wheel.torque > 0) {
+//    leg->wheel.torque += 0.05f;
+//  } else {
+//    leg->wheel.torque -= 0.05f;
+//  }
 }
 
 static void joint_motors_torque_set_point_cal() {
