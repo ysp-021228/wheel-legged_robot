@@ -96,24 +96,24 @@ fp32 joint_K_R[6] = {0, 0, 0, 0, 0, 0};
 //};
 
 fp32 wheel_fitting_factor[6][4] = {
-    {-1400.855481,261.315075,-41.214402,-0.288694},
-    {9.204610,-8.650371,-0.942393,-0.069374},
+    {-2059.769234,302.173675,-48.464243,-0.410201},
+    {31.944912,-20.380446,-0.995845,-0.104774},
 
-    {528.385588,-82.894130,3.671236,-0.368628},
-    {1330.129855,-199.248637,9.223661,-0.577372},
+    {332.854501,-53.055425,2.271719,-0.192193},
+    {1661.612102,-260.174159,11.399586,-0.834947},
 
-    {2355.209129,-396.705970,14.857754,1.765168},
-    {113.638926,-18.709641,0.342018,0.188771}
+    {1449.414599,-285.210663,8.423722,3.511450},
+    {-29.384817,3.808388,-0.842783,0.269615}
 };
 fp32 joint_fitting_factor[6][4] = {
-    {11201.880993,-3799.610801,415.555231,1.933342},
-    {505.162046,-158.656600,21.450875,0.728957},
+    {20114.431447,-4777.253579,509.835093,3.958127},
+    {-287.159044,-16.132679,20.954753,1.405234},
 
-    {12959.436110,-2055.367427,91.569851,3.691423},
-    {9362.037701,-1582.027062,63.365121,5.941493},
+    {3174.743548,-521.675866,22.640863,2.159166},
+    {8919.235426,-1541.980660,62.474335,9.481559},
 
-    {-52734.083196,8384.486523,-338.700195,40.690128},
-    {-5038.547321,790.796380,-32.273919,2.362930}
+    {-39177.728911,6566.090452,-228.256872,30.158803},
+    {-2806.012908,462.257815,-17.439130,0.833864}
 };
 
 void chassis_task(void const *pvParameters) {
@@ -410,7 +410,9 @@ static void vmc_inverse_solution(struct Leg *leg) {
   }
   Vmc_Negative_Kinematics(&leg->vmc, leg->cyber_gear_data[0].speed, leg->cyber_gear_data[1].speed);
   //todo 看看电机怎么获取实际扭矩
-  Vmc_Negative_Dynamics(&leg->vmc, leg->vmc.T1_T4_set_point.E.T1_set_point, leg->vmc.T1_T4_set_point.E.T4_set_point);
+//  Vmc_Negative_Dynamics(&leg->vmc, leg->vmc.T1_T4_set_point.E.T1_set_point, leg->vmc.T1_T4_set_point.E.T4_set_point);
+  Vmc_Negative_Dynamics(&leg->vmc, leg->cyber_gear_data[0].torque, leg->cyber_gear_data[1].torque);
+
 }
 
 static void Vmc_Negative_Kinematics(struct VMC *vmc, fp32 w1, fp32 w4) {
@@ -580,12 +582,10 @@ static void chassis_relax_handle() {
 }
 
 static void chassis_enabled_leg_handle() {
-  chassis_forward_kinematics();//verified to be correct
+  chassis_forward_kinematics();
 
   chassis_K_matrix_fitting(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0 * 0.2, wheel_K_L, wheel_fitting_factor);
   chassis_K_matrix_fitting(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0 * 0.2, joint_K_L, joint_fitting_factor);
-//  chassis_K_matrix_fitting(0.18f, wheel_K_L, wheel_fitting_factor);
-//  chassis_K_matrix_fitting(0.18f, joint_K_L, joint_fitting_factor);
   chassis_K_matrix_fitting(chassis.leg_R.vmc.forward_kinematics.fk_L0.L0 * 0.2, wheel_K_R, wheel_fitting_factor);
   chassis_K_matrix_fitting(chassis.leg_R.vmc.forward_kinematics.fk_L0.L0 * 0.2, joint_K_R, joint_fitting_factor);
 

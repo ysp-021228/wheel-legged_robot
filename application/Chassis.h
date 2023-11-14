@@ -29,7 +29,7 @@
 /**********************  平衡底盘  *************************/
 
 #define CHASSIS_PERIOD 5 // 单位为ms 底盘任务运行周期
-#define MAX_CHASSIS_VX_SPEED 1.f
+#define MAX_CHASSIS_VX_SPEED 0.5f
 #define MAX_CHASSIS_VW_TORQUE 0.5f
 #define MIN_L0 0.08f
 #define MAX_L0 0.27f
