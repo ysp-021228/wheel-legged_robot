@@ -178,21 +178,6 @@ struct ForwardKinematics {
 /*******************************************************************************
  *                           Inverse Kinematics                                *
  *******************************************************************************/
-struct InverseKinematics {
-  fp32 Jocbian[2][2];
-  fp32 Jocbian_Inv[2][2];
-
-  fp32 R[2][2];
-  fp32 M[2][2];
-  fp32 F[2][1];
-  fp32 T[2][1];
-
-  fp32 F_feedback[2][1];
-  fp32 T_feedback[2][1];
-
-  fp32 Fn;
-};
-
 struct VMC {
   struct ForwardKinematics forward_kinematics;
   union {
