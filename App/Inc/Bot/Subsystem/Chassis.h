@@ -15,21 +15,24 @@
                                 osThreadResume(handle);                          \
                                 }                                                \
 
+/*******************************************************************************
+ *                                 Task Time                                   *
+ *******************************************************************************/
 #define CHASSIS_TASK_INIT_TIME 50
+#define CHASSIS_PERIOD 5 // 单位为ms 底盘任务运行周期
+#define MILLISECOND_TO_SECOND 0.001f
 
-#define CHASSIS_X_CHANNEL 1
-#define CHASSIS_Z_CHANNEL 2
-#define CHASSIS_PIT_CHANNEL 3
-
+/*******************************************************************************
+ *                                  Motor ID                                   *
+ *******************************************************************************/
 #define LF_MOTOR_ID (0x66)
 #define LB_MOTOR_ID (0x67)
 #define RB_MOTOR_ID (0x68)
 #define RF_MOTOR_ID (0x69)
 
-/**********************  平衡底盘  *************************/
-
-#define CHASSIS_PERIOD 5 // 单位为ms 底盘任务运行周期
-#define MILLISECOND_TO_SECOND 0.001f
+/*******************************************************************************
+ *                                    Limit                                    *
+ *******************************************************************************/
 #define MAX_CHASSIS_VX_SPEED 1.5f
 #define MAX_CHASSIS_VW_TORQUE 0.5f
 #define MIN_L0 0.08f
@@ -41,6 +44,13 @@
 #define MIN_WHEEL_TORQUE -5.f
 #define MAX_JOINT_TORQUE 5.f
 #define MIN_JOINT_TORQUE -5.f
+
+/*******************************************************************************
+ *                                Remote control                               *
+ *******************************************************************************/
+#define CHASSIS_X_CHANNEL 1
+#define CHASSIS_Z_CHANNEL 2
+#define CHASSIS_PIT_CHANNEL 3
 
 #define RC_TO_VX  (MAX_CHASSIS_VX_SPEED/660)
 #define RC_TO_VW  (MAX_CHASSIS_VW_TORQUE/660)
@@ -64,7 +74,6 @@
 #define CHASSIS_ROTATION_RADIUS 0.1577f
 #define BODY_WEIGHT 3.446f
 #define WHEEL_WEIGHT 0.183f
-
 #define MECHANICAL_LEG_LIMIT_ANGLE 0.10472f
 
 #define GRAVITY_A 9.8f
@@ -90,7 +99,7 @@
 #define CHASSIS_ROLL_PID_IOUT_LIMIT 0
 #define CHASSIS_ROLL_PID_OUT_LIMIT 0
 
-//枚举 结构体
+
 enum ChassisMode {
   CHASSIS_DISABLE,
   CHASSIS_UNENABLED_LEG,
