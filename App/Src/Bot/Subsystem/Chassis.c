@@ -220,7 +220,7 @@ static void leg_state_variable_set_point_set(struct Leg *leg, fp32 vx) {
   leg->state_variable_set_point.x_dot = vx;
   leg->state_variable_set_point.theta = 0;
   leg->state_variable_set_point.theta_dot = 0;
-  leg->state_variable_set_point.phi = 0;
+  leg->state_variable_set_point.phi = chassis.imu_set_point.pitch;
   leg->state_variable_set_point.phi_dot = 0;
 }
 
@@ -331,6 +331,7 @@ static void vmc_inverse_solution(struct Leg *leg) {
 static void chassis_ctrl_info_get() {
   chassis.chassis_move_speed_set_point.vx = (float) (get_rc_ctrl().rc.ch[CHASSIS_X_CHANNEL]) * RC_TO_VX;
   chassis.chassis_move_speed_set_point.vw = (float) (get_rc_ctrl().rc.ch[CHASSIS_Z_CHANNEL]) * -RC_TO_VW;
+  chassis.imu_set_point.pitch = (float) (get_rc_ctrl().rc.ch[CHASSIS_PIT_CHANNEL]) * RC_TO_PITCH;
   chassis.leg_L.L0_set_point = -(float) (get_rc_ctrl().rc.ch[4]) * RC_TO_L0 + 0.18f;
   chassis.leg_R.L0_set_point = -(float) (get_rc_ctrl().rc.ch[4]) * RC_TO_L0 + 0.18f;
 
@@ -362,7 +363,6 @@ void chassis_device_offline_handle() {
 struct Chassis get_chassis() {
   return chassis;
 }
-//todo 遥控离线刹车原地不动电机离线直接全部失能
 
 static void chassis_forward_kinematics() {
   //leg_L
@@ -641,3 +641,7 @@ void chassis_task(void const *pvParameters) {
     vTaskDelayUntil(&last_wake_time, CHASSIS_PERIOD);
   }
 }
+
+//todo
+// roll automatic stabilization
+// Turning and tilting body

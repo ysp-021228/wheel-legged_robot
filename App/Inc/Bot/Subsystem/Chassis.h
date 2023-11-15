@@ -18,8 +18,8 @@
 #define CHASSIS_TASK_INIT_TIME 50
 
 #define CHASSIS_X_CHANNEL 1
-
 #define CHASSIS_Z_CHANNEL 2
+#define CHASSIS_PIT_CHANNEL 3
 
 #define LF_MOTOR_ID (0x66)
 #define LB_MOTOR_ID (0x67)
@@ -33,9 +33,12 @@
 #define MAX_CHASSIS_VW_TORQUE 0.5f
 #define MIN_L0 0.08f
 #define MAX_L0 0.27f
+#define MAX_PITCH 0.35f
+#define MIN_PITCH -0.35f
 
 #define RC_TO_VX  (MAX_CHASSIS_VX_SPEED/660)
 #define RC_TO_VW  (MAX_CHASSIS_VW_TORQUE/660)
+#define RC_TO_PITCH ((MAX_PITCH-MIN_PITCH)/660)
 #define RC_TO_L0  ((MAX_L0-MIN_L0)/1320)
 
 /*******************************************************************************
