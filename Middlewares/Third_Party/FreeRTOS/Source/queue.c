@@ -30,7 +30,7 @@
 
 /* Defining MPU_WRAPPERS_INCLUDED_FROM_API_FILE prevents task.h from redefining
 all the API functions to use the MPU wrappers.  That should only be done when
-task.h is included from an application file. */
+task.h is included from an App file. */
 #define MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
 #include "FreeRTOS.h"
@@ -2701,7 +2701,7 @@ BaseType_t xReturn;
 	{
 	Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 
-		/* This function should not be called by application code hence the
+		/* This function should not be called by App code hence the
 		'Restricted' in its name.  It is not part of the public API.  It is
 		designed for use by kernel code, and has special calling requirements.
 		It can result in vListInsert() being called on a list that can only

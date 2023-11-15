@@ -2289,7 +2289,7 @@ HAL_StatusTypeDef HAL_SPI_DMAResume(SPI_HandleTypeDef *hspi)
 HAL_StatusTypeDef HAL_SPI_DMAStop(SPI_HandleTypeDef *hspi)
 {
   HAL_StatusTypeDef errorcode = HAL_OK;
-  /* The Lock is not implemented on this API to allow the user application
+  /* The Lock is not implemented on this API to allow the user App
      to call the HAL SPI API under callbacks HAL_SPI_TxCpltCallback() or HAL_SPI_RxCpltCallback() or HAL_SPI_TxRxCpltCallback():
      when calling HAL_DMA_Abort() API the DMA TX/RX Transfer complete interrupt is generated
      and the correspond call back is executed HAL_SPI_TxCpltCallback() or HAL_SPI_RxCpltCallback() or HAL_SPI_TxRxCpltCallback()

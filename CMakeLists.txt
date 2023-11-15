@@ -46,7 +46,7 @@ else ()
     add_compile_options(-Og -g)
 endif ()
 
-include_directories(Inc Drivers/STM32F4xx_HAL_Driver/Inc
+include_directories(Core/Inc Drivers/STM32F4xx_HAL_Driver/Inc
         Drivers/STM32F4xx_HAL_Driver/Inc/Legacy
         Middlewares/Third_Party/FreeRTOS/Source/include
         Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS
@@ -55,17 +55,23 @@ include_directories(Inc Drivers/STM32F4xx_HAL_Driver/Inc
         Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc
         Drivers/CMSIS/Device/ST/STM32F4xx/Include
         Drivers/CMSIS/Include
+
         bsp
-        component/algorithm
-        component/controller
-        component/devices
-        component/support
-        application/
+        App
+        App/Inc/Bot
+        App/Inc/Bot/Device
+        App/Inc/Bot/IO
+        App/Inc/Bot/Subsystem
+        App/Inc/Lib
+        App/Inc/Lib/Controller
+        App/Inc/Lib/Filter
+        App/Inc/Lib/Algorithm
+        App/Inc/Lib/Support
         )
 
 add_definitions(-DUSE_HAL_DRIVER -DSTM32F407xx)
 
-file(GLOB_RECURSE SOURCES "segger/*.*" "startup/*.*" "Middlewares/*.*" "Drivers/*.*" "Src/*.*" "bsp/*.*" "component/*.*" "application/*.*")
+file(GLOB_RECURSE SOURCES "segger/*.*" "Core/startup/*.*" "Middlewares/*.*" "Drivers/*.*" "Core/Src/*.*" "bsp/*.*" "component/*.*" "App/*.*")
 
 set(LINKER_SCRIPT ${CMAKE_SOURCE_DIR}/STM32F407IGHx_FLASH.ld)
 

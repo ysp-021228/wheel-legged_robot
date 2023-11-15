@@ -10,7 +10,7 @@
 **                1024Kbytes FLASH and 192Kbytes RAM
 **
 **                Set heap size, stack size and stack location according
-**                to application requirements.
+**                to App requirements.
 **
 **                Set memory bank area and size if external memory is used.
 **

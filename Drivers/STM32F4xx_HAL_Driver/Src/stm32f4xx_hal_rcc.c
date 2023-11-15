@@ -24,9 +24,9 @@
           are assigned to be used for debug purpose.
 
     [..]
-      Once the device started from reset, the user application has to:
+      Once the device started from reset, the user App has to:
       (+) Configure the clock source to be used to drive the System clock
-          (if the application needs higher frequency/performance)
+          (if the App needs higher frequency/performance)
       (+) Configure the System clock frequency and Flash settings
       (+) Configure the AHB and APB busses prescalers
       (+) Enable the clock for the peripheral(s) to be used
@@ -847,7 +847,7 @@ void HAL_RCC_DisableCSS(void)
   * @note   The result of this function could be not correct when using fractional
   *         value for HSE crystal.
   *
-  * @note   This function can be used by the user application to compute the
+  * @note   This function can be used by the user App to compute the
   *         baudrate for the communication peripherals or configure other parameters.
   *
   * @note   Each time SYSCLK changes, this function must be called to update the

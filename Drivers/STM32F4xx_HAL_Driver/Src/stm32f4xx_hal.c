@@ -149,7 +149,7 @@ HAL_TickFreqTypeDef uwTickFreq = HAL_TICK_FREQ_DEFAULT;  /* 1KHz */
   *           Calls the HAL_MspInit() callback function defined in user file 
   *           "stm32f4xx_hal_msp.c" to do the global low level hardware initialization 
   *            
-  * @note   SysTick is used as time base for the HAL_Delay() function, the application
+  * @note   SysTick is used as time base for the HAL_Delay() function, the App
   *         need to ensure that the SysTick time base is always set to 1 millisecond
   *         to have correct HAL operation.
   * @retval HAL status
@@ -302,7 +302,7 @@ __weak HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
 
 /**
   * @brief This function is called to increment  a global variable "uwTick"
-  *        used as application time base.
+  *        used as App time base.
   * @note In the default implementation, this variable is incremented each 1ms
   *       in SysTick ISR.
  * @note This function is declared as __weak to be overwritten in case of other 

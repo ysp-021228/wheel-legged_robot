@@ -31,7 +31,7 @@
 
 /* Defining MPU_WRAPPERS_INCLUDED_FROM_API_FILE prevents task.h from redefining
 all the API functions to use the MPU wrappers.  That should only be done when
-task.h is included from an application file. */
+task.h is included from an App file. */
 #define MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
 /* FreeRTOS includes. */
@@ -451,7 +451,7 @@ static portTASK_FUNCTION_PROTO( prvIdleTask, pvParameters );
  * including the stack pointed to by the TCB.
  *
  * This does not free memory allocated by the task itself (i.e. memory
- * allocated by calls to pvPortMalloc from within the tasks application code).
+ * allocated by calls to pvPortMalloc from within the tasks App code).
  */
 #if ( INCLUDE_vTaskDelete == 1 )
 
@@ -2692,7 +2692,7 @@ BaseType_t xSwitchRequired = pdFALSE;
 		}
 
 		/* Tasks of equal priority to the currently running task will share
-		processing time (time slice) if preemption is on, and the application
+		processing time (time slice) if preemption is on, and the App
 		writer has not explicitly turned time slicing off. */
 		#if ( ( configUSE_PREEMPTION == 1 ) && ( configUSE_TIME_SLICING == 1 ) )
 		{
@@ -2869,7 +2869,7 @@ void vTaskSwitchContext( void )
 				protection here so count values are only valid until the timer
 				overflows.  The guard against negative values is to protect
 				against suspect run time stat counter implementations - which
-				are provided by the application, not the kernel. */
+				are provided by the App, not the kernel. */
 				if( ulTotalRunTime > ulTaskSwitchedInTime )
 				{
 					pxCurrentTCB->ulRunTimeCounter += ( ulTotalRunTime - ulTaskSwitchedInTime );
@@ -2948,7 +2948,7 @@ void vTaskPlaceOnUnorderedEventList( List_t * pxEventList, const TickType_t xIte
 	{
 		configASSERT( pxEventList );
 
-		/* This function should not be called by application code hence the
+		/* This function should not be called by App code hence the
 		'Restricted' in its name.  It is not part of the public API.  It is
 		designed for use by kernel code, and has special calling requirements -
 		it should be called with the scheduler suspended. */
@@ -3271,7 +3271,7 @@ static portTASK_FUNCTION( prvIdleTask, pvParameters )
 			extern void vApplicationIdleHook( void );
 
 			/* Call the user defined function from within the idle task.  This
-			allows the application designer to add background functionality
+			allows the App designer to add background functionality
 			without the overhead of a separate task.
 			NOTE: vApplicationIdleHook() MUST NOT, UNDER ANY CIRCUMSTANCES,
 			CALL A FUNCTION THAT MIGHT BLOCK. */
@@ -3305,7 +3305,7 @@ static portTASK_FUNCTION( prvIdleTask, pvParameters )
 					xExpectedIdleTime = prvGetExpectedIdleTime();
 
 					/* Define the following macro to set xExpectedIdleTime to 0
-					if the application does not want
+					if the App does not want
 					portSUPPRESS_TICKS_AND_SLEEP() to be called. */
 					configPRE_SUPPRESS_TICKS_AND_SLEEP_PROCESSING( xExpectedIdleTime );
 
@@ -3336,7 +3336,7 @@ static portTASK_FUNCTION( prvIdleTask, pvParameters )
 
 	eSleepModeStatus eTaskConfirmSleepModeStatus( void )
 	{
-	/* The idle task exists in addition to the application tasks. */
+	/* The idle task exists in addition to the App tasks. */
 	const UBaseType_t uxNonApplicationTasks = 1;
 	eSleepModeStatus eReturn = eStandardSleep;
 
@@ -3675,7 +3675,7 @@ static void prvCheckTasksWaitingTermination( void )
 		portCLEAN_UP_TCB( pxTCB );
 
 		/* Free up the memory allocated by the scheduler for the task.  It is up
-		to the task to free any memory allocated at the application level. */
+		to the task to free any memory allocated at the App level. */
 		#if ( configUSE_NEWLIB_REENTRANT == 1 )
 		{
 			_reclaim_reent( &( pxTCB->xNewLib_reent ) );
@@ -4426,7 +4426,7 @@ TickType_t uxReturn;
 					/* All ports are written to allow a yield in a critical
 					section (some will yield immediately, others wait until the
 					critical section exits) - but it is not something that
-					application code should ever do. */
+					App code should ever do. */
 					portYIELD_WITHIN_API();
 				}
 				else
@@ -4499,7 +4499,7 @@ TickType_t uxReturn;
 					/* All ports are written to allow a yield in a critical
 					section (some will yield immediately, others wait until the
 					critical section exits) - but it is not something that
-					application code should ever do. */
+					App code should ever do. */
 					portYIELD_WITHIN_API();
 				}
 				else

@@ -406,7 +406,7 @@ void HAL_PWREx_DisableLowRegulatorLowVoltage(void)
   * @note   This function can be used only for STM32F42xx/STM32F43xx/STM32F446xx/STM32F469xx/STM32F479xx devices.
   *         This mode allows the CPU and the core logic to operate at a higher frequency
   *         than the normal mode for a given voltage scaling (scale 1, scale 2 or scale 3).   
-  * @note   It is recommended to enter or exit Over-drive mode when the application is not running 
+  * @note   It is recommended to enter or exit Over-drive mode when the App is not running
   *         critical tasks and when the system clock source is either HSI or HSE. 
   *         During the Over-drive switch activation, no peripheral clocks should be enabled.   
   *         The peripheral clocks must be enabled once the Over-drive mode is activated.   
@@ -453,7 +453,7 @@ HAL_StatusTypeDef HAL_PWREx_EnableOverDrive(void)
   * @note   This function can be used only for STM32F42xx/STM32F43xx/STM32F446xx/STM32F469xx/STM32F479xx devices.
   *         This mode allows the CPU and the core logic to operate at a higher frequency
   *         than the normal mode for a given voltage scaling (scale 1, scale 2 or scale 3).    
-  * @note   It is recommended to enter or exit Over-drive mode when the application is not running 
+  * @note   It is recommended to enter or exit Over-drive mode when the App is not running
   *         critical tasks and when the system clock source is either HSI or HSE. 
   *         During the Over-drive switch activation, no peripheral clocks should be enabled.   
   *         The peripheral clocks must be enabled once the Over-drive mode is activated.

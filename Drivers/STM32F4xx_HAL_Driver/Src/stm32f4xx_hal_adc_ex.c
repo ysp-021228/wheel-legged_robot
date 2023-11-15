@@ -43,7 +43,7 @@
      [..]    
        (+) Start the ADC peripheral using HAL_ADCEx_InjectedStart() 
        (+) Wait for end of conversion using HAL_ADC_PollForConversion(), at this stage
-           user can specify the value of timeout according to his end application      
+           user can specify the value of timeout according to his end App
        (+) To read the ADC converted values, use the HAL_ADCEx_InjectedGetValue() function.
        (+) Stop the ADC peripheral using HAL_ADCEx_InjectedStop()
   

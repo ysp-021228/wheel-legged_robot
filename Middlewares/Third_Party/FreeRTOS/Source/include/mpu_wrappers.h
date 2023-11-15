@@ -39,7 +39,7 @@ only for ports that are using the MPU. */
 
 		/*
 		 * Map standard (non MPU) API functions to equivalents that start
-		 * "MPU_".  This will cause the application code to call the MPU_
+		 * "MPU_".  This will cause the App code to call the MPU_
 		 * version, which wraps the non-MPU version with privilege promoting
 		 * then demoting code, so the kernel code always runs will full
 		 * privileges.

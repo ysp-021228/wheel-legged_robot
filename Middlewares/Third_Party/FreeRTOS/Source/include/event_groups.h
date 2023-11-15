@@ -40,11 +40,11 @@ extern "C" {
 #endif
 
 /**
- * An event group is a collection of bits to which an application can assign a
- * meaning.  For example, an application may create an event group to convey
+ * An event group is a collection of bits to which an App can assign a
+ * meaning.  For example, an App may create an event group to convey
  * the status of various CAN bus related events in which bit 0 might mean "A CAN
  * message has been received and is ready for processing", bit 1 might mean "The
- * application has queued a message that is ready for sending onto the CAN
+ * App has queued a message that is ready for sending onto the CAN
  * network", and bit 2 might mean "It is time to send a SYNC message onto the
  * CAN network" etc.  A task can then test the bit values to see which events
  * are active, and optionally enter the Blocked state to wait for a specified
@@ -56,7 +56,7 @@ extern "C" {
  * send a SYNC).
  *
  * The event groups implementation contains intelligence to avoid race
- * conditions that would otherwise occur were an application to use a simple
+ * conditions that would otherwise occur were an App to use a simple
  * variable for the same purpose.  This is particularly important with respect
  * to when a bit within an event group is to be cleared, and when bits have to
  * be set and then tested atomically - as is the case where event groups are
@@ -103,7 +103,7 @@ typedef TickType_t EventBits_t;
  * groups is created using xEventGropuCreate() then the required memory is
  * automatically dynamically allocated inside the xEventGroupCreate() function.
  * (see http://www.freertos.org/a00111.html).  If an event group is created
- * using xEventGropuCreateStatic() then the application writer must instead
+ * using xEventGropuCreateStatic() then the App writer must instead
  * provide the memory that will get used by the event group.
  * xEventGroupCreateStatic() therefore allows an event group to be created
  * without using any dynamic memory allocation.
@@ -159,7 +159,7 @@ typedef TickType_t EventBits_t;
  * groups is created using xEventGropuCreate() then the required memory is
  * automatically dynamically allocated inside the xEventGroupCreate() function.
  * (see http://www.freertos.org/a00111.html).  If an event group is created
- * using xEventGropuCreateStatic() then the application writer must instead
+ * using xEventGropuCreateStatic() then the App writer must instead
  * provide the memory that will get used by the event group.
  * xEventGroupCreateStatic() therefore allows an event group to be created
  * without using any dynamic memory allocation.

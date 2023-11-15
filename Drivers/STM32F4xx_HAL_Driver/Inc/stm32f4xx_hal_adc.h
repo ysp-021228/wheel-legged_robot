@@ -62,7 +62,7 @@ typedef struct
   uint32_t Resolution;                   /*!< Configures the ADC resolution.
                                               This parameter can be a value of @ref ADC_Resolution */
   uint32_t DataAlign;                    /*!< Specifies ADC data alignment to right (MSB on register bit 11 and LSB on register bit 0) (default setting)
-                                              or to left (if regular group: MSB on register bit 15 and LSB on register bit 4, if injected group (MSB kept as signed value due to potential negative value after offset application): MSB on register bit 14 and LSB on register bit 3).
+                                              or to left (if regular group: MSB on register bit 15 and LSB on register bit 4, if injected group (MSB kept as signed value due to potential negative value after offset App): MSB on register bit 14 and LSB on register bit 3).
                                               This parameter can be a value of @ref ADC_Data_align */
   uint32_t ScanConvMode;                 /*!< Configures the sequencer of regular and injected groups.
                                               This parameter can be associated to parameter 'DiscontinuousConvMode' to have main sequence subdivided in successive parts.

@@ -4,12 +4,12 @@
   * @author  MCD Application Team
   * @brief   CMSIS STM32F4xx Device Peripheral Access Layer Header File.
   *            
-  *          The file is the unique include file that the application programmer
+  *          The file is the unique include file that the App programmer
   *          is using in the C source code, usually in main.c. This file contains:
   *           - Configuration section that allows to select:
-  *              - The STM32F4xx device used in the target application
-  *              - To use or not the peripheral’s drivers in application code(i.e. 
-  *                code will be based on direct access to peripheral’s registers 
+  *              - The STM32F4xx device used in the target App
+  *              - To use or not the peripheralï¿½s drivers in App code(i.e.
+  *                code will be based on direct access to peripheralï¿½s registers 
   *                rather than drivers API), this option is controlled by 
   *                "#define USE_HAL_DRIVER"
   *  
@@ -70,7 +70,7 @@
 #endif /* STM32F4 */
 
 /* Uncomment the line below according to the target STM32 device used in your
-   application 
+   App
   */
 #if !defined (STM32F405xx) && !defined (STM32F415xx) && !defined (STM32F407xx) && !defined (STM32F417xx) && \
     !defined (STM32F427xx) && !defined (STM32F437xx) && !defined (STM32F429xx) && !defined (STM32F439xx) && \
@@ -115,7 +115,7 @@
 #if !defined  (USE_HAL_DRIVER)
 /**
  * @brief Comment the line below if you will not use the peripherals drivers.
-   In this case, these drivers will not be included and the application code will 
+   In this case, these drivers will not be included and the App code will
    be based on direct access to peripherals registers 
    */
   /*#define USE_HAL_DRIVER */
@@ -188,7 +188,7 @@
 #elif defined(STM32F423xx)
   #include "stm32f423xx.h"
 #else
- #error "Please select first the target STM32F4xx device used in your application (in stm32f4xx.h file)"
+ #error "Please select first the target STM32F4xx device used in your App (in stm32f4xx.h file)"
 #endif
 
 /**

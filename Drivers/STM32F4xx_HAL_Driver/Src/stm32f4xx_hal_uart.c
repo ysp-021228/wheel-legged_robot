@@ -1484,7 +1484,7 @@ HAL_StatusTypeDef HAL_UART_DMAResume(UART_HandleTypeDef *huart)
 HAL_StatusTypeDef HAL_UART_DMAStop(UART_HandleTypeDef *huart)
 {
   uint32_t dmarequest = 0x00U;
-  /* The Lock is not implemented on this API to allow the user application
+  /* The Lock is not implemented on this API to allow the user App
      to call the HAL UART API under callbacks HAL_UART_TxCpltCallback() / HAL_UART_RxCpltCallback():
      when calling HAL_DMA_Abort() API the DMA TX/RX Transfer complete interrupt is generated
      and the correspond call back is executed HAL_UART_TxCpltCallback() / HAL_UART_RxCpltCallback()

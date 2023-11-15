@@ -31,7 +31,7 @@
 
 /* Defining MPU_WRAPPERS_INCLUDED_FROM_API_FILE prevents task.h from redefining
 all the API functions to use the MPU wrappers.  That should only be done when
-task.h is included from an application file. */
+task.h is included from an App file. */
 #define MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
 /* FreeRTOS includes. */
@@ -49,7 +49,7 @@ header files above, but not in this file, in order to generate the correct
 privileged Vs unprivileged linkage and placement. */
 #undef MPU_WRAPPERS_INCLUDED_FROM_API_FILE /*lint !e961 !e750. */
 
-/* If the user has not provided application specific Rx notification macros,
+/* If the user has not provided App specific Rx notification macros,
 or #defined the notification macros away, them provide default implementations
 that uses task notifications. */
 /*lint -save -e9026 Function like macros allowed and needed here so they can be overidden. */
@@ -89,7 +89,7 @@ that uses task notifications. */
 	}
 #endif /* sbRECEIVE_COMPLETED_FROM_ISR */
 
-/* If the user has not provided an application specific Tx notification macro,
+/* If the user has not provided an App specific Tx notification macro,
 or #defined the notification macro away, them provide a default implementation
 that uses task notifications. */
 #ifndef sbSEND_COMPLETED

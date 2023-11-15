@@ -90,7 +90,7 @@ typedef void * QueueSetMemberHandle_t;
  * created using xQueueCreate() then both blocks of memory are automatically
  * dynamically allocated inside the xQueueCreate() function.  (see
  * http://www.freertos.org/a00111.html).  If a queue is created using
- * xQueueCreateStatic() then the application writer must provide the memory that
+ * xQueueCreateStatic() then the App writer must provide the memory that
  * will get used by the queue.  xQueueCreateStatic() therefore allows a queue to
  * be created without using any dynamic memory allocation.
  *
@@ -164,7 +164,7 @@ typedef void * QueueSetMemberHandle_t;
  * created using xQueueCreate() then both blocks of memory are automatically
  * dynamically allocated inside the xQueueCreate() function.  (see
  * http://www.freertos.org/a00111.html).  If a queue is created using
- * xQueueCreateStatic() then the application writer must provide the memory that
+ * xQueueCreateStatic() then the App writer must provide the memory that
  * will get used by the queue.  xQueueCreateStatic() therefore allows a queue to
  * be created without using any dynamic memory allocation.
  *
@@ -1396,7 +1396,7 @@ UBaseType_t uxQueueMessagesWaitingFromISR( const QueueHandle_t xQueue ) PRIVILEG
  * co-routines.
  *
  * These functions are called from the co-routine macro implementation and
- * should not be called directly from application code.  Instead use the macro
+ * should not be called directly from App code.  Instead use the macro
  * wrappers defined within croutine.h.
  */
 BaseType_t xQueueCRSendFromISR( QueueHandle_t xQueue, const void *pvItemToQueue, BaseType_t xCoRoutinePreviouslyWoken );

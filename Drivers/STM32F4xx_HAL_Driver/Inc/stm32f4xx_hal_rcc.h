@@ -379,7 +379,7 @@ typedef struct
 /** @defgroup RCC_AHB1_Clock_Enable_Disable AHB1 Peripheral Clock Enable Disable
   * @brief  Enable or disable the AHB1 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -439,7 +439,7 @@ typedef struct
 /** @defgroup RCC_AHB1_Peripheral_Clock_Enable_Disable_Status AHB1 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the AHB1 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -463,7 +463,7 @@ typedef struct
 /** @defgroup RCC_APB1_Clock_Enable_Disable APB1 Peripheral Clock Enable Disable
   * @brief  Enable or disable the Low Speed APB (APB1) peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -531,7 +531,7 @@ typedef struct
 /** @defgroup RCC_APB1_Peripheral_Clock_Enable_Disable_Status APB1 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the APB1 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -557,7 +557,7 @@ typedef struct
 /** @defgroup RCC_APB2_Clock_Enable_Disable APB2 Peripheral Clock Enable Disable
   * @brief  Enable or disable the High Speed APB (APB2) peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -633,7 +633,7 @@ typedef struct
 /** @defgroup RCC_APB2_Peripheral_Clock_Enable_Disable_Status APB2 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the APB2 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -826,7 +826,7 @@ typedef struct
   *         Security System CSS is enabled).
   * @note   HSI can not be stopped if it is used as system clock source. In this case,
   *         you have to select another source of the system clock then stop the HSI.
-  * @note   After enabling the HSI, the application software should wait on HSIRDY
+  * @note   After enabling the HSI, the App software should wait on HSIRDY
   *         flag to be set indicating that HSI clock is stable and can be used as
   *         system clock source.
   *         This parameter can be: ENABLE or DISABLE.
@@ -854,7 +854,7 @@ typedef struct
   */
 
 /** @brief  Macros to enable or disable the Internal Low Speed oscillator (LSI).
-  * @note   After enabling the LSI, the application software should wait on
+  * @note   After enabling the LSI, the App software should wait on
   *         LSIRDY flag to be set indicating that LSI clock is stable and can
   *         be used to clock the IWDG and/or the RTC.
   * @note   LSI can not be disabled if the IWDG is running.
@@ -875,7 +875,7 @@ typedef struct
   * @brief  Macro to configure the External High Speed oscillator (HSE).
   * @note   Transition HSE Bypass to HSE On and HSE On to HSE Bypass are not supported by this macro.
   *         User should request a transition to HSE Off first and then HSE On or HSE Bypass.
-  * @note   After enabling the HSE (RCC_HSE_ON or RCC_HSE_Bypass), the application
+  * @note   After enabling the HSE (RCC_HSE_ON or RCC_HSE_Bypass), the App
   *         software should wait on HSERDY flag to be set indicating that HSE clock
   *         is stable and can be used to clock the PLL and/or system clock.
   * @note   HSE state can not be changed if it is used directly or through the
@@ -925,7 +925,7 @@ typedef struct
   *         this domain after reset, you have to enable write access using
   *         HAL_PWR_EnableBkUpAccess() function before to configure the LSE
   *         (to be done once after reset).
-  * @note   After enabling the LSE (RCC_LSE_ON or RCC_LSE_BYPASS), the application
+  * @note   After enabling the LSE (RCC_LSE_ON or RCC_LSE_BYPASS), the App
   *         software should wait on LSERDY flag to be set indicating that LSE clock
   *         is stable and can be used to clock the RTC.
   * @param  __STATE__ specifies the new state of the LSE.
@@ -1028,7 +1028,7 @@ typedef struct
   */
 
 /** @brief  Macros to enable or disable the main PLL.
-  * @note   After enabling the main PLL, the application software should wait on
+  * @note   After enabling the main PLL, the App software should wait on
   *         PLLRDY flag to be set indicating that PLL clock is stable and can
   *         be used as system clock source.
   * @note   The main PLL can not be disabled if it is used as system clock source

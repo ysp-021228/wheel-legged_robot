@@ -965,7 +965,7 @@ typedef struct
 /** @defgroup RCCEx_AHB1_Clock_Enable_Disable AHB1 Peripheral Clock Enable Disable
   * @brief  Enables or disables the AHB1 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before 
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -1129,7 +1129,7 @@ typedef struct
 /** @defgroup RCCEx_AHB1_Peripheral_Clock_Enable_Disable_Status AHB1 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the AHB1 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -1181,7 +1181,7 @@ typedef struct
 /** @defgroup RCCEx_AHB2_Clock_Enable_Disable AHB2 Peripheral Clock Enable Disable
   * @brief  Enable or disable the AHB2 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before 
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -1235,7 +1235,7 @@ typedef struct
 /** @defgroup RCCEx_AHB2_Peripheral_Clock_Enable_Disable_Status AHB2 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the AHB1 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */ 
@@ -1262,7 +1262,7 @@ typedef struct
 /** @defgroup RCCEx_AHB3_Clock_Enable_Disable AHB3 Peripheral Clock Enable Disable
   * @brief  Enables or disables the AHB3 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before 
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{  
   */
@@ -1292,7 +1292,7 @@ typedef struct
 /** @defgroup RCCEx_AHB3_Peripheral_Clock_Enable_Disable_Status AHB3 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the AHB3 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -1309,7 +1309,7 @@ typedef struct
 /** @defgroup RCCEx_APB1_Clock_Enable_Disable APB1 Peripheral Clock Enable Disable
   * @brief  Enable or disable the Low Speed APB (APB1) peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before 
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -1471,7 +1471,7 @@ typedef struct
 /** @defgroup RCCEx_APB1_Peripheral_Clock_Enable_Disable_Status APB1 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the APB1 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -1519,7 +1519,7 @@ typedef struct
 /** @defgroup RCCEx_APB2_Clock_Enable_Disable APB2 Peripheral Clock Enable Disable
   * @brief  Enable or disable the High Speed APB (APB2) peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before 
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -1626,7 +1626,7 @@ typedef struct
 /** @defgroup RCCEx_APB2_Peripheral_Clock_Enable_Disable_Status APB2 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the APB2 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */  
@@ -2011,7 +2011,7 @@ typedef struct
 /** @defgroup RCCEx_AHB1_Clock_Enable_Disable AHB1 Peripheral Clock Enable Disable
   * @brief  Enables or disables the AHB1 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before 
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -2153,7 +2153,7 @@ typedef struct
 /** @defgroup RCCEx_AHB1_Peripheral_Clock_Enable_Disable_Status AHB1 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the AHB1 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */  
@@ -2207,7 +2207,7 @@ typedef struct
 /** @defgroup RCCEx_AHB2_Clock_Enable_Disable AHB2 Peripheral Clock Enable Disable 
   * @brief  Enable or disable the AHB2 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before 
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -2263,7 +2263,7 @@ typedef struct
 /** @defgroup RCCEx_AHB2_Peripheral_Clock_Enable_Disable_Status AHB2 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the AHB2 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -2292,7 +2292,7 @@ typedef struct
 /** @defgroup RCCEx_AHB3_Clock_Enable_Disable AHB3 Peripheral Clock Enable Disable
   * @brief  Enables or disables the AHB3 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before 
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{  
   */
@@ -2311,7 +2311,7 @@ typedef struct
 /** @defgroup RCCEx_AHB3_Peripheral_Clock_Enable_Disable_Status AHB3 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the AHB3 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -2324,7 +2324,7 @@ typedef struct
 /** @defgroup RCCEx_APB1_Clock_Enable_Disable APB1 Peripheral Clock Enable Disable
   * @brief  Enable or disable the Low Speed APB (APB1) peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before 
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{  
   */
@@ -2463,7 +2463,7 @@ typedef struct
 /** @defgroup RCCEx_APB1_Peripheral_Clock_Enable_Disable_Status APB1 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the APB1 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */ 
@@ -2507,7 +2507,7 @@ typedef struct
 /** @defgroup RCCEx_APB2_Clock_Enable_Disable APB2 Peripheral Clock Enable Disable
   * @brief  Enable or disable the High Speed APB (APB2) peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before 
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */ 
@@ -2567,7 +2567,7 @@ typedef struct
 /** @defgroup RCCEx_APB2_Peripheral_Clock_Enable_Disable_Status APB2 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the APB2 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -2879,7 +2879,7 @@ typedef struct
 /** @defgroup RCCEx_AHB1_Clock_Enable_Disable AHB1 Peripheral Clock Enable Disable
   * @brief  Enable or disable the AHB1 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before 
+  *         is disabled and the App software has to enable this clock before
   *         using it.   
   * @{
   */
@@ -2923,7 +2923,7 @@ typedef struct
 /** @defgroup RCCEx_AHB1_Peripheral_Clock_Enable_Disable_Status AHB1 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the AHB1 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -2943,7 +2943,7 @@ typedef struct
 /** @defgroup RCCEx_AHB2_Clock_Enable_Disable AHB2 Peripheral Clock Enable Disable
   * @brief  Enable or disable the AHB2 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before 
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -2959,7 +2959,7 @@ typedef struct
 /** @defgroup RCCEx_AHB2_Peripheral_Clock_Enable_Disable_Status AHB2 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the AHB2 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -2972,7 +2972,7 @@ typedef struct
 /** @defgroup RCC_APB1_Clock_Enable_Disable APB1 Peripheral Clock Enable Disable
   * @brief  Enable or disable the Low Speed APB (APB1) peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -3023,7 +3023,7 @@ typedef struct
 /** @defgroup RCCEx_APB1_Peripheral_Clock_Enable_Disable_Status APB1 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the APB1 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -3045,7 +3045,7 @@ typedef struct
 /** @defgroup RCCEx_APB2_Clock_Enable_Disable APB2 Peripheral Clock Enable Disable
   * @brief  Enable or disable the High Speed APB (APB2) peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before 
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -3081,7 +3081,7 @@ typedef struct
 /** @defgroup RCCEx_APB2_Peripheral_Clock_Enable_Disable_Status APB2 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the APB2 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -3260,7 +3260,7 @@ typedef struct
 /** @defgroup RCCEx_AHB1_Clock_Enable_Disable AHB1 Peripheral Clock Enable Disable     
   * @brief  Enables or disables the AHB1 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before 
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -3287,7 +3287,7 @@ typedef struct
 /** @defgroup RCCEx_AHB1_Peripheral_Clock_Enable_Disable_Status AHB1 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the AHB1 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -3352,7 +3352,7 @@ typedef struct
 /** @defgroup RCCEx_APB1_Peripheral_Clock_Enable_Disable_Status APB1 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the APB1 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */  
@@ -3398,7 +3398,7 @@ typedef struct
 /** @defgroup RCCEx_APB2_Peripheral_Clock_Enable_Disable_Status APB2 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the APB2 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -3530,7 +3530,7 @@ typedef struct
 /** @defgroup RCCEx_AHB1_Clock_Enable_Disable AHB1 Peripheral Clock Enable Disable
   * @brief  Enables or disables the AHB1 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before 
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -3573,7 +3573,7 @@ typedef struct
 /** @defgroup RCCEx_AHB1_Peripheral_Clock_Enable_Disable_Status AHB1 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the AHB1 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */  
@@ -3593,7 +3593,7 @@ typedef struct
 /** @defgroup RCCEX_AHB2_Clock_Enable_Disable AHB2 Peripheral Clock Enable Disable
   * @brief  Enable or disable the AHB2 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before 
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -3609,7 +3609,7 @@ typedef struct
 /** @defgroup RCCEx_AHB2_Peripheral_Clock_Enable_Disable_Status AHB2 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the AHB2 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -3622,7 +3622,7 @@ typedef struct
 /** @defgroup RCCEx_APB1_Clock_Enable_Disable APB1 Peripheral Clock Enable Disable
   * @brief  Enable or disable the Low Speed APB (APB1) peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before 
+  *         is disabled and the App software has to enable this clock before
   *         using it. 
   * @{
   */
@@ -3673,7 +3673,7 @@ typedef struct
 /** @defgroup RCCEx_APB1_Peripheral_Clock_Enable_Disable_Status APB1 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the APB1 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -3735,7 +3735,7 @@ typedef struct
 /** @defgroup RCCEx_APB2_Peripheral_Clock_Enable_Disable_Status APB2 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the APB2 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -3906,7 +3906,7 @@ typedef struct
 /** @defgroup RCCEx_AHB1_Clock_Enable_Disable AHB1 Peripheral Clock Enable Disable
   * @brief  Enables or disables the AHB1 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before 
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -3989,7 +3989,7 @@ typedef struct
 /** @defgroup RCCEx_AHB1_Peripheral_Clock_Enable_Disable_Status AHB1 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the AHB1 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -4019,7 +4019,7 @@ typedef struct
 /** @defgroup RCCEx_AHB2_Clock_Enable_Disable AHB2 Peripheral Clock Enable Disable
   * @brief  Enable or disable the AHB2 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before 
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -4052,7 +4052,7 @@ typedef struct
 /** @defgroup RCCEx_AHB2_Peripheral_Clock_Enable_Disable_Status AHB2 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the AHB2 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -4071,7 +4071,7 @@ typedef struct
 /** @defgroup RCCEx_AHB3_Clock_Enable_Disable AHB3 Peripheral Clock Enable Disable
   * @brief  Enables or disables the AHB3 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before 
+  *         is disabled and the App software has to enable this clock before
   *         using it. 
   * @{
   */
@@ -4099,7 +4099,7 @@ typedef struct
 /** @defgroup RCCEx_AHB3_Peripheral_Clock_Enable_Disable_Status AHB3 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the AHB3 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -4115,7 +4115,7 @@ typedef struct
 /** @defgroup RCCEx_APB1_Clock_Enable_Disable APB1 Peripheral Clock Enable Disable
   * @brief  Enable or disable the Low Speed APB (APB1) peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before 
+  *         is disabled and the App software has to enable this clock before
   *         using it. 
   * @{
   */
@@ -4278,7 +4278,7 @@ typedef struct
 /** @defgroup RCCEx_APB1_Peripheral_Clock_Enable_Disable_Status APB1 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the APB1 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -4328,7 +4328,7 @@ typedef struct
 /** @defgroup RCCEx_APB2_Clock_Enable_Disable APB2 Peripheral Clock Enable Disable
   * @brief  Enable or disable the High Speed APB (APB2) peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before 
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -4403,7 +4403,7 @@ typedef struct
 /** @defgroup RCCEx_APB2_Peripheral_Clock_Enable_Disable_Status APB2 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the APB2 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -4710,7 +4710,7 @@ typedef struct
 /** @defgroup RCCEx_AHB1_Clock_Enable_Disable AHB1 Peripheral Clock Enable Disable
   * @brief  Enables or disables the AHB1 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before 
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -4773,7 +4773,7 @@ typedef struct
 /** @defgroup RCCEx_AHB1_Peripheral_Clock_Enable_Disable_Status AHB1 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the AHB1 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -4807,7 +4807,7 @@ typedef struct
 /** @defgroup RCCEx_AHB2_Clock_Enable_Disable AHB2 Peripheral Clock Enable Disable
   * @brief  Enable or disable the AHB2 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before 
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -4844,7 +4844,7 @@ typedef struct
 /** @defgroup RCCEx_AHB2_Peripheral_Clock_Enable_Disable_Status AHB2 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the AHB2 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -4865,7 +4865,7 @@ typedef struct
 /** @defgroup RCCEx_AHB3_Clock_Enable_Disable AHB3 Peripheral Clock Enable Disable
   * @brief  Enables or disables the AHB3 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before 
+  *         is disabled and the App software has to enable this clock before
   *         using it. 
   * @{
   */
@@ -4895,7 +4895,7 @@ typedef struct
 /** @defgroup RCCEx_AHB3_Peripheral_Clock_Enable_Disable_Status AHB3 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the AHB3 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -4914,7 +4914,7 @@ typedef struct
 /** @defgroup RCCEx_APB1_Clock_Enable_Disable APB1 Peripheral Clock Enable Disable
   * @brief  Enable or disable the Low Speed APB (APB1) peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before 
+  *         is disabled and the App software has to enable this clock before
   *         using it. 
   * @{
   */
@@ -5123,7 +5123,7 @@ typedef struct
 /** @defgroup RCCEx_APB1_Peripheral_Clock_Enable_Disable_Status APB1 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the APB1 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -5194,7 +5194,7 @@ typedef struct
 /** @defgroup RCCEx_APB2_Clock_Enable_Disable APB2 Peripheral Clock Enable Disable
   * @brief  Enable or disable the High Speed APB (APB2) peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before 
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -5306,7 +5306,7 @@ typedef struct
 /** @defgroup RCCEx_APB2_Peripheral_Clock_Enable_Disable_Status APB2 Peripheral Clock Enable Disable Status
   * @brief  Get the enable or disable status of the APB2 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
-  *         is disabled and the application software has to enable this clock before
+  *         is disabled and the App software has to enable this clock before
   *         using it.
   * @{
   */
@@ -5760,7 +5760,7 @@ typedef struct
   *           
   * @param  __PLLQ__ specifies the division factor for OTG FS, SDIO and RNG clocks
   *         This parameter must be a number between Min_Data = 2 and Max_Data = 15.
-  * @note   If the USB OTG FS is used in your application, you have to set the
+  * @note   If the USB OTG FS is used in your App, you have to set the
   *         PLLQ parameter correctly to have 48 MHz clock for the USB. However,
   *         the SDIO and RNG need a frequency lower than or equal to 48 MHz to work
   *         correctly.
@@ -5801,7 +5801,7 @@ typedef struct
   *           
   * @param  __PLLQ__ specifies the division factor for OTG FS, SDIO and RNG clocks
   *         This parameter must be a number between Min_Data = 2 and Max_Data = 15.
-  * @note   If the USB OTG FS is used in your application, you have to set the
+  * @note   If the USB OTG FS is used in your App, you have to set the
   *         PLLQ parameter correctly to have 48 MHz clock for the USB. However,
   *         the SDIO and RNG need a frequency lower than or equal to 48 MHz to work
   *         correctly.

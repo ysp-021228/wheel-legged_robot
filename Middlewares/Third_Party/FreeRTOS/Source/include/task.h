@@ -61,7 +61,7 @@ extern "C" {
 typedef void * TaskHandle_t;
 
 /*
- * Defines the prototype to which the application task hook function must
+ * Defines the prototype to which the App task hook function must
  * conform.
  */
 typedef BaseType_t (*TaskHookFunction_t)( void * );
@@ -244,7 +244,7 @@ is used in assert() statements. */
  * xTaskCreate() then both blocks of memory are automatically dynamically
  * allocated inside the xTaskCreate() function.  (see
  * http://www.freertos.org/a00111.html).  If a task is created using
- * xTaskCreateStatic() then the application writer must provide the required
+ * xTaskCreateStatic() then the App writer must provide the required
  * memory.  xTaskCreateStatic() therefore allows a task to be created without
  * using any dynamic memory allocation.
  *
@@ -345,7 +345,7 @@ is used in assert() statements. */
  * xTaskCreate() then both blocks of memory are automatically dynamically
  * allocated inside the xTaskCreate() function.  (see
  * http://www.freertos.org/a00111.html).  If a task is created using
- * xTaskCreateStatic() then the application writer must provide the required
+ * xTaskCreateStatic() then the App writer must provide the required
  * memory.  xTaskCreateStatic() therefore allows a task to be created without
  * using any dynamic memory allocation.
  *
@@ -532,10 +532,10 @@ TaskHandle_t xHandle;
  * Internally, within the FreeRTOS implementation, tasks use two blocks of
  * memory.  The first block is used to hold the task's data structures.  The
  * second block is used by the task as its stack.  If a task is created using
- * xTaskCreateRestricted() then the stack is provided by the application writer,
+ * xTaskCreateRestricted() then the stack is provided by the App writer,
  * and the memory used to hold the task's data structure is automatically
  * dynamically allocated inside the xTaskCreateRestricted() function.  If a task
- * is created using xTaskCreateRestrictedStatic() then the application writer
+ * is created using xTaskCreateRestrictedStatic() then the App writer
  * must provide the memory used to hold the task's data structures too.
  * xTaskCreateRestrictedStatic() therefore allows a memory protected task to be
  * created without using any dynamic memory allocation.
@@ -668,11 +668,11 @@ void vTaskAllocateMPURegions( TaskHandle_t xTask, const MemoryRegion_t * const p
  * NOTE:  The idle task is responsible for freeing the kernel allocated
  * memory from tasks that have been deleted.  It is therefore important that
  * the idle task is not starved of microcontroller processing time if your
- * application makes any calls to vTaskDelete ().  Memory allocated by the
+ * App makes any calls to vTaskDelete ().  Memory allocated by the
  * task code is not automatically freed, and should be freed before the task
  * is deleted.
  *
- * See the demo application file death.c for sample code that utilises
+ * See the demo App file death.c for sample code that utilises
  * vTaskDelete ().
  *
  * @param xTask The handle of the task to be deleted.  Passing NULL will
@@ -1143,7 +1143,7 @@ BaseType_t xTaskResumeFromISR( TaskHandle_t xTaskToResume ) PRIVILEGED_FUNCTION;
  * Starts the real time kernel tick processing.  After calling the kernel
  * has control over which tasks are executed and when.
  *
- * See the demo application file main.c for an example of creating
+ * See the demo App file main.c for an example of creating
  * tasks and starting the kernel.
  *
  * Example usage:
@@ -1177,7 +1177,7 @@ void vTaskStartScheduler( void ) PRIVILEGED_FUNCTION;
  * stop.  Execution then resumes from the point where vTaskStartScheduler ()
  * was called, as if vTaskStartScheduler () had just returned.
  *
- * See the demo application file main. c in the demo/PC directory for an
+ * See the demo App file main. c in the demo/PC directory for an
  * example that uses vTaskEndScheduler ().
  *
  * vTaskEndScheduler () requires an exit function to be defined within the
@@ -1185,7 +1185,7 @@ void vTaskStartScheduler( void ) PRIVILEGED_FUNCTION;
  * performs hardware specific operations such as stopping the kernel tick.
  *
  * vTaskEndScheduler () will cause all of the resources allocated by the
- * kernel to be freed - but will not free resources allocated by application
+ * kernel to be freed - but will not free resources allocated by App
  * tasks.
  *
  * Example usage:
@@ -1453,7 +1453,7 @@ constant. */
 
 	/* Each task contains an array of pointers that is dimensioned by the
 	configNUM_THREAD_LOCAL_STORAGE_POINTERS setting in FreeRTOSConfig.h.  The
-	kernel does not use the pointers itself, so the application writer can use
+	kernel does not use the pointers itself, so the App writer can use
 	the pointers for any purpose they wish.  The following two functions are
 	used to set and query a pointer respectively. */
 	void vTaskSetThreadLocalStoragePointer( TaskHandle_t xTaskToSet, BaseType_t xIndex, void *pvValue ) PRIVILEGED_FUNCTION;
@@ -1591,7 +1591,7 @@ UBaseType_t uxTaskGetSystemState( TaskStatus_t * const pxTaskStatusArray, const 
  * configuration section of the FreeRTOS.org website for more information.
  *
  * NOTE 1: This function will disable interrupts for its duration.  It is
- * not intended for normal application runtime use but as a debug aid.
+ * not intended for normal App runtime use but as a debug aid.
  *
  * Lists all the current tasks, along with their current state and stack
  * usage high water mark.
@@ -1634,7 +1634,7 @@ void vTaskList( char * pcWriteBuffer ) PRIVILEGED_FUNCTION; /*lint !e971 Unquali
  * <PRE>void vTaskGetRunTimeStats( char *pcWriteBuffer );</PRE>
  *
  * configGENERATE_RUN_TIME_STATS and configUSE_STATS_FORMATTING_FUNCTIONS
- * must both be defined as 1 for this function to be available.  The application
+ * must both be defined as 1 for this function to be available.  The App
  * must also then provide definitions for
  * portCONFIGURE_TIMER_FOR_RUN_TIME_STATS() and portGET_RUN_TIME_COUNTER_VALUE()
  * to configure a peripheral timer/counter and return the timers current count
@@ -1642,7 +1642,7 @@ void vTaskList( char * pcWriteBuffer ) PRIVILEGED_FUNCTION; /*lint !e971 Unquali
  * the tick count.
  *
  * NOTE 1: This function will disable interrupts for its duration.  It is
- * not intended for normal application runtime use but as a debug aid.
+ * not intended for normal App runtime use but as a debug aid.
  *
  * Setting configGENERATE_RUN_TIME_STATS to 1 will result in a total
  * accumulated execution time being stored for each task.  The resolution

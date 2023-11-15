@@ -26,7 +26,7 @@
  *  
  *----------------------------------------------------------------------------
  *
- * Portions Copyright © 2016 STMicroelectronics International N.V. All rights reserved.
+ * Portions Copyright ï¿½ 2016 STMicroelectronics International N.V. All rights reserved.
  * Portions Copyright (c) 2013 ARM LIMITED
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without
@@ -122,7 +122,7 @@ The file cmsis_os.h contains:
 <b>Name conventions and header file modifications</b>
 
 All definitions are prefixed with \b os to give an unique name space for CMSIS-RTOS functions.
-Definitions that are prefixed \b os_ are not used in the application code but local to this header file.
+Definitions that are prefixed \b os_ are not used in the App code but local to this header file.
 All definitions and functions that belong to a module are grouped and have a common prefix, i.e. \b osThread.
 
 Definitions that are marked with <b>CAN BE CHANGED</b> can be adapted towards the needs of the actual CMSIS-RTOS implementation.

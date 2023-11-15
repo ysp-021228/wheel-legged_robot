@@ -112,7 +112,7 @@ debugger. */
 
 /*
  * Setup the timer to generate the tick interrupts.  The implementation in this
- * file is weak to allow application writers to change the timer used to
+ * file is weak to allow App writers to change the timer used to
  * generate the tick interrupt.
  */
 void vPortSetupTimerInterrupt( void );
@@ -223,7 +223,7 @@ volatile uint32_t ulDummy = 0;
 	should instead call vTaskDelete( NULL ).
 
 	Artificially force an assert() to be triggered if configASSERT() is
-	defined, then stop here so application writers can catch the error. */
+	defined, then stop here so App writers can catch the error. */
 	configASSERT( uxCriticalNesting == ~0UL );
 	portDISABLE_INTERRUPTS();
 	while( ulDummy == 0 )
@@ -380,7 +380,7 @@ BaseType_t xPortStartScheduler( void )
 
 	/* Should never get here as the tasks will now be executing!  Call the task
 	exit error function to prevent compiler warnings about a static function
-	not being called in the case that the application writer overrides this
+	not being called in the case that the App writer overrides this
 	functionality by defining configTASK_RETURN_ADDRESS.  Call
 	vTaskSwitchContext() so link time optimisation does not remove the
 	symbol. */
@@ -761,7 +761,7 @@ static void vPortEnableVFP( void )
 		to be pre-emption priority bits.  The following assertion will fail if
 		this is not the case (if some bits represent a sub-priority).
 
-		If the application only uses CMSIS libraries for interrupt
+		If the App only uses CMSIS libraries for interrupt
 		configuration then the correct setting can be achieved on all Cortex-M
 		devices by calling NVIC_SetPriorityGrouping( 0 ); before starting the
 		scheduler.  Note however that some vendor specific peripheral libraries

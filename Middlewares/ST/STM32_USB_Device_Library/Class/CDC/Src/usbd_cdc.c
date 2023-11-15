@@ -27,11 +27,11 @@
   *             - Union Functional collection (using 1 IN endpoint for control)
   *             - Data interface class
   *
-  *           These aspects may be enriched or modified for a specific user application.
+  *           These aspects may be enriched or modified for a specific user App.
   *
   *            This driver doesn't implement the following aspects of the specification
   *            (but it is possible to manage these features with some modifications on this driver):
-  *             - Any class-specific aspect relative to communication classes should be managed by user application.
+  *             - Any class-specific aspect relative to communication classes should be managed by user App.
   *             - All communication classes other than PSTN are not managed
   *
   *  @endverbatim
@@ -716,7 +716,7 @@ static uint8_t  USBD_CDC_DataOut (USBD_HandleTypeDef *pdev, uint8_t epnum)
   hcdc->RxLength = USBD_LL_GetRxDataSize (pdev, epnum);
 
   /* USB data will be immediately processed, this allow next USB traffic being
-  NAKed till the end of the application Xfer */
+  NAKed till the end of the App Xfer */
   if(pdev->pClassData != NULL)
   {
     ((USBD_CDC_ItfTypeDef *)pdev->pUserData)->Receive(hcdc->RxBuffer, &hcdc->RxLength);

@@ -30,7 +30,7 @@
 
 /* Defining MPU_WRAPPERS_INCLUDED_FROM_API_FILE prevents task.h from redefining
 all the API functions to use the MPU wrappers.  That should only be done when
-task.h is included from an application file. */
+task.h is included from an App file. */
 #define MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
 #include "FreeRTOS.h"
@@ -49,7 +49,7 @@ privileged Vs unprivileged linkage and placement. */
 #undef MPU_WRAPPERS_INCLUDED_FROM_API_FILE /*lint !e961 !e750. */
 
 
-/* This entire source file will be skipped if the application is not configured
+/* This entire source file will be skipped if the App is not configured
 to include software timer functionality.  This #if is closed at the very bottom
 of this file.  If you want to include software timer functionality then ensure
 configUSE_TIMERS is set to 1 in FreeRTOSConfig.h. */
@@ -143,8 +143,8 @@ PRIVILEGED_DATA static TaskHandle_t xTimerTaskHandle = NULL;
 
 #if( configSUPPORT_STATIC_ALLOCATION == 1 )
 
-	/* If static allocation is supported then the application must provide the
-	following callback function - which enables the application to optionally
+	/* If static allocation is supported then the App must provide the
+	following callback function - which enables the App to optionally
 	provide the memory that will be used by the timer task as the task's stack
 	and TCB. */
 	extern void vApplicationGetTimerTaskMemory( StaticTask_t **ppxTimerTaskTCBBuffer, StackType_t **ppxTimerTaskStackBuffer, uint32_t *pulTimerTaskStackSize );
@@ -511,9 +511,9 @@ BaseType_t xListWasEmpty;
 	{
 		extern void vApplicationDaemonTaskStartupHook( void );
 
-		/* Allow the application writer to execute some code in the context of
+		/* Allow the App writer to execute some code in the context of
 		this task at the point the task starts executing.  This is useful if the
-		application includes initialisation code that would benefit from
+		App includes initialisation code that would benefit from
 		executing after the scheduler has been started. */
 		vApplicationDaemonTaskStartupHook();
 	}
@@ -1067,7 +1067,7 @@ Timer_t * const pxTimer = ( Timer_t * ) xTimer;
 #endif /* configUSE_TRACE_FACILITY */
 /*-----------------------------------------------------------*/
 
-/* This entire source file will be skipped if the application is not configured
+/* This entire source file will be skipped if the App is not configured
 to include software timer functionality.  If you want to include software timer
 functionality then ensure configUSE_TIMERS is set to 1 in FreeRTOSConfig.h. */
 #endif /* configUSE_TIMERS == 1 */

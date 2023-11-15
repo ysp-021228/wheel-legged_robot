@@ -126,7 +126,7 @@ const TickType_t xValueOfInsertion = pxNewListItem->xItemValue;
 	else
 	{
 		/* *** NOTE ***********************************************************
-		If you find your application is crashing here then likely causes are
+		If you find your App is crashing here then likely causes are
 		listed below.  In addition see http://www.freertos.org/FAQHelp.html for
 		more tips, and ensure configASSERT() is defined!
 		http://www.freertos.org/a00110.html#configASSERT

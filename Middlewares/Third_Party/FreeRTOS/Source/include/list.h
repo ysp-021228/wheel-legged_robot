@@ -28,7 +28,7 @@
 /*
  * This is the list implementation used by the scheduler.  While it is tailored
  * heavily for the schedulers needs, it is also available for use by
- * application code.
+ * App code.
  *
  * list_ts can only store pointers to list_item_ts.  Each ListItem_t contains a
  * numeric value (xItemValue).  Most of the time the lists are sorted in
@@ -98,7 +98,7 @@ extern "C" {
 
 /* Macros that can be used to place known values within the list structures,
 then check that the known values do not get corrupted during the execution of
-the application.   These may catch the list data structures being overwritten in
+the App.   These may catch the list data structures being overwritten in
 memory.  They will not catch data errors caused by incorrect configuration or
 use of FreeRTOS.*/
 #if( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 0 )

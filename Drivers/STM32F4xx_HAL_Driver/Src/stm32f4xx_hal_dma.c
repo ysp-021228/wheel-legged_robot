@@ -34,7 +34,7 @@
           (+) Use HAL_DMA_Start() to start DMA transfer after the configuration of Source 
               address and destination address and the Length of data to be transferred.
           (+) Use HAL_DMA_PollForTransfer() to poll for the end of current transfer, in this  
-              case a fixed Timeout can be configured by User depending from his application.
+              case a fixed Timeout can be configured by User depending from his App.
           (+) Use HAL_DMA_Abort() function to abort the current transfer.
 
      *** Interrupt mode IO operation ***

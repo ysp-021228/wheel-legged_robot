@@ -141,7 +141,7 @@ HAL_StatusTypeDef USB_SetTurnaroundTime(USB_OTG_GlobalTypeDef *USBx,
   uint32_t UsbTrd;
 
   /* The USBTRD is configured according to the tables below, depending on AHB frequency
-  used by application. In the low AHB frequency range it is used to stretch enough the USB response
+  used by App. In the low AHB frequency range it is used to stretch enough the USB response
   time to IN tokens, the USB turnaround time, so to compensate for the longer AHB read access
   latency to the Data FIFO */
   if (speed == USBD_FS_SPEED)
@@ -1472,7 +1472,7 @@ HAL_StatusTypeDef USB_InitFSLSPClkSel(USB_OTG_GlobalTypeDef *USBx, uint8_t freq)
 * @brief  USB_OTG_ResetPort : Reset Host Port
   * @param  USBx  Selected device
   * @retval HAL status
-  * @note (1)The application must wait at least 10 ms
+  * @note (1)The App must wait at least 10 ms
   *   before clearing the reset bit.
   */
 HAL_StatusTypeDef USB_ResetPort(USB_OTG_GlobalTypeDef *USBx)

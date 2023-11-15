@@ -33,7 +33,7 @@
 	#error "include FreeRTOS.h must appear in source files before include timers.h"
 #endif
 
-/*lint -save -e537 This headers are only multiply included if the application code
+/*lint -save -e537 This headers are only multiply included if the App code
 happens to also be including task.h. */
 #include "task.h"
 /*lint -restore */
@@ -101,7 +101,7 @@ typedef void (*PendedFunction_t)( void *, uint32_t );
  * is created using xTimerCreate() then the required memory is automatically
  * dynamically allocated inside the xTimerCreate() function.  (see
  * http://www.freertos.org/a00111.html).  If a software timer is created using
- * xTimerCreateStatic() then the application writer must provide the memory that
+ * xTimerCreateStatic() then the App writer must provide the memory that
  * will get used by the software timer.  xTimerCreateStatic() therefore allows a
  * software timer to be created without using any dynamic memory allocation.
  *
@@ -247,7 +247,7 @@ typedef void (*PendedFunction_t)( void *, uint32_t );
  * is created using xTimerCreate() then the required memory is automatically
  * dynamically allocated inside the xTimerCreate() function.  (see
  * http://www.freertos.org/a00111.html).  If a software timer is created using
- * xTimerCreateStatic() then the application writer must provide the memory that
+ * xTimerCreateStatic() then the App writer must provide the memory that
  * will get used by the software timer.  xTimerCreateStatic() therefore allows a
  * software timer to be created without using any dynamic memory allocation.
  *
@@ -456,7 +456,7 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
  * Timer functionality is provided by a timer service/daemon task.  Many of the
  * public FreeRTOS timer API functions send commands to the timer service task
  * through a queue called the timer command queue.  The timer command queue is
- * private to the kernel itself and is not directly accessible to application
+ * private to the kernel itself and is not directly accessible to App
  * code.  The length of the timer command queue is set by the
  * configTIMER_QUEUE_LENGTH configuration constant.
  *
@@ -508,7 +508,7 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
  * Timer functionality is provided by a timer service/daemon task.  Many of the
  * public FreeRTOS timer API functions send commands to the timer service task
  * through a queue called the timer command queue.  The timer command queue is
- * private to the kernel itself and is not directly accessible to application
+ * private to the kernel itself and is not directly accessible to App
  * code.  The length of the timer command queue is set by the
  * configTIMER_QUEUE_LENGTH configuration constant.
  *
@@ -552,7 +552,7 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
  * Timer functionality is provided by a timer service/daemon task.  Many of the
  * public FreeRTOS timer API functions send commands to the timer service task
  * through a queue called the timer command queue.  The timer command queue is
- * private to the kernel itself and is not directly accessible to application
+ * private to the kernel itself and is not directly accessible to App
  * code.  The length of the timer command queue is set by the
  * configTIMER_QUEUE_LENGTH configuration constant.
  *
@@ -630,7 +630,7 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
  * Timer functionality is provided by a timer service/daemon task.  Many of the
  * public FreeRTOS timer API functions send commands to the timer service task
  * through a queue called the timer command queue.  The timer command queue is
- * private to the kernel itself and is not directly accessible to application
+ * private to the kernel itself and is not directly accessible to App
  * code.  The length of the timer command queue is set by the
  * configTIMER_QUEUE_LENGTH configuration constant.
  *
@@ -668,7 +668,7 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
  * Timer functionality is provided by a timer service/daemon task.  Many of the
  * public FreeRTOS timer API functions send commands to the timer service task
  * through a queue called the timer command queue.  The timer command queue is
- * private to the kernel itself and is not directly accessible to application
+ * private to the kernel itself and is not directly accessible to App
  * code.  The length of the timer command queue is set by the
  * configTIMER_QUEUE_LENGTH configuration constant.
  *
@@ -1102,7 +1102,7 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
  *                                          BaseType_t *pxHigherPriorityTaskWoken );
  *
  *
- * Used from application interrupt service routines to defer the execution of a
+ * Used from App interrupt service routines to defer the execution of a
  * function to the RTOS daemon task (the timer service task, hence this function
  * is implemented in timers.c and is prefixed with 'Timer').
  *

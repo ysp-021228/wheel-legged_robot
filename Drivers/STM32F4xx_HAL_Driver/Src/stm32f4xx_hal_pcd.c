@@ -1360,7 +1360,7 @@ void HAL_PCD_IRQHandler(PCD_HandleTypeDef *hpcd)
     /* Handle Incomplete ISO IN Interrupt */
     if (__HAL_PCD_GET_FLAG(hpcd, USB_OTG_GINTSTS_IISOIXFR))
     {
-      /* Keep application checking the corresponding Iso IN endpoint
+      /* Keep App checking the corresponding Iso IN endpoint
       causing the incomplete Interrupt */
       epnum = 0U;
 
@@ -1376,7 +1376,7 @@ void HAL_PCD_IRQHandler(PCD_HandleTypeDef *hpcd)
     /* Handle Incomplete ISO OUT Interrupt */
     if (__HAL_PCD_GET_FLAG(hpcd, USB_OTG_GINTSTS_PXFR_INCOMPISOOUT))
     {
-      /* Keep application checking the corresponding Iso OUT endpoint
+      /* Keep App checking the corresponding Iso OUT endpoint
       causing the incomplete Interrupt */
       epnum = 0U;
 

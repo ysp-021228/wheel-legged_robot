@@ -143,7 +143,7 @@ BaseType_t xCoRoutineCreate( crCOROUTINE_CODE pxCoRoutineCode, UBaseType_t uxPri
  * preempted by a task.  Co-routines execute cooperatively so one
  * co-routine cannot be preempted by another, but can be preempted by a task.
  *
- * If an application comprises of both tasks and co-routines then
+ * If an App comprises of both tasks and co-routines then
  * vCoRoutineSchedule should be called from the idle task (in an idle task
  * hook).
  *
@@ -236,7 +236,7 @@ void vCoRoutineSchedule( void );
 
 /*
  * These macros are intended for internal use by the co-routine implementation
- * only.  The macros should not be used directly by application writers.
+ * only.  The macros should not be used directly by App writers.
  */
 #define crSET_STATE0( xHandle ) ( ( CRCB_t * )( xHandle ) )->uxState = (__LINE__ * 2); return; case (__LINE__ * 2):
 #define crSET_STATE1( xHandle ) ( ( CRCB_t * )( xHandle ) )->uxState = ((__LINE__ * 2)+1); return; case ((__LINE__ * 2)+1):
@@ -696,7 +696,7 @@ void vCoRoutineSchedule( void );
 /*
  * This function is intended for internal use by the co-routine macros only.
  * The macro nature of the co-routine implementation requires that the
- * prototype appears here.  The function should not be used by application
+ * prototype appears here.  The function should not be used by App
  * writers.
  *
  * Removes the current co-routine from its ready list and places it in the
@@ -706,7 +706,7 @@ void vCoRoutineAddToDelayedList( TickType_t xTicksToDelay, List_t *pxEventList )
 
 /*
  * This function is intended for internal use by the queue implementation only.
- * The function should not be used by application writers.
+ * The function should not be used by App writers.
  *
  * Removes the highest priority co-routine from the event list and places it in
  * the pending ready list.

@@ -37,7 +37,7 @@
 
 /* Defining MPU_WRAPPERS_INCLUDED_FROM_API_FILE prevents task.h from redefining
 all the API functions to use the MPU wrappers.  That should only be done when
-task.h is included from an application file. */
+task.h is included from an App file. */
 #define MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
 #include "FreeRTOS.h"
@@ -57,7 +57,7 @@ task.h is included from an application file. */
 
 /* Allocate the memory for the heap. */
 #if( configAPPLICATION_ALLOCATED_HEAP == 1 )
-	/* The application writer has already defined the array used for the RTOS
+	/* The App writer has already defined the array used for the RTOS
 	heap - probably so it can be placed in a special segment or address. */
 	extern uint8_t ucHeap[ configTOTAL_HEAP_SIZE ];
 #else
@@ -104,7 +104,7 @@ static size_t xMinimumEverFreeBytesRemaining = 0U;
 
 /* Gets set to the top bit of an size_t type.  When this bit in the xBlockSize
 member of an BlockLink_t structure is set then the block belongs to the
-application.  When the bit is free the block is still part of the free heap
+App.  When the bit is free the block is still part of the free heap
 space. */
 static size_t xBlockAllocatedBit = 0;
 
@@ -130,7 +130,7 @@ void *pvReturn = NULL;
 
 		/* Check the requested block size is not so large that the top bit is
 		set.  The top bit of the block size member of the BlockLink_t structure
-		is used to determine who owns the block - the application or the
+		is used to determine who owns the block - the App or the
 		kernel, so it must be free. */
 		if( ( xWantedSize & xBlockAllocatedBit ) == 0 )
 		{
@@ -218,7 +218,7 @@ void *pvReturn = NULL;
 					}
 
 					/* The block is being returned - it is allocated and owned
-					by the application and has no "next" block. */
+					by the App and has no "next" block. */
 					pxBlock->xBlockSize |= xBlockAllocatedBit;
 					pxBlock->pxNextFreeBlock = NULL;
 				}

@@ -117,7 +117,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * is created using xSemaphoreCreateBinary() then the required memory is
  * automatically dynamically allocated inside the xSemaphoreCreateBinary()
  * function.  (see http://www.freertos.org/a00111.html).  If a binary semaphore
- * is created using xSemaphoreCreateBinaryStatic() then the application writer
+ * is created using xSemaphoreCreateBinaryStatic() then the App writer
  * must provide the memory.  xSemaphoreCreateBinaryStatic() therefore allows a
  * binary semaphore to be created without using any dynamic memory allocation.
  *
@@ -178,7 +178,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * is created using xSemaphoreCreateBinary() then the required memory is
  * automatically dynamically allocated inside the xSemaphoreCreateBinary()
  * function.  (see http://www.freertos.org/a00111.html).  If a binary semaphore
- * is created using xSemaphoreCreateBinaryStatic() then the application writer
+ * is created using xSemaphoreCreateBinaryStatic() then the App writer
  * must provide the memory.  xSemaphoreCreateBinaryStatic() therefore allows a
  * binary semaphore to be created without using any dynamic memory allocation.
  *
@@ -669,7 +669,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * using xSemaphoreCreateMutex() then the required memory is automatically
  * dynamically allocated inside the xSemaphoreCreateMutex() function.  (see
  * http://www.freertos.org/a00111.html).  If a mutex is created using
- * xSemaphoreCreateMutexStatic() then the application writer must provided the
+ * xSemaphoreCreateMutexStatic() then the App writer must provided the
  * memory.  xSemaphoreCreateMutexStatic() therefore allows a mutex to be created
  * without using any dynamic memory allocation.
  *
@@ -728,7 +728,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * using xSemaphoreCreateMutex() then the required memory is automatically
  * dynamically allocated inside the xSemaphoreCreateMutex() function.  (see
  * http://www.freertos.org/a00111.html).  If a mutex is created using
- * xSemaphoreCreateMutexStatic() then the application writer must provided the
+ * xSemaphoreCreateMutexStatic() then the App writer must provided the
  * memory.  xSemaphoreCreateMutexStatic() therefore allows a mutex to be created
  * without using any dynamic memory allocation.
  *
@@ -791,7 +791,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * automatically dynamically allocated inside the
  * xSemaphoreCreateRecursiveMutex() function.  (see
  * http://www.freertos.org/a00111.html).  If a recursive mutex is created using
- * xSemaphoreCreateRecursiveMutexStatic() then the application writer must
+ * xSemaphoreCreateRecursiveMutexStatic() then the App writer must
  * provide the memory that will get used by the mutex.
  * xSemaphoreCreateRecursiveMutexStatic() therefore allows a recursive mutex to
  * be created without using any dynamic memory allocation.
@@ -858,7 +858,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * automatically dynamically allocated inside the
  * xSemaphoreCreateRecursiveMutex() function.  (see
  * http://www.freertos.org/a00111.html).  If a recursive mutex is created using
- * xSemaphoreCreateRecursiveMutexStatic() then the application writer must
+ * xSemaphoreCreateRecursiveMutexStatic() then the App writer must
  * provide the memory that will get used by the mutex.
  * xSemaphoreCreateRecursiveMutexStatic() therefore allows a recursive mutex to
  * be created without using any dynamic memory allocation.
@@ -935,7 +935,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * required memory is automatically dynamically allocated inside the
  * xSemaphoreCreateCounting() function.  (see
  * http://www.freertos.org/a00111.html).  If a counting semaphore is created
- * using xSemaphoreCreateCountingStatic() then the application writer can
+ * using xSemaphoreCreateCountingStatic() then the App writer can
  * instead optionally provide the memory that will get used by the counting
  * semaphore.  xSemaphoreCreateCountingStatic() therefore allows a counting
  * semaphore to be created without using any dynamic memory allocation.
@@ -1015,7 +1015,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * required memory is automatically dynamically allocated inside the
  * xSemaphoreCreateCounting() function.  (see
  * http://www.freertos.org/a00111.html).  If a counting semaphore is created
- * using xSemaphoreCreateCountingStatic() then the application writer must
+ * using xSemaphoreCreateCountingStatic() then the App writer must
  * provide the memory.  xSemaphoreCreateCountingStatic() therefore allows a
  * counting semaphore to be created without using any dynamic memory allocation.
  *

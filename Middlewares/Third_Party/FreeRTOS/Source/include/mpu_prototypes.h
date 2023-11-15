@@ -28,7 +28,7 @@
 /*
  * When the MPU is used the standard (non MPU) API functions are mapped to
  * equivalents that start "MPU_", the prototypes for which are defined in this
- * header files.  This will cause the application code to call the MPU_ version
+ * header files.  This will cause the App code to call the MPU_ version
  * which wraps the non-MPU version with privilege promoting then demoting code,
  * so the kernel code always runs will full privileges.
  */

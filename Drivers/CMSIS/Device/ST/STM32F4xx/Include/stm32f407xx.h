@@ -12906,10 +12906,10 @@ typedef struct
 #define ETH_MACFFR_PCF                                ETH_MACFFR_PCF_Msk       /* Pass control frames: 3 cases */
 #define ETH_MACFFR_PCF_BlockAll_Pos                   (6U)                     
 #define ETH_MACFFR_PCF_BlockAll_Msk                   (0x1UL << ETH_MACFFR_PCF_BlockAll_Pos) /*!< 0x00000040 */
-#define ETH_MACFFR_PCF_BlockAll                       ETH_MACFFR_PCF_BlockAll_Msk /* MAC filters all control frames from reaching the application */
+#define ETH_MACFFR_PCF_BlockAll                       ETH_MACFFR_PCF_BlockAll_Msk /* MAC filters all control frames from reaching the App */
 #define ETH_MACFFR_PCF_ForwardAll_Pos                 (7U)                     
 #define ETH_MACFFR_PCF_ForwardAll_Msk                 (0x1UL << ETH_MACFFR_PCF_ForwardAll_Pos) /*!< 0x00000080 */
-#define ETH_MACFFR_PCF_ForwardAll                     ETH_MACFFR_PCF_ForwardAll_Msk /* MAC forwards all control frames to application even if they fail the Address Filter */
+#define ETH_MACFFR_PCF_ForwardAll                     ETH_MACFFR_PCF_ForwardAll_Msk /* MAC forwards all control frames to App even if they fail the Address Filter */
 #define ETH_MACFFR_PCF_ForwardPassedAddrFilter_Pos    (6U)                     
 #define ETH_MACFFR_PCF_ForwardPassedAddrFilter_Msk    (0x3UL << ETH_MACFFR_PCF_ForwardPassedAddrFilter_Pos) /*!< 0x000000C0 */
 #define ETH_MACFFR_PCF_ForwardPassedAddrFilter        ETH_MACFFR_PCF_ForwardPassedAddrFilter_Msk /* MAC forwards control frames that pass the Address Filter. */ 
@@ -13748,7 +13748,7 @@ typedef struct
 #define ETH_DMAMFBOCR_OFOC                            ETH_DMAMFBOCR_OFOC_Msk   /* Overflow bit for FIFO overflow counter */
 #define ETH_DMAMFBOCR_MFA_Pos                         (17U)                    
 #define ETH_DMAMFBOCR_MFA_Msk                         (0x7FFUL << ETH_DMAMFBOCR_MFA_Pos) /*!< 0x0FFE0000 */
-#define ETH_DMAMFBOCR_MFA                             ETH_DMAMFBOCR_MFA_Msk    /* Number of frames missed by the application */
+#define ETH_DMAMFBOCR_MFA                             ETH_DMAMFBOCR_MFA_Msk    /* Number of frames missed by the App */
 #define ETH_DMAMFBOCR_OMFC_Pos                        (16U)                    
 #define ETH_DMAMFBOCR_OMFC_Msk                        (0x1UL << ETH_DMAMFBOCR_OMFC_Pos) /*!< 0x00010000 */
 #define ETH_DMAMFBOCR_OMFC                            ETH_DMAMFBOCR_OMFC_Msk   /* Overflow bit for missed frame counter */

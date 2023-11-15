@@ -3029,7 +3029,7 @@ HAL_StatusTypeDef HAL_RCCEx_DisablePLLSAI(void)
   * @note   The result of this function could be not correct when using fractional
   *         value for HSE crystal.
   *
-  * @note   This function can be used by the user application to compute the
+  * @note   This function can be used by the user App to compute the
   *         baudrate for the communication peripherals or configure other parameters.
   *
   * @note   Each time SYSCLK changes, this function must be called to update the
