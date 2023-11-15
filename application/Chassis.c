@@ -23,7 +23,7 @@ static void chassis_unable_leg_handle();
 static void chassis_imu_info_update();
 static void chassis_relax_judge();
 void chassis_device_offline_handle();
-static void chassis_off_ground_detection();
+static void chassis_off_ground_detection(struct Leg *leg);
 static void chassis_info_update();
 static void chassis_motor_info_update();
 static void leg_state_variable_reference_get(struct Leg *leg);
@@ -45,75 +45,32 @@ static void Vmc_Negative_Kinematics(struct VMC *vmc, fp32 w1, fp32 w4);
 static void Vmc_Negative_Dynamics(struct VMC *vmc, fp32 T1, fp32 T4);
 static void leg_fn_cal(struct Leg *leg, fp32 az);
 
+
 fp32 wheel_K_L[6] = {-2.999201, -0.204226, -0.046454, -0.110180, 0.193266, 0.069071};
 fp32 joint_K_L[6] = {4.178352, 0.313840, 0.120231, 0.278284, 6.250164, 4.915544};
 
 fp32 wheel_K_R[6] = {0, 0, 0, 0, 0, 0};
 fp32 joint_K_R[6] = {0, 0, 0, 0, 0, 0};
 
-//fp32 wheel_fitting_factor[6][4] = {
-//    {-1673.057334, 232.571401, -47.931995, -0.577519},
-//    {123.117076, -34.201064, -0.213162, -0.065369},
-//
-//    {552.013755, -83.775165, 10.262378, -0.821934},
-//    {2364.387111, -354.429253, 15.557227, -0.538798},
-//
-//    {-129.486870, -46.403887, -4.520816, 3.173940},
-//    {-115.799334, 11.347779, -1.362861, 0.378518}
-//
-//};
-//fp32 joint_fitting_factor[6][4] = {
-//    {35798.593960, -7437.861413, 597.340243, 6.227063},
-//    {-157.136511, -93.793125, 1.340098, 0.974567},
-//
-//    {3450.517869, -562.796975, 35.500483, 8.306312},
-//    {5420.342887, -984.711217, 26.244659, 5.071084},
-//
-//    {-18022.410517, 2874.336071, -20.249029, 18.600220},
-//    {-1943.270245, 305.026358, 0.198070, 0.935925}
-//};
-
-//fp32 wheel_fitting_factor[6][4] = {
-//    {-1673.057334, 232.571401, -47.931995, -0.877519},
-//    {123.117076, -34.201064, -0.213162, -0.065369},
-//
-//    {552.013755, -83.775165, 20.262378, -1.21934},
-//    {2364.387111, -354.429253, 10.557227, -0.538798},
-//
-//    {-129.486870, -46.403887, -4.520816, 3.173940},
-//    {-115.799334, 11.347779, -1.362861, 0.378518}
-//
-//};
-//fp32 joint_fitting_factor[6][4] = {
-//    {35798.593960, -7437.861413, 797.340243, 8.227063},
-//    {-157.136511, -93.793125, 1.340098, 0.974567},
-//
-//    {3450.517869, -562.796975, 40.500483, 20.306312},
-//    {5420.342887, -984.711217, 40.244659, 5.071084},
-//
-//    {-18022.410517, 2874.336071, -40.249029, 58.600220},
-//    {-1943.270245, 305.026358, 0.198070, 0.935925}
-//};
-
 fp32 wheel_fitting_factor[6][4] = {
-    {-1646.924405,213.914414,-48.404761,-0.591737},
-    {132.643205,-38.349908,-0.852857,-0.172735},
+    {-1646.924405, 213.914414, -48.404761, -0.591737},
+    {132.643205, -38.349908, -0.852857, -0.172735},
 
-    {1108.147318,-170.632047,5.865122,-0.498328},
-    {2769.004713,-414.553082,16.788342,-0.930631},
+    {1108.147318, -170.632047, 5.865122, -0.498328},
+    {2769.004713, -414.553082, 16.788342, -0.930631},
 
-    {120.632950,-148.900646,-3.510030,5.506320},
-    {-151.748316,17.059403,-1.704834,0.406821}
+    {120.632950, -148.900646, -3.510030, 5.506320},
+    {-151.748316, 17.059403, -1.704834, 0.406821}
 };
 fp32 joint_fitting_factor[6][4] = {
-    {47907.722195,-9892.085410,788.070850,9.756630},
-    {-564.792576,-81.727188,18.329920,4.059584},
+    {47907.722195, -9892.085410, 788.070850, 9.756630},
+    {-564.792576, -81.727188, 18.329920, 4.059584},
 
-    {6837.153119,-1212.766774,43.244902,7.985787},
-    {-11512.091221,1386.097877,-106.456406,15.819744},
+    {6837.153119, -1212.766774, 43.244902, 7.985787},
+    {-11512.091221, 1386.097877, -106.456406, 15.819744},
 
-    {-33315.577466,5602.029788,2.956268,28.679460},
-    {-1209.772314,217.708476,7.609868,0.813373}
+    {-33315.577466, 5602.029788, 2.956268, 28.679460},
+    {-1209.772314, 217.708476, 7.609868, 0.813373}
 };
 
 void chassis_task(void const *pvParameters) {
@@ -135,16 +92,6 @@ void chassis_task(void const *pvParameters) {
     switch (chassis.mode) {
       case CHASSIS_ENABLED_LEG: {
         chassis_enabled_leg_handle();
-      }
-        break;
-
-      case CHASSIS_UNENABLED_LEG: {
-        chassis_enabled_leg_handle();
-      }
-        break;
-
-      case CHASSIS_OFF_GROUND: {
-
       }
         break;
 
@@ -384,7 +331,6 @@ static void Matrix_multiply(int rows1, int cols1, fp32 matrix1[rows1][cols1],
 
 fp32 cal_leg_theta(fp32 phi0, fp32 phi) {
   fp32 theta = 0, alpha = 0;//alpha is the Angle at which the virtual joint motor is turned
-
   alpha = PI / 2 - phi0;
 
   if (alpha * phi < 0) {
@@ -582,10 +528,13 @@ static void chassis_relax_handle() {
 static void chassis_enabled_leg_handle() {
   chassis_forward_kinematics();
 
-  chassis_K_matrix_fitting(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0 * 0.2, wheel_K_L, wheel_fitting_factor);
-  chassis_K_matrix_fitting(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0 * 0.2, joint_K_L, joint_fitting_factor);
-  chassis_K_matrix_fitting(chassis.leg_R.vmc.forward_kinematics.fk_L0.L0 * 0.2, wheel_K_R, wheel_fitting_factor);
-  chassis_K_matrix_fitting(chassis.leg_R.vmc.forward_kinematics.fk_L0.L0 * 0.2, joint_K_R, joint_fitting_factor);
+  chassis_K_matrix_fitting(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0 * 0.2f, wheel_K_L, wheel_fitting_factor);
+  chassis_K_matrix_fitting(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0 * 0.2f, joint_K_L, joint_fitting_factor);
+  chassis_K_matrix_fitting(chassis.leg_R.vmc.forward_kinematics.fk_L0.L0 * 0.2f, wheel_K_R, wheel_fitting_factor);
+  chassis_K_matrix_fitting(chassis.leg_R.vmc.forward_kinematics.fk_L0.L0 * 0.2f, joint_K_R, joint_fitting_factor);
+
+  chassis_off_ground_detection(&chassis.leg_L);
+  chassis_off_ground_detection(&chassis.leg_R);
 
   leg_state_variable_reference_get(&chassis.leg_L);
   leg_state_variable_reference_get(&chassis.leg_R);
@@ -607,11 +556,6 @@ static void chassis_enabled_leg_handle() {
 
   leg_fn_cal(&chassis.leg_L, chassis.imu_reference.robot_az);
   leg_fn_cal(&chassis.leg_R, chassis.imu_reference.robot_az);
-
-}
-
-static void chassis_unable_leg_handle() {
-
 }
 
 void chassis_device_offline_handle() {
@@ -778,8 +722,29 @@ static void chassis_relax_judge() {
   }
 }
 
-static void chassis_off_ground_detection() {
-  //todo 跳跃离地和 提起来切换失能模式
+static void chassis_off_ground_handle(struct Leg *leg) {
+  if (leg->leg_index == L) {
+    for (int i = 0; i < 6; i++) {
+      wheel_K_L[i] = 0;
+    }
+    for (int i = 2; i < 6; i++) {
+      joint_K_L[i] = 0;
+    }
+  } else if (leg->leg_index == R) {
+    for (int i = 0; i < 6; i++) {
+      wheel_K_R[i] = 0;
+    }
+    for (int i = 2; i < 6; i++) {
+      joint_K_R[i] = 0;
+    }
+  }
+}
+
+static void chassis_off_ground_detection(struct Leg *leg) {
+  if (leg->Fn <= 10) {
+    chassis_off_ground_handle(leg);
+  } else {
+  }
 }
 
 static void leg_fn_cal(struct Leg *leg, fp32 az) {
