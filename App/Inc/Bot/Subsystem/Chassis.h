@@ -78,12 +78,17 @@
 #define CHASSIS_VW_PID_IOUT_LIMIT 0.2
 #define CHASSIS_VW_PID_OUT_LIMIT 0.5
 
+#define CHASSIS_ROLL_PID_P 0
+#define CHASSIS_ROLL_PID_I 0
+#define CHASSIS_ROLL_PID_D 0
+#define CHASSIS_ROLL_PID_IOUT_LIMIT 0
+#define CHASSIS_ROLL_PID_OUT_LIMIT 0
+
 //枚举 结构体
 enum ChassisMode {
   CHASSIS_DISABLE,
   CHASSIS_UNENABLED_LEG,
   CHASSIS_ENABLED_LEG,
-  CHASSIS_OFF_GROUND,
   CHASSIS_MODE_NUM,
 };
 
@@ -297,11 +302,13 @@ struct Chassis {
   struct Leg leg_R;
 
   pid_t chassis_vw_pid;
+  pid_t chassis_roll_pid;
 
   struct ChassisMoveSpeedSetPoint chassis_move_speed_set_point;
   struct ChassisMoveSpeedReference chassis_move_speed_reference;
 
   fp32 mileage;
+  fp32 L0_delta;
 };
 
 /*******************************************************************************

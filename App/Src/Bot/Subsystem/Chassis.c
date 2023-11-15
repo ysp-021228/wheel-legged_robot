@@ -109,6 +109,13 @@ static void chassis_init(struct Chassis *chassis) {
            CHASSIS_VW_PID_I,
            CHASSIS_VW_PID_D);
 
+  pid_init(&chassis->chassis_roll_pid,
+           CHASSIS_ROLL_PID_OUT_LIMIT,
+           CHASSIS_ROLL_PID_IOUT_LIMIT,
+           CHASSIS_ROLL_PID_P,
+           CHASSIS_ROLL_PID_I,
+           CHASSIS_ROLL_PID_D);
+
 }
 
 /*******************************************************************************
@@ -342,12 +349,19 @@ static void chassis_ctrl_info_get() {
     chassis.imu_set_point.yaw = chassis.imu_reference.yaw_angle;
   }
 
+  chassis.L0_delta = pid_calc(&chassis.chassis_roll_pid, chassis.imu_reference.roll_angle, 0.f);
+  chassis.leg_L.L0_set_point -= chassis.L0_delta;
+  chassis.leg_R.L0_set_point += chassis.L0_delta;
+
+  VAL_LIMIT(chassis.leg_L.L0_set_point, MIN_L0, MAX_L0);
+  VAL_LIMIT(chassis.leg_R.L0_set_point, MIN_L0, MAX_L0);
+
   if (switch_is_down(get_rc_ctrl().rc.s[RC_s_L]) && switch_is_down(get_rc_ctrl().rc.s[RC_s_R])) {
     chassis.last_mode = chassis.mode;
     chassis.mode = CHASSIS_DISABLE;
   } else if (switch_is_mid(get_rc_ctrl().rc.s[RC_s_R])) {
     chassis.last_mode = chassis.mode;
-    chassis.mode = CHASSIS_UNENABLED_LEG;
+    chassis.mode = CHASSIS_ENABLED_LEG;
   } else if (switch_is_up(get_rc_ctrl().rc.s[RC_s_R])) {
     chassis.last_mode = chassis.mode;
     chassis.mode = CHASSIS_ENABLED_LEG;
