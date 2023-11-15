@@ -47,9 +47,6 @@ else ()
 endif ()
 
 include_directories(Inc Drivers/STM32F4xx_HAL_Driver/Inc
-        segger/SEGGER
-        segger/FreeRTOSV10
-        segger/Config
         Drivers/STM32F4xx_HAL_Driver/Inc/Legacy
         Middlewares/Third_Party/FreeRTOS/Source/include
         Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS
@@ -76,22 +73,7 @@ add_link_options(-Wl,-gc-sections,--print-memory-usage,-Map=${PROJECT_BINARY_DIR
 add_link_options(-mcpu=cortex-m4 -mthumb -mthumb-interwork)
 add_link_options(-T ${LINKER_SCRIPT})
 LINK_LIBRARIES(m)
-add_executable(${PROJECT_NAME}.elf ${SOURCES} ${LINKER_SCRIPT}
-        component/controller/PID.h
-        application/Referee.c
-        application/Referee.h
-        application/Calibrate.c
-        application/Calibrate.h
-        component/algorithm/AHRS_MiddleWare.c
-        component/algorithm/AHRS_MiddleWare.h
-        component/algorithm/AHRS.c
-        component/algorithm/AHRS.h
-        component/algorithm/ramp.c
-        component/algorithm/ramp.h
-        application/Can_send.c
-        application/Can_send.h
-        application/Detection.c
-        application/Detection.h)
+add_executable(${PROJECT_NAME}.elf ${SOURCES} ${LINKER_SCRIPT})
 
 set(HEX_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.hex)
 set(BIN_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.bin)
