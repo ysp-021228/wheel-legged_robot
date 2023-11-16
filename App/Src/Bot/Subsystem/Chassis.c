@@ -517,7 +517,7 @@ static void chassis_off_ground_handle(struct Leg *leg) {
     for (int i = 0; i < 6; i++) {
       wheel_K_L[i] = 0;
     }
-    for (int i = 1; i < 6; i++) {
+    for (int i = 0; i < 6; i++) {
       joint_K_L[i] = 0;
     }
   } else if (leg->leg_index == R) {
@@ -527,14 +527,14 @@ static void chassis_off_ground_handle(struct Leg *leg) {
     for (int i = 0; i < 6; i++) {
       wheel_K_R[i] = 0;
     }
-    for (int i = 1; i < 6; i++) {
+    for (int i = 0; i < 6; i++) {
       joint_K_R[i] = 0;
     }
   }
 }
 
 static void chassis_off_ground_detection(struct Leg *leg) {
-  if (leg->Fn <= 10) {
+  if (leg->Fn <= 6) {
     chassis_off_ground_handle(leg);
 
     chassis.chassis_move_speed_set_point.vw = 0;
