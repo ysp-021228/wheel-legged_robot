@@ -356,8 +356,22 @@ static void chassis_ctrl_info_get() {
   }
 
   chassis.L0_delta = -pid_calc(&chassis.chassis_roll_pid, chassis.imu_reference.roll_angle, chassis.imu_set_point.roll);
-  chassis.leg_L.L0_set_point -= chassis.L0_delta;
-  chassis.leg_R.L0_set_point += chassis.L0_delta;
+
+  if (chassis.leg_L.flag.OFF_GROUND_FLAG == 1) {
+    chassis.chassis_move_speed_set_point.vw = 0;
+    chassis.imu_set_point.yaw = chassis.imu_reference.yaw_angle;
+    chassis.imu_set_point.roll = chassis.imu_reference.roll_angle;
+  } else {
+    chassis.leg_L.L0_set_point -= chassis.L0_delta;
+  }
+
+  if (chassis.leg_R.flag.OFF_GROUND_FLAG == 1) {
+    chassis.chassis_move_speed_set_point.vw = 0;
+    chassis.imu_set_point.yaw = chassis.imu_reference.yaw_angle;
+    chassis.imu_set_point.roll = chassis.imu_reference.roll_angle;
+  } else {
+    chassis.leg_R.L0_set_point += chassis.L0_delta;
+  }
 
   VAL_LIMIT(chassis.leg_L.L0_set_point, MIN_L0, MAX_L0);
   VAL_LIMIT(chassis.leg_R.L0_set_point, MIN_L0, MAX_L0);
@@ -538,13 +552,11 @@ static void chassis_off_ground_handle(struct Leg *leg) {
 static void chassis_off_ground_detection(struct Leg *leg) {
   if (leg->Fn <= 6) {
     chassis_off_ground_handle(leg);
-
-    chassis.chassis_move_speed_set_point.vw = 0;
-    chassis.imu_set_point.yaw = chassis.imu_reference.yaw_angle;
-    chassis.imu_set_point.roll = chassis.imu_reference.roll_angle;
+    leg->flag.OFF_GROUND_FLAG = 1;
 
     buzzer_on(15, 10000);
   } else {
+    leg->flag.OFF_GROUND_FLAG = 0;
     buzzer_off();
   }
 }

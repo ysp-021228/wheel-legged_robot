@@ -106,7 +106,6 @@
 
 enum ChassisMode {
   CHASSIS_DISABLE,
-  CHASSIS_UNENABLED_LEG,
   CHASSIS_ENABLED_LEG,
   CHASSIS_MODE_NUM,
 };
@@ -114,6 +113,10 @@ enum ChassisMode {
 enum LegIndex {
   R = 1,
   L = 0,
+};
+
+struct Flag{
+  bool_t OFF_GROUND_FLAG;
 };
 
 struct IMUSetPoint {
@@ -299,6 +302,7 @@ struct Wheel {
 
 struct Leg {
   enum LegIndex leg_index;
+  struct Flag flag;
   struct StateVariable state_variable_reference;
   struct StateVariable state_variable_set_point;
   struct StateVariable state_variable_error;
