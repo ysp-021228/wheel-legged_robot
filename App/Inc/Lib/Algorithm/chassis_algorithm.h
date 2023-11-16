@@ -20,4 +20,4 @@ void chassis_K_matrix_fitting(fp32 L0, fp32 K[6], const fp32 KL[6][4]);
 
 void leg_fn_cal(struct Leg *leg, fp32 az);
 
-#endif CHASSIS_ALGORITHM_H_
+#endif //CHASSIS_ALGORITHM_H_

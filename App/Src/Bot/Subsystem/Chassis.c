@@ -11,6 +11,7 @@
 #include "Device/Atti.h"
 #include "CyberGear.h"
 #include "chassis_algorithm.h"
+#include "bsp_buzzer.h"
 
 struct Chassis chassis;
 extern CAN_HandleTypeDef hcan1;
@@ -149,8 +150,10 @@ static void chassis_imu_info_update() {
 static void chassis_motor_info_update() {
   chassis.leg_L.wheel.speed = -motor_3508_measure[0].speed_rpm * BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED;
   chassis.leg_R.wheel.speed = -motor_3508_measure[1].speed_rpm * BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED;
-  chassis.leg_L.wheel.mileage = chassis.leg_L.wheel.mileage + CHASSIS_PERIOD * MILLISECOND_TO_SECOND * (chassis.leg_L.wheel.speed);
-  chassis.leg_R.wheel.mileage = chassis.leg_R.wheel.mileage + CHASSIS_PERIOD * MILLISECOND_TO_SECOND * (chassis.leg_R.wheel.speed);
+  chassis.leg_L.wheel.mileage =
+      chassis.leg_L.wheel.mileage + CHASSIS_PERIOD * MILLISECOND_TO_SECOND * (chassis.leg_L.wheel.speed);
+  chassis.leg_R.wheel.mileage =
+      chassis.leg_R.wheel.mileage + CHASSIS_PERIOD * MILLISECOND_TO_SECOND * (chassis.leg_R.wheel.speed);
 
   chassis.leg_L.cyber_gear_data[0].angle = cybergears_2[LB_MOTOR_ID].angle;
   chassis.leg_L.cyber_gear_data[1].angle = cybergears_2[LF_MOTOR_ID].angle;
@@ -195,7 +198,8 @@ static void leg_state_variable_reference_get(struct Leg *leg) {
 
   leg->state_variable_reference.theta_dot_last = leg->state_variable_reference.theta_dot;
   leg->state_variable_reference.theta_dot =
-      (leg->state_variable_reference.theta - leg->state_variable_reference.theta_last) / (CHASSIS_PERIOD * MILLISECOND_TO_SECOND);
+      (leg->state_variable_reference.theta - leg->state_variable_reference.theta_last)
+          / (CHASSIS_PERIOD * MILLISECOND_TO_SECOND);
   leg->state_variable_reference.theta_ddot =
       (leg->state_variable_reference.theta_dot - leg->state_variable_reference.theta_dot_last)
           / (CHASSIS_PERIOD * MILLISECOND_TO_SECOND);
@@ -508,16 +512,22 @@ static void chassis_relax_judge() {
 static void chassis_off_ground_handle(struct Leg *leg) {
   if (leg->leg_index == L) {
     for (int i = 0; i < 6; i++) {
+      joint_K_L[i] *= 0.2f;
+    }
+    for (int i = 0; i < 6; i++) {
       wheel_K_L[i] = 0;
     }
-    for (int i = 2; i < 6; i++) {
+    for (int i = 1; i < 6; i++) {
       joint_K_L[i] = 0;
     }
   } else if (leg->leg_index == R) {
     for (int i = 0; i < 6; i++) {
+      joint_K_R[i] *= 0.2f;
+    }
+    for (int i = 0; i < 6; i++) {
       wheel_K_R[i] = 0;
     }
-    for (int i = 2; i < 6; i++) {
+    for (int i = 1; i < 6; i++) {
       joint_K_R[i] = 0;
     }
   }
@@ -526,7 +536,13 @@ static void chassis_off_ground_handle(struct Leg *leg) {
 static void chassis_off_ground_detection(struct Leg *leg) {
   if (leg->Fn <= 10) {
     chassis_off_ground_handle(leg);
+
+    chassis.chassis_move_speed_set_point.vw = 0;
+    chassis.imu_set_point.yaw = chassis.imu_reference.yaw_angle;
+
+    buzzer_on(15, 10000);
   } else {
+    buzzer_off();
   }
 }
 
@@ -617,6 +633,8 @@ static void chassis_relax_handle() {
   chassis.leg_R.L0_set_point = DEFAULT_L0;
 
   chassis.imu_set_point.yaw = chassis.imu_reference.yaw_angle;
+
+  buzzer_off();
 }
 
 /*******************************************************************************
@@ -657,5 +675,4 @@ void chassis_task(void const *pvParameters) {
 }
 
 //todo
-// roll automatic stabilization
 // Turning and tilting body
