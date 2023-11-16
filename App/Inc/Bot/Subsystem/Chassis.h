@@ -40,8 +40,8 @@
 #define DEFAULT_L0 0.18f
 #define MAX_PITCH 0.35f
 #define MIN_PITCH -0.35f
-#define MAX_ROLL 0.3f
-#define MIN_ROLL -0.3f
+#define MAX_ROLL 0.17f
+#define MIN_ROLL -0.17f
 #define MAX_WHEEL_TORQUE 5.f
 #define MIN_WHEEL_TORQUE -5.f
 #define MAX_JOINT_TORQUE 5.f
@@ -100,8 +100,8 @@
 #define CHASSIS_ROLL_PID_P 0.2
 #define CHASSIS_ROLL_PID_I 0.001
 #define CHASSIS_ROLL_PID_D 2
-#define CHASSIS_ROLL_PID_IOUT_LIMIT 0.005
-#define CHASSIS_ROLL_PID_OUT_LIMIT 0.1
+#define CHASSIS_ROLL_PID_IOUT_LIMIT 0.05
+#define CHASSIS_ROLL_PID_OUT_LIMIT 0.2
 
 
 enum ChassisMode {

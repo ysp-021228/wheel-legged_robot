@@ -174,6 +174,8 @@ static void chassis_motor_info_update() {
 static void chassis_info_update() {
   chassis_imu_info_update();
   chassis_motor_info_update();
+  chassis.chassis_move_speed_reference.vx =
+      ((-chassis.leg_L.wheel.speed) + (chassis.leg_R.wheel.speed)) / 2;
   chassis.mileage =
       (-chassis.leg_L.wheel.mileage + chassis.leg_R.wheel.mileage) / 2;//The state variable x should use this value
   if (chassis.chassis_move_speed_set_point.vx != 0 || get_rc_ctrl().rc.ch[CHASSIS_Z_CHANNEL] != 0) {
@@ -355,6 +357,11 @@ static void chassis_ctrl_info_get() {
     chassis.imu_set_point.yaw = chassis.imu_reference.yaw_angle;
   }
 
+  if (chassis.chassis_move_speed_set_point.vx != 0) {
+    chassis.imu_set_point.roll =
+        atan2f(chassis.chassis_move_speed_reference.vx * chassis.imu_reference.yaw_gyro, GRAVITY_A);
+    VAL_LIMIT(chassis.imu_set_point.roll, MIN_ROLL, MAX_ROLL);
+  }
   chassis.L0_delta = -pid_calc(&chassis.chassis_roll_pid, chassis.imu_reference.roll_angle, chassis.imu_set_point.roll);
 
   if (chassis.leg_L.flag.OFF_GROUND_FLAG == 1) {
