@@ -40,6 +40,8 @@
 #define DEFAULT_L0 0.18f
 #define MAX_PITCH 0.35f
 #define MIN_PITCH -0.35f
+#define MAX_ROLL 0.3f
+#define MIN_ROLL -0.3f
 #define MAX_WHEEL_TORQUE 5.f
 #define MIN_WHEEL_TORQUE -5.f
 #define MAX_JOINT_TORQUE 5.f
@@ -51,10 +53,12 @@
 #define CHASSIS_X_CHANNEL 1
 #define CHASSIS_Z_CHANNEL 2
 #define CHASSIS_PIT_CHANNEL 3
+#define CHASSIS_ROLL_CHANNEL 0
 
 #define RC_TO_VX  (MAX_CHASSIS_VX_SPEED/660)
 #define RC_TO_VW  (MAX_CHASSIS_VW_TORQUE/660)
 #define RC_TO_PITCH ((MAX_PITCH-MIN_PITCH)/660)
+#define RC_TO_ROLL ((MAX_ROLL-MIN_ROLL)/660)
 #define RC_TO_L0  ((MAX_L0-MIN_L0)/1320)
 
 /*******************************************************************************
@@ -93,11 +97,11 @@
 #define CHASSIS_VW_PID_IOUT_LIMIT 0.2
 #define CHASSIS_VW_PID_OUT_LIMIT 0.5
 
-#define CHASSIS_ROLL_PID_P 0
-#define CHASSIS_ROLL_PID_I 0
-#define CHASSIS_ROLL_PID_D 0
-#define CHASSIS_ROLL_PID_IOUT_LIMIT 0
-#define CHASSIS_ROLL_PID_OUT_LIMIT 0
+#define CHASSIS_ROLL_PID_P 0.2
+#define CHASSIS_ROLL_PID_I 0.001
+#define CHASSIS_ROLL_PID_D 2
+#define CHASSIS_ROLL_PID_IOUT_LIMIT 0.005
+#define CHASSIS_ROLL_PID_OUT_LIMIT 0.1
 
 
 enum ChassisMode {

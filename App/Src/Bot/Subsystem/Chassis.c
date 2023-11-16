@@ -24,25 +24,26 @@ fp32 wheel_K_R[6] = {0, 0, 0, 0, 0, 0};
 fp32 joint_K_R[6] = {0, 0, 0, 0, 0, 0};
 
 fp32 wheel_fitting_factor[6][4] = {
-    {-1646.924405, 213.914414, -48.404761, -0.591737},
-    {132.643205, -38.349908, -0.852857, -0.172735},
+    {-1240.374099, 171.721376, -41.186670, -0.546221},
+    {147.280655, -36.670604, -0.649697, -0.173492},
 
-    {1108.147318, -170.632047, 5.865122, -0.498328},
-    {2769.004713, -414.553082, 16.788342, -0.930631},
+    {1074.665281, -167.115155, 5.561230, -0.468029},
+    {2492.720452, -370.310124, 15.681324, -0.722688},
 
-    {120.632950, -148.900646, -3.510030, 5.506320},
-    {-151.748316, 17.059403, -1.704834, 0.406821}
+    {-187.718086, -114.946999, -4.537848, 5.565148},
+    {-152.015868, 16.226825, -1.639772, 0.396996}
 };
 fp32 joint_fitting_factor[6][4] = {
-    {47907.722195, -9892.085410, 788.070850, 9.756630},
-    {-564.792576, -81.727188, 18.329920, 4.059584},
+    {43785.838227, -8949.485314, 677.506488, 10.310535},
+    {-561.956786, -93.873425, 11.574666, 4.624143},
 
-    {6837.153119, -1212.766774, 43.244902, 7.985787},
-    {-11512.091221, 1386.097877, -106.456406, 15.819744},
+    {5807.951457, -1078.870569, 37.426148, 8.247970},
+    {-21709.228918, 2977.273165, -184.489969, 13.960355},
 
-    {-33315.577466, 5602.029788, 2.956268, 28.679460},
-    {-1209.772314, 217.708476, 7.609868, 0.813373}
+    {-26771.917731, 4813.669573, 48.282919, 26.288774},
+    {-325.858603, 95.714530, 13.501626, 0.788509}
 };
+
 /*******************************************************************************
  *                                    Init                                     *
  *******************************************************************************/
@@ -343,6 +344,7 @@ static void chassis_ctrl_info_get() {
   chassis.chassis_move_speed_set_point.vx = (float) (get_rc_ctrl().rc.ch[CHASSIS_X_CHANNEL]) * RC_TO_VX;
   chassis.chassis_move_speed_set_point.vw = (float) (get_rc_ctrl().rc.ch[CHASSIS_Z_CHANNEL]) * -RC_TO_VW;
   chassis.imu_set_point.pitch = (float) (get_rc_ctrl().rc.ch[CHASSIS_PIT_CHANNEL]) * RC_TO_PITCH;
+  chassis.imu_set_point.roll = (float) (get_rc_ctrl().rc.ch[CHASSIS_ROLL_CHANNEL]) * RC_TO_ROLL;
   chassis.leg_L.L0_set_point = -(float) (get_rc_ctrl().rc.ch[4]) * RC_TO_L0 + DEFAULT_L0;
   chassis.leg_R.L0_set_point = -(float) (get_rc_ctrl().rc.ch[4]) * RC_TO_L0 + DEFAULT_L0;
 
@@ -353,7 +355,7 @@ static void chassis_ctrl_info_get() {
     chassis.imu_set_point.yaw = chassis.imu_reference.yaw_angle;
   }
 
-  chassis.L0_delta = pid_calc(&chassis.chassis_roll_pid, chassis.imu_reference.roll_angle, 0.f);
+  chassis.L0_delta = -pid_calc(&chassis.chassis_roll_pid, chassis.imu_reference.roll_angle, chassis.imu_set_point.roll);
   chassis.leg_L.L0_set_point -= chassis.L0_delta;
   chassis.leg_R.L0_set_point += chassis.L0_delta;
 
@@ -539,6 +541,7 @@ static void chassis_off_ground_detection(struct Leg *leg) {
 
     chassis.chassis_move_speed_set_point.vw = 0;
     chassis.imu_set_point.yaw = chassis.imu_reference.yaw_angle;
+    chassis.imu_set_point.roll = chassis.imu_reference.roll_angle;
 
     buzzer_on(15, 10000);
   } else {
