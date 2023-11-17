@@ -36,8 +36,8 @@
 #define MAX_CHASSIS_VX_SPEED 1.5f
 #define MAX_CHASSIS_VW_TORQUE 0.5f
 #define MIN_L0 0.08f
-#define MAX_L0 0.27f
-#define DEFAULT_L0 0.18f
+#define MAX_L0 0.25f
+#define DEFAULT_L0 0.15f
 #define MAX_PITCH 0.35f
 #define MIN_PITCH -0.35f
 #define MAX_ROLL 0.17f
@@ -85,11 +85,17 @@
 /*******************************************************************************
  *                                PID parameters                               *
  *******************************************************************************/
-#define CHASSIS_LEG_LO_PID_P 250
+#define CHASSIS_LEG_LO_PID_P 150
 #define CHASSIS_LEG_L0_PID_I 0.1
-#define CHASSIS_LEG_L0_PID_D 500
-#define CHASSIS_LEG_L0_PID_IOUT_LIMIT 5
+#define CHASSIS_LEG_L0_PID_D 00000
+#define CHASSIS_LEG_L0_PID_IOUT_LIMIT 3
 #define CHASSIS_LEG_L0_PID_OUT_LIMIT 5000
+
+#define CHASSIS_OFFGROUND_LEG_LO_PID_P 250
+#define CHASSIS_OFFGROUND_LEG_L0_PID_I 0
+#define CHASSIS_OFFGROUND_LEG_L0_PID_D 00000
+#define CHASSIS_OFFGROUND_LEG_L0_PID_IOUT_LIMIT 3
+#define CHASSIS_OFFGROUND_LEG_L0_PID_OUT_LIMIT 5000
 
 #define CHASSIS_VW_PID_P -0.5
 #define CHASSIS_VW_PID_I 0
@@ -309,7 +315,8 @@ struct Leg {
   struct Wheel wheel;
   struct CyberGearData cyber_gear_data[3];
   struct VMC vmc;
-  pid_t pid;
+  pid_t ground_pid;
+  pid_t offground_pid;
   fp32 L0_set_point;
   fp32 Fn;
 };

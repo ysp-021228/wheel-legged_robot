@@ -1,44 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/application/Atti.h" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/application/Auto.c" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/application/Auto.h" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/application/Calibrate.c" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/application/Calibrate.h" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/application/Chassis.c" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/application/Chassis.h" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/application/Detection.c" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/application/Gimbal.c" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/application/Gimbal.h" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/application/Referee.c" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/application/Referee.h" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/application/balance_ctrl.c" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/application/can_receive.c" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/application/can_receive.h" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/application/key_board.c" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/application/key_board.h" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/application/launcher.c" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/application/launcher.h" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/application/remote.c" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/application/steel_ctrl.c" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/Inc/Bot/Device/Atti.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/Inc/Bot/Device/Calibrate.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/Inc/Bot/Device/ist8310driver.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/Inc/Bot/Device/ist8310driver_middleware.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/Inc/Bot/Device/key_board.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/Inc/Bot/IO/Auto.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/Inc/Bot/IO/can_receive.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/Inc/Bot/Subsystem/Chassis.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/Inc/Bot/Subsystem/Gimbal.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/Inc/Bot/Subsystem/Referee.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/Inc/Bot/Subsystem/launcher.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/Inc/Lib/Algorithm/AHRS.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/Inc/Lib/Algorithm/AHRS_MiddleWare.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/Inc/Lib/Algorithm/ramp.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/Inc/Lib/Algorithm/user_lib.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/Inc/Lib/Controller/pid.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/Inc/Lib/Filter/filter.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/Inc/Lib/Support/CRC8_CRC16.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/Src/Bot/Device/Calibrate.c" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/Src/Bot/Device/ist8310driver.c" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/Src/Bot/Device/ist8310driver_middleware.c" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/Src/Bot/Device/key_board.c" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/Src/Bot/IO/Auto.c" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/Src/Bot/IO/can_receive.c" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/App/Src/Bot/IO/remote.c" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/Src/Bot/Subsystem/Chassis.c" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/App/Src/Bot/Subsystem/Detection.c" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/Src/Bot/Subsystem/Gimbal.c" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/Src/Bot/Subsystem/Referee.c" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/Src/Bot/Subsystem/launcher.c" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/Src/Lib/Algorithm/AHRS.c" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/Src/Lib/Algorithm/AHRS_MiddleWare.c" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/Src/Lib/Algorithm/user_lib.c" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/Src/Lib/Controller/pid.c" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/Src/Lib/Support/CRC8_CRC16.c" charset="GB2312" />
+    <file url="file://$PROJECT_DIR$/App/Src/Lib/Support/CRC8_CRC16.c" charset="GB2312" />
+    <file url="file://$PROJECT_DIR$/App/balance_ctrl.c" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/App/steel_ctrl.c" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Matlab/Cal_mA_mB_In_Zhi_Tui_Mode.m" charset="GBK" />
     <file url="file://$PROJECT_DIR$/bsp/bsp_usart.c" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/component/algorithm/AHRS.c" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/component/algorithm/AHRS.h" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/component/algorithm/AHRS_MiddleWare.c" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/component/algorithm/AHRS_MiddleWare.h" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/component/algorithm/filter.h" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/component/algorithm/ramp.h" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/component/algorithm/user_lib.c" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/component/algorithm/user_lib.h" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/component/controller/PID.c" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/component/controller/PID.h" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/component/devices/ist8310driver.c" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/component/devices/ist8310driver.h" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/component/devices/ist8310driver_middleware.c" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/component/devices/ist8310driver_middleware.h" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/component/support/CRC8_CRC16.c" charset="GB2312" />
-    <file url="file://$PROJECT_DIR$/component/support/CRC8_CRC16.h" charset="UTF-8" />
     <file url="mock:///ist8310driver.c" charset="GBK" />
     <file url="mock:///steel_ctrl.c" charset="GBK" />
     <file url="PROJECT" charset="UTF-8" />

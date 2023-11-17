@@ -24,24 +24,24 @@ fp32 wheel_K_R[6] = {0, 0, 0, 0, 0, 0};
 fp32 joint_K_R[6] = {0, 0, 0, 0, 0, 0};
 
 fp32 wheel_fitting_factor[6][4] = {
-    {-1240.374099, 171.721376, -41.186670, -0.546221},
-    {147.280655, -36.670604, -0.649697, -0.173492},
+    {-1311.877590, 183.022138, -39.769496, -0.446471},
+    {106.116938, -29.806016, -0.528552, -0.131703},
 
-    {1074.665281, -167.115155, 5.561230, -0.468029},
-    {2492.720452, -370.310124, 15.681324, -0.722688},
+    {912.239964, -142.085245, 5.096864, -0.387869},
+    {2120.431678, -318.199916, 13.304728, -0.658861},
 
-    {-187.718086, -114.946999, -4.537848, 5.565148},
-    {-152.015868, 16.226825, -1.639772, 0.396996}
+    {-46.077618, -90.807305, -2.739071, 3.891235},
+    {-120.176412, 13.247289, -1.329640, 0.320311}
 };
 fp32 joint_fitting_factor[6][4] = {
-    {43785.838227, -8949.485314, 677.506488, 10.310535},
-    {-561.956786, -93.873425, 11.574666, 4.624143},
+    {43524.958598, -9263.401710, 750.130875, 9.380194},
+    {-511.478386, -94.508965, 16.881021, 4.059426},
 
-    {5807.951457, -1078.870569, 37.426148, 8.247970},
-    {-21709.228918, 2977.273165, -184.489969, 13.960355},
+    {7108.893060, -1268.826163, 47.272344, 7.982098},
+    {-13870.412882, 1753.097728, -121.285141, 14.579636},
 
-    {-26771.917731, 4813.669573, 48.282919, 26.288774},
-    {-325.858603, 95.714530, 13.501626, 0.788509}
+    {-30974.878869, 5403.706333, -20.192550, 24.927891},
+    {-1303.500590, 247.750009, 5.351638, 0.847694}
 };
 
 /*******************************************************************************
@@ -90,19 +90,26 @@ static void chassis_init(struct Chassis *chassis) {
   cyber_gear_enable(&cybergears_2[RF_MOTOR_ID]);
   osDelay(1);
 
-  pid_init(&chassis->leg_L.pid,
+  pid_init(&chassis->leg_L.ground_pid,
            CHASSIS_LEG_L0_PID_OUT_LIMIT,
            CHASSIS_LEG_L0_PID_IOUT_LIMIT,
            CHASSIS_LEG_LO_PID_P,
            CHASSIS_LEG_L0_PID_I,
            CHASSIS_LEG_L0_PID_D);
 
-  pid_init(&chassis->leg_R.pid,
+  pid_init(&chassis->leg_R.ground_pid,
            CHASSIS_LEG_L0_PID_OUT_LIMIT,
            CHASSIS_LEG_L0_PID_IOUT_LIMIT,
            CHASSIS_LEG_LO_PID_P,
            CHASSIS_LEG_L0_PID_I,
            CHASSIS_LEG_L0_PID_D);
+
+  pid_init(&chassis->leg_R.offground_pid,
+           CHASSIS_OFFGROUND_LEG_L0_PID_OUT_LIMIT,
+           CHASSIS_OFFGROUND_LEG_L0_PID_IOUT_LIMIT,
+           CHASSIS_OFFGROUND_LEG_LO_PID_P,
+           CHASSIS_OFFGROUND_LEG_L0_PID_I,
+           CHASSIS_OFFGROUND_LEG_L0_PID_D);
 
   pid_init(&chassis->chassis_vw_pid,
            CHASSIS_VW_PID_OUT_LIMIT,
@@ -306,11 +313,21 @@ static void joint_motors_torque_set_point_cal() {
   chassis.leg_L.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_L.state_variable_error.phi * joint_K_L[4];//
   chassis.leg_L.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_L.state_variable_error.phi_dot * joint_K_L[5];//
 
-  pid_calc(&chassis.leg_L.pid, chassis.leg_L.vmc.forward_kinematics.fk_L0.L0, chassis.leg_L.L0_set_point);
-  chassis.leg_L.vmc.Fxy_set_point.E.Fy_set_point = chassis.leg_L.pid.out + BODY_WEIGHT * GRAVITY_A * 0.5;
+//  if (chassis.leg_L.flag.OFF_GROUND_FLAG == 0) {
+    pid_calc(&chassis.leg_L.ground_pid, chassis.leg_L.vmc.forward_kinematics.fk_L0.L0, chassis.leg_L.L0_set_point);
+    chassis.leg_L.vmc.Fxy_set_point.E.Fy_set_point = chassis.leg_L.ground_pid.out + BODY_WEIGHT * GRAVITY_A * 0.5;
+//  }else if(chassis.leg_L.flag.OFF_GROUND_FLAG == 1){
+//    pid_calc(&chassis.leg_L.offground_pid, chassis.leg_L.vmc.forward_kinematics.fk_L0.L0, chassis.leg_L.L0_set_point);
+//    chassis.leg_L.vmc.Fxy_set_point.E.Fy_set_point = chassis.leg_L.offground_pid.out + BODY_WEIGHT * GRAVITY_A * 0.5;
+//  }
 
-  pid_calc(&chassis.leg_R.pid, chassis.leg_R.vmc.forward_kinematics.fk_L0.L0, chassis.leg_R.L0_set_point);
-  chassis.leg_R.vmc.Fxy_set_point.E.Fy_set_point = chassis.leg_R.pid.out + BODY_WEIGHT * GRAVITY_A * 0.5;
+//  if(chassis.leg_R.flag.OFF_GROUND_FLAG == 0){
+    pid_calc(&chassis.leg_R.ground_pid, chassis.leg_R.vmc.forward_kinematics.fk_L0.L0, chassis.leg_R.L0_set_point);
+    chassis.leg_R.vmc.Fxy_set_point.E.Fy_set_point = chassis.leg_R.ground_pid.out + BODY_WEIGHT * GRAVITY_A * 0.5;
+//  }else if(chassis.leg_R.flag.OFF_GROUND_FLAG == 1){
+//    pid_calc(&chassis.leg_R.offground_pid, chassis.leg_R.vmc.forward_kinematics.fk_L0.L0, chassis.leg_R.L0_set_point);
+//    chassis.leg_R.vmc.Fxy_set_point.E.Fy_set_point = chassis.leg_R.offground_pid.out + BODY_WEIGHT * GRAVITY_A * 0.5;
+//  }
 
   VMC_positive_dynamics(&chassis.leg_R.vmc);
   VMC_positive_dynamics(&chassis.leg_L.vmc);
@@ -557,11 +574,11 @@ static void chassis_off_ground_handle(struct Leg *leg) {
 }
 
 static void chassis_off_ground_detection(struct Leg *leg) {
-  if (leg->Fn <= 6) {
+  if (leg->Fn <= 3) {
     chassis_off_ground_handle(leg);
     leg->flag.OFF_GROUND_FLAG = 1;
 
-    buzzer_on(15, 10000);
+    buzzer_on(25, 10000);
   } else {
     leg->flag.OFF_GROUND_FLAG = 0;
     buzzer_off();
