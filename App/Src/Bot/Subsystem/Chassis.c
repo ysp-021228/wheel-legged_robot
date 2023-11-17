@@ -125,6 +125,8 @@ static void chassis_init(struct Chassis *chassis) {
            CHASSIS_ROLL_PID_I,
            CHASSIS_ROLL_PID_D);
 
+  chassis->leg_L.flag.IMPACT_FLAG=0;
+  chassis->leg_R.flag.IMPACT_FLAG=0;
 }
 
 /*******************************************************************************
@@ -314,16 +316,16 @@ static void joint_motors_torque_set_point_cal() {
   chassis.leg_L.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_L.state_variable_error.phi_dot * joint_K_L[5];//
 
 //  if (chassis.leg_L.flag.OFF_GROUND_FLAG == 0) {
-    pid_calc(&chassis.leg_L.ground_pid, chassis.leg_L.vmc.forward_kinematics.fk_L0.L0, chassis.leg_L.L0_set_point);
-    chassis.leg_L.vmc.Fxy_set_point.E.Fy_set_point = chassis.leg_L.ground_pid.out + BODY_WEIGHT * GRAVITY_A * 0.5;
+  pid_calc(&chassis.leg_L.ground_pid, chassis.leg_L.vmc.forward_kinematics.fk_L0.L0, chassis.leg_L.L0_set_point);
+  chassis.leg_L.vmc.Fxy_set_point.E.Fy_set_point = chassis.leg_L.ground_pid.out + BODY_WEIGHT * GRAVITY_A * 0.5;
 //  }else if(chassis.leg_L.flag.OFF_GROUND_FLAG == 1){
 //    pid_calc(&chassis.leg_L.offground_pid, chassis.leg_L.vmc.forward_kinematics.fk_L0.L0, chassis.leg_L.L0_set_point);
 //    chassis.leg_L.vmc.Fxy_set_point.E.Fy_set_point = chassis.leg_L.offground_pid.out + BODY_WEIGHT * GRAVITY_A * 0.5;
 //  }
 
 //  if(chassis.leg_R.flag.OFF_GROUND_FLAG == 0){
-    pid_calc(&chassis.leg_R.ground_pid, chassis.leg_R.vmc.forward_kinematics.fk_L0.L0, chassis.leg_R.L0_set_point);
-    chassis.leg_R.vmc.Fxy_set_point.E.Fy_set_point = chassis.leg_R.ground_pid.out + BODY_WEIGHT * GRAVITY_A * 0.5;
+  pid_calc(&chassis.leg_R.ground_pid, chassis.leg_R.vmc.forward_kinematics.fk_L0.L0, chassis.leg_R.L0_set_point);
+  chassis.leg_R.vmc.Fxy_set_point.E.Fy_set_point = chassis.leg_R.ground_pid.out + BODY_WEIGHT * GRAVITY_A * 0.5;
 //  }else if(chassis.leg_R.flag.OFF_GROUND_FLAG == 1){
 //    pid_calc(&chassis.leg_R.offground_pid, chassis.leg_R.vmc.forward_kinematics.fk_L0.L0, chassis.leg_R.L0_set_point);
 //    chassis.leg_R.vmc.Fxy_set_point.E.Fy_set_point = chassis.leg_R.offground_pid.out + BODY_WEIGHT * GRAVITY_A * 0.5;
@@ -571,6 +573,7 @@ static void chassis_off_ground_handle(struct Leg *leg) {
       joint_K_R[i] = 0;
     }
   }
+  leg->state_variable_reference.x=0;
 }
 
 static void chassis_off_ground_detection(struct Leg *leg) {
@@ -583,6 +586,36 @@ static void chassis_off_ground_detection(struct Leg *leg) {
     leg->flag.OFF_GROUND_FLAG = 0;
     buzzer_off();
   }
+}
+
+static void chassis_impact_handle(struct Leg *leg) {
+  if(leg==NULL){
+    return;
+  }
+
+  if(leg->flag.IMPACT_FLAG==1){
+    leg->ground_pid.p=1500;
+  }else{
+    leg->ground_pid.p=CHASSIS_LEG_LO_PID_P;
+  }
+}
+
+static void chassis_impact_detection(struct Leg *leg) {
+  if (leg == NULL) {
+    return;
+  }
+
+  if (leg->Fn > 30) {
+    leg->flag.IMPACT_FLAG = 1;
+    buzzer_on(5, 10000);
+  }
+
+  if (leg->flag.IMPACT_FLAG == 1 && leg->Fn <= 15) {
+    leg->flag.IMPACT_FLAG = 0;
+    buzzer_off();
+  }
+
+  chassis_impact_handle(leg);
 }
 
 static void chassis_motor_cmd_send() {
@@ -629,6 +662,9 @@ static void chassis_enabled_leg_handle() {
 
   chassis_off_ground_detection(&chassis.leg_L);
   chassis_off_ground_detection(&chassis.leg_R);
+
+//  chassis_impact_detection(&chassis.leg_L);
+//  chassis_impact_detection(&chassis.leg_R);
 
   leg_state_variable_reference_get(&chassis.leg_L);
   leg_state_variable_reference_get(&chassis.leg_R);

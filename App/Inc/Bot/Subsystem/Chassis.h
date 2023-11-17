@@ -123,6 +123,7 @@ enum LegIndex {
 
 struct Flag{
   bool_t OFF_GROUND_FLAG;
+  bool_t IMPACT_FLAG;
 };
 
 struct IMUSetPoint {
