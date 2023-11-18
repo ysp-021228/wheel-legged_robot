@@ -547,7 +547,7 @@ static void cali_data_read(void)
 
         offset += cali_sensor[i].flash_len * 4;
 
-        //read the name and cali flag,
+        //read the name and cali leg_flag,
         cali_flash_read(FLASH_USER_ADDR + offset, (uint32_t *)flash_read_buf, CALI_SENSOR_HEAD_LEGHT);
 
         cali_sensor[i].name[0] = flash_read_buf[0];

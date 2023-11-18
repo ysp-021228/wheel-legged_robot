@@ -232,10 +232,10 @@ typedef union
   struct
   {
     uint32_t _reserved0:28;              /*!< bit:  0..27  Reserved                           */
-    uint32_t V:1;                        /*!< bit:     28  Overflow condition code flag       */
-    uint32_t C:1;                        /*!< bit:     29  Carry condition code flag          */
-    uint32_t Z:1;                        /*!< bit:     30  Zero condition code flag           */
-    uint32_t N:1;                        /*!< bit:     31  Negative condition code flag       */
+    uint32_t V:1;                        /*!< bit:     28  Overflow condition code leg_flag       */
+    uint32_t C:1;                        /*!< bit:     29  Carry condition code leg_flag          */
+    uint32_t Z:1;                        /*!< bit:     30  Zero condition code leg_flag           */
+    uint32_t N:1;                        /*!< bit:     31  Negative condition code leg_flag       */
   } b;                                   /*!< Structure used for bit  access                  */
   uint32_t w;                            /*!< Type      used for word access                  */
 } APSR_Type;
@@ -281,10 +281,10 @@ typedef union
     uint32_t _reserved0:15;              /*!< bit:  9..23  Reserved                           */
     uint32_t T:1;                        /*!< bit:     24  Thumb bit        (read 0)          */
     uint32_t _reserved1:3;               /*!< bit: 25..27  Reserved                           */
-    uint32_t V:1;                        /*!< bit:     28  Overflow condition code flag       */
-    uint32_t C:1;                        /*!< bit:     29  Carry condition code flag          */
-    uint32_t Z:1;                        /*!< bit:     30  Zero condition code flag           */
-    uint32_t N:1;                        /*!< bit:     31  Negative condition code flag       */
+    uint32_t V:1;                        /*!< bit:     28  Overflow condition code leg_flag       */
+    uint32_t C:1;                        /*!< bit:     29  Carry condition code leg_flag          */
+    uint32_t Z:1;                        /*!< bit:     30  Zero condition code leg_flag           */
+    uint32_t N:1;                        /*!< bit:     31  Negative condition code leg_flag       */
   } b;                                   /*!< Structure used for bit  access                  */
   uint32_t w;                            /*!< Type      used for word access                  */
 } xPSR_Type;

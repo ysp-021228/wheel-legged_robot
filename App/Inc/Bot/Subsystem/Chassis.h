@@ -89,13 +89,13 @@
 #define CHASSIS_LEG_L0_PID_I 0.1
 #define CHASSIS_LEG_L0_PID_D 00000
 #define CHASSIS_LEG_L0_PID_IOUT_LIMIT 3
-#define CHASSIS_LEG_L0_PID_OUT_LIMIT 5000
+#define CHASSIS_LEG_L0_PID_OUT_LIMIT 100000
 
 #define CHASSIS_OFFGROUND_LEG_LO_PID_P 250
 #define CHASSIS_OFFGROUND_LEG_L0_PID_I 0
 #define CHASSIS_OFFGROUND_LEG_L0_PID_D 00000
 #define CHASSIS_OFFGROUND_LEG_L0_PID_IOUT_LIMIT 3
-#define CHASSIS_OFFGROUND_LEG_L0_PID_OUT_LIMIT 5000
+#define CHASSIS_OFFGROUND_LEG_L0_PID_OUT_LIMIT 10000
 
 #define CHASSIS_VW_PID_P -0.5
 #define CHASSIS_VW_PID_I 0
@@ -113,7 +113,18 @@
 enum ChassisMode {
   CHASSIS_DISABLE,
   CHASSIS_ENABLED_LEG,
+  CHASSIS_JUMP,
   CHASSIS_MODE_NUM,
+};
+
+enum JumpState{
+  NOT_READY,
+  READY,
+  STRETCHING,
+  SHRINKING,
+  STRETCHING_AGAIN,
+  FALLING,
+  LANDING,
 };
 
 enum LegIndex {
@@ -121,9 +132,14 @@ enum LegIndex {
   L = 0,
 };
 
-struct Flag{
+struct LegFlag{
   bool_t OFF_GROUND_FLAG;
   bool_t IMPACT_FLAG;
+};
+
+struct JumpFlag{
+  bool_t jump_completed;
+  bool_t offground;
 };
 
 struct IMUSetPoint {
@@ -309,7 +325,7 @@ struct Wheel {
 
 struct Leg {
   enum LegIndex leg_index;
-  struct Flag flag;
+  struct LegFlag leg_flag;
   struct StateVariable state_variable_reference;
   struct StateVariable state_variable_set_point;
   struct StateVariable state_variable_error;
@@ -340,6 +356,9 @@ struct Chassis {
 
   fp32 mileage;
   fp32 L0_delta;
+
+  struct JumpFlag jump_flag;
+  enum JumpState jump_state;
 };
 
 /*******************************************************************************
