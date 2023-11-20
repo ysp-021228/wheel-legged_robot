@@ -412,7 +412,7 @@ static void chassis_ctrl_info_get() {
   } else if (switch_is_mid(get_rc_ctrl().rc.s[RC_s_R])) {
     chassis.last_mode = chassis.mode;
     chassis.mode = CHASSIS_ENABLED_LEG;
-    chassis.jump_state=NOT_READY;
+    chassis.jump_state = NOT_READY;
   } else if ((switch_is_mid(rc_sw_R_last) && switch_is_up(get_rc_ctrl().rc.s[RC_s_R]))) {
     chassis.last_mode = chassis.mode;
     chassis.jump_state = READY;
@@ -662,13 +662,18 @@ static void chassis_jump_handle() {
   switch (chassis.jump_state) {
     case READY:chassis.leg_L.L0_set_point = 0.1;//todo 保存当前腿长，以免在两腿不同长度下跳跃出错
       chassis.leg_R.L0_set_point = 0.1;
+      chassis.leg_L.ground_pid.p = 200;
+      chassis.leg_R.ground_pid.p = 200;
 
       if ((ABS(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0_dot) <= 0.02f
-          && ABS(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0 - chassis.leg_L.L0_set_point) <= 0.02)
+          && ABS(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0 - chassis.leg_L.L0_set_point) <= 0.03)
           && (ABS(chassis.leg_R.vmc.forward_kinematics.fk_L0.L0_dot) <= 0.02f
-              && ABS(chassis.leg_R.vmc.forward_kinematics.fk_L0.L0 - chassis.leg_R.L0_set_point) <= 0.02f)) {
-        chassis.jump_state = STRETCHING;
-        chassis.jump_flag.offground = 0;
+              && ABS(chassis.leg_R.vmc.forward_kinematics.fk_L0.L0 - chassis.leg_R.L0_set_point) <= 0.03f)) {
+        buzzer_on(5, 1000);
+        if (switch_is_mid(get_rc_ctrl().rc.s[RC_s_L])) {
+          chassis.jump_state = STRETCHING;
+          chassis.jump_flag.offground = 0;
+        }
       }
       break;
 
@@ -678,8 +683,8 @@ static void chassis_jump_handle() {
       chassis.leg_L.ground_pid.p = 100000;
       chassis.leg_R.ground_pid.p = 100000;
 
-      if (chassis.leg_L.vmc.forward_kinematics.fk_L0.L0 > 0.20
-          && chassis.leg_R.vmc.forward_kinematics.fk_L0.L0 > 0.20) {
+      if (chassis.leg_L.vmc.forward_kinematics.fk_L0.L0 > 0.18
+          && chassis.leg_R.vmc.forward_kinematics.fk_L0.L0 > 0.18) {
         chassis.jump_state = SHRINKING;
       }
 
@@ -690,8 +695,10 @@ static void chassis_jump_handle() {
     case SHRINKING:chassis.leg_L.L0_set_point = 0.15f;
       chassis.leg_R.L0_set_point = 0.15f;
 
-      chassis.leg_L.ground_pid.p = 1000;
-      chassis.leg_R.ground_pid.p = 1000;
+      chassis.leg_L.ground_pid.p = 1800;
+      chassis.leg_L.ground_pid.d = 1800;
+      chassis.leg_R.ground_pid.p = 1800;
+      chassis.leg_R.ground_pid.d = 1800;
 
       if (chassis.leg_L.vmc.forward_kinematics.fk_L0.L0 < 0.15
           && chassis.leg_R.vmc.forward_kinematics.fk_L0.L0 < 0.15) {
@@ -705,8 +712,8 @@ static void chassis_jump_handle() {
     case STRETCHING_AGAIN:chassis.leg_L.L0_set_point = DEFAULT_L0;
       chassis.leg_R.L0_set_point = DEFAULT_L0;
 
-      chassis.leg_L.ground_pid.p = 800;
-      chassis.leg_R.ground_pid.p = 800;
+      chassis.leg_L.ground_pid.p = 1000;
+      chassis.leg_R.ground_pid.p = 1000;
 
       if (chassis.imu_reference.robot_az <= -5) {
         chassis.jump_state = FALLING;

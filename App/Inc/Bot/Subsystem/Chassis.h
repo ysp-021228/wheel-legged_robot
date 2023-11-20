@@ -44,8 +44,8 @@
 #define MIN_ROLL -0.17f
 #define MAX_WHEEL_TORQUE 5.f
 #define MIN_WHEEL_TORQUE -5.f
-#define MAX_JOINT_TORQUE 5.f
-#define MIN_JOINT_TORQUE -5.f
+#define MAX_JOINT_TORQUE 7.f
+#define MIN_JOINT_TORQUE -7.f
 
 /*******************************************************************************
  *                                Remote control                               *

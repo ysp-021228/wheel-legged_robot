@@ -5,7 +5,7 @@
 ![GitHub Logo](picture/Positive_direction_specification.jpg)
 
 ## 底盘结构体从属关系
-![GitHub Logo](picture/轮腿底盘结构.png)
+![GitHub Logo](picture/底盘结构体.png)
 
 ## 控制方式说明
 机器人左右两腿皆从左视图参照正方向定义中控制两腿，参考示意图：
