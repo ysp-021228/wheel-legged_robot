@@ -1,0 +1,242 @@
+<!DOCTYPE html><html><head>
+      <title>README</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="file:///c:\Users\11367\.vscode\extensions\shd101wyy.markdown-preview-enhanced-0.8.10\crossnote\dependencies\katex\katex.min.css">
+      
+      
+      
+      
+      
+      <style>
+      code[class*=language-],pre[class*=language-]{color:#333;background:0 0;font-family:Consolas,"Liberation Mono",Menlo,Courier,monospace;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.4;-moz-tab-size:8;-o-tab-size:8;tab-size:8;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none}pre[class*=language-]{padding:.8em;overflow:auto;border-radius:3px;background:#f5f5f5}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em;white-space:normal;background:#f5f5f5}.token.blockquote,.token.comment{color:#969896}.token.cdata{color:#183691}.token.doctype,.token.macro.property,.token.punctuation,.token.variable{color:#333}.token.builtin,.token.important,.token.keyword,.token.operator,.token.rule{color:#a71d5d}.token.attr-value,.token.regex,.token.string,.token.url{color:#183691}.token.atrule,.token.boolean,.token.code,.token.command,.token.constant,.token.entity,.token.number,.token.property,.token.symbol{color:#0086b3}.token.prolog,.token.selector,.token.tag{color:#63a35c}.token.attr-name,.token.class,.token.class-name,.token.function,.token.id,.token.namespace,.token.pseudo-class,.token.pseudo-element,.token.url-reference .token.variable{color:#795da3}.token.entity{cursor:help}.token.title,.token.title .token.punctuation{font-weight:700;color:#1d3e81}.token.list{color:#ed6a43}.token.inserted{background-color:#eaffea;color:#55a532}.token.deleted{background-color:#ffecec;color:#bd2c00}.token.bold{font-weight:700}.token.italic{font-style:italic}.language-json .token.property{color:#183691}.language-markup .token.tag .token.punctuation{color:#333}.language-css .token.function,code.language-css{color:#0086b3}.language-yaml .token.atrule{color:#63a35c}code.language-yaml{color:#183691}.language-ruby .token.function{color:#333}.language-markdown .token.url{color:#795da3}.language-makefile .token.symbol{color:#795da3}.language-makefile .token.variable{color:#183691}.language-makefile .token.builtin{color:#0086b3}.language-bash .token.keyword{color:#0086b3}pre[data-line]{position:relative;padding:1em 0 1em 3em}pre[data-line] .line-highlight-wrapper{position:absolute;top:0;left:0;background-color:transparent;display:block;width:100%}pre[data-line] .line-highlight{position:absolute;left:0;right:0;padding:inherit 0;margin-top:1em;background:hsla(24,20%,50%,.08);background:linear-gradient(to right,hsla(24,20%,50%,.1) 70%,hsla(24,20%,50%,0));pointer-events:none;line-height:inherit;white-space:pre}pre[data-line] .line-highlight:before,pre[data-line] .line-highlight[data-end]:after{content:attr(data-start);position:absolute;top:.4em;left:.6em;min-width:1em;padding:0 .5em;background-color:hsla(24,20%,50%,.4);color:#f4f1ef;font:bold 65%/1.5 sans-serif;text-align:center;vertical-align:.3em;border-radius:999px;text-shadow:none;box-shadow:0 1px #fff}pre[data-line] .line-highlight[data-end]:after{content:attr(data-end);top:auto;bottom:.4em}html body{font-family:'Helvetica Neue',Helvetica,'Segoe UI',Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ol,html body>ul{margin-bottom:16px}html body ol,html body ul{padding-left:2em}html body ol.no-list,html body ul.no-list{padding:0;list-style-type:none}html body ol ol,html body ol ul,html body ul ol,html body ul ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;background-color:#f0f0f0;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:700;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::after,html body code::before{letter-spacing:-.2em;content:'\00a0'}html body pre>code{padding:0;margin:0;word-break:normal;white-space:pre;background:0 0;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:after,html body pre code:before,html body pre tt:after,html body pre tt:before{content:normal}html body blockquote,html body dl,html body ol,html body p,html body pre,html body ul{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body code,html body pre{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview ul{list-style:disc}.markdown-preview ul ul{list-style:circle}.markdown-preview ul ul ul{list-style:square}.markdown-preview ol{list-style:decimal}.markdown-preview ol ol,.markdown-preview ul ol{list-style-type:lower-roman}.markdown-preview ol ol ol,.markdown-preview ol ul ol,.markdown-preview ul ol ol,.markdown-preview ul ul ol{list-style-type:lower-alpha}.markdown-preview .newpage,.markdown-preview .pagebreak{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center!important}.markdown-preview:not([data-for=preview]) .code-chunk .code-chunk-btn-group{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .status{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .output-div{margin-bottom:16px}.markdown-preview .md-toc{padding:0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link div,.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}.markdown-preview .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,.66);border:4px solid rgba(150,150,150,.66);background-clip:content-box}html body[for=html-export]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0;min-height:100vh}@media screen and (min-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{font-size:14px!important;padding:1em}}@media print{html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,.66);border:4px solid rgba(150,150,150,.66);background-clip:content-box}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc{padding:0 16px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link div,html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% - 300px);padding:2em calc(50% - 457px - 300px / 2);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+      <!-- The content below will be included at the end of the <head> element. --><script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function () {
+    // your code here
+  });
+</script></head><body for="html-export">
+    
+    
+      <div class="crossnote markdown-preview  ">
+      
+<h1 id="目录">目录 </h1>
+<ul>
+<li><a href="#%E8%BD%AE%E8%85%BF%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%9B%B8%E5%85%B3%E8%AF%B4%E6%98%8E-a-name1-sectiona">轮腿机器人相关说明</a>
+<ul>
+<li><a href="#%E6%95%B4%E6%9C%BA%E5%9B%BE%E7%89%87-a-name1-section-1a">整机图片</a></li>
+<li><a href="#%E6%AD%A3%E6%96%B9%E5%90%91%E5%AE%9A%E4%B9%89-a-name1-section-2a">正方向定义</a></li>
+<li><a href="#%E5%BA%95%E7%9B%98%E7%BB%93%E6%9E%84%E4%BD%93%E4%BB%8E%E5%B1%9E%E5%85%B3%E7%B3%BB-a-name1-section-3a">底盘结构体从属关系</a></li>
+<li><a href="#%E6%8E%A7%E5%88%B6%E6%96%B9%E5%BC%8F%E8%AF%B4%E6%98%8E-a-name1-section-4a">控制方式说明</a></li>
+</ul>
+</li>
+<li><a href="#%E9%A1%B9%E7%9B%AE%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%8A%9F%E8%83%BD%E8%AE%BE%E8%AE%A1-a-name2-sectiona">项目系统与功能设计</a>
+<ul>
+<li><a href="#%E7%A1%AC%E4%BB%B6%E8%AE%BE%E8%AE%A1-a-name2-section-2a">硬件设计</a></li>
+<li><a href="#%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1-a-name2-section-3a">软件设计</a>
+<ul>
+<li><a href="#%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84-a-name2-section-3-1a">系统架构</a></li>
+<li><a href="#%E8%BF%90%E8%A1%8C%E6%B5%81%E7%A8%8B-a-name2-section-3-2a">运行流程</a></li>
+<li><a href="#%E5%BA%95%E7%9B%98%E4%BB%BB%E5%8A%A1%E6%B5%81%E7%A8%8B-a-name2-section-3-3a">底盘任务流程</a></li>
+<li><a href="#%E7%A6%BB%E7%BA%BF%E6%A3%80%E6%B5%8B%E4%BB%BB%E5%8A%A1%E6%B5%81%E7%A8%8B-a-name2-section-3-4a">离线检测任务流程</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8A%9F%E8%83%BD%E8%AE%BE%E8%AE%A1-a-name2-section-4a">功能设计</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="轮腿机器人相关说明-a-name1-sectiona">轮腿机器人相关说明 <a name="1-section" href=""></a> </h1>
+<h2 id="整机图片-a-name1-section-1a">整机图片 <a name="1-section-1" href=""></a> </h2>
+<center>
+<p><img src="picture/f1f453ee73a97a37a0b2060098c7de4.jpg" alt="GitHub Logo"></p>
+</center>
+<h2 id="正方向定义-a-name1-section-2a">正方向定义 <a name="1-section-2" href=""></a> </h2>
+<center>
+<p><img src="picture/Positive_direction_specification.jpg" alt="GitHub Logo"></p>
+</center>
+<h2 id="底盘结构体从属关系-a-name1-section-3a">底盘结构体从属关系 <a name="1-section-3" href=""></a> </h2>
+<center>
+<p><img src="picture/%E5%BA%95%E7%9B%98%E7%BB%93%E6%9E%84%E4%BD%93.png" alt="GitHub Logo"></p>
+</center>
+<h2 id="控制方式说明-a-name1-section-4a">控制方式说明 <a name="1-section-4" href=""></a> </h2>
+<p>机器人左右两腿皆从左视图参照正方向定义中控制两腿，参考示意图：</p>
+<center>
+<p><img src="picture/Control_specification.jpg" alt="GitHub Logo"></p>
+</center>
+<h1 id="项目系统与功能设计-a-name2-sectiona">项目系统与功能设计 <a name="2-section" href=""></a> </h1>
+<h2 id="机械设计-a-name2-section-1a">机械设计 <a name="2-section-1" href=""></a> </h2>
+<center>
+<p><img src="picture/%E8%85%BF%E9%83%A8%E8%AE%BE%E8%AE%A1.jpg" alt="GitHub Logo"></p>
+</center>
+<p>五连杆机器人腿是一种常见的机械结构，具有一些优势，特别适用于复杂的应用场景。</p>
+<p><strong>稳定性：</strong> 五连杆结构可以提供较好的稳定性，使得机器人在行走或运动时更加平稳。这对于需要在不同地形或工作环境中移动的机器人尤为重要。<br>
+<strong>适应性强</strong>： 五连杆机器人腿的设计使得机器人能够适应不同高度和倾斜角度的地面。这种灵活性使得机器人能够在多样化的环境中行动，从而拓展了其应用领域。<br>
+<strong>精准控制</strong>： 五连杆结构提供了较好的关节控制，使得机器人能够在移动和定位过程中实现更为精准的运动。这对于执行复杂任务或避开障碍物非常有帮助。<br>
+<strong>有效载荷能力</strong>： 由于五连杆机器人腿的结构稳定，它通常具有较高的有效载荷能力。这使得机器人能够携带更多的设备、传感器或负载，扩展了其应用范围。<br>
+<strong>节省空间</strong>： 五连杆腿结构通常能够以较小的空间实现较大的运动范围，这对于有限空间内的机器人应用尤为重要，如在狭窄的通道中行走或执行任务。<br>
+<strong>可编程性</strong>： 五连杆机器人腿的关节可编程性较高，使得开发人员可以更容易地实现各种运动模式和行为，从而适应不同的任务需求。</p>
+<p>总体而言，五连杆机器人腿的优势在于其结构稳定性、适应性强、精准控制和较高有效载荷能力。</p>
+<h3 id="机械参数-a-name2-section-1-1a">机械参数 <a name="2-section-1-1" href=""></a> </h3>
+<h4 id="尺寸相关">尺寸相关 </h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">部件名称</th>
+<th style="text-align:center">数值</th>
+<th style="text-align:center">单位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">杆L1</td>
+<td style="text-align:center">0.11</td>
+<td style="text-align:center">m</td>
+</tr>
+<tr>
+<td style="text-align:center">杆L2</td>
+<td style="text-align:center">0.18</td>
+<td style="text-align:center">m</td>
+</tr>
+<tr>
+<td style="text-align:center">杆L3</td>
+<td style="text-align:center">0.18</td>
+<td style="text-align:center">m</td>
+</tr>
+<tr>
+<td style="text-align:center">杆L4</td>
+<td style="text-align:center">0.11</td>
+<td style="text-align:center">m</td>
+</tr>
+<tr>
+<td style="text-align:center">杆L5</td>
+<td style="text-align:center">0.09</td>
+<td style="text-align:center">m</td>
+</tr>
+<tr>
+<td style="text-align:center">驱动轮半径</td>
+<td style="text-align:center">0.05</td>
+<td style="text-align:center">m</td>
+</tr>
+<tr>
+<td style="text-align:center">底盘绕Z轴旋转半径</td>
+<td style="text-align:center">0.1577</td>
+<td style="text-align:center">m</td>
+</tr>
+<tr>
+<td style="text-align:center">大腿趴下机械限位</td>
+<td style="text-align:center">0.10472</td>
+<td style="text-align:center">rad</td>
+</tr>
+</tbody>
+</table>
+<h4 id="质量相关">质量相关 </h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">部件名称</th>
+<th style="text-align:center">数值</th>
+<th style="text-align:center">单位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">整车</td>
+<td style="text-align:center">4.635</td>
+<td style="text-align:center">kg</td>
+</tr>
+<tr>
+<td style="text-align:center">轮子</td>
+<td style="text-align:center">0.183</td>
+<td style="text-align:center">kg</td>
+</tr>
+<tr>
+<td style="text-align:center">单腿</td>
+<td style="text-align:center">0.715</td>
+<td style="text-align:center">kg</td>
+</tr>
+<tr>
+<td style="text-align:center">车体</td>
+<td style="text-align:center">2.839</td>
+<td style="text-align:center">kg</td>
+</tr>
+</tbody>
+</table>
+<h2 id="硬件设计-a-name2-section-2a">硬件设计 <a name="2-section-2" href=""></a> </h2>
+<h3 id="整机硬件框图">整机硬件框图 </h3>
+<center>
+<p><img src="picture/%E7%A1%AC%E4%BB%B6%E6%A1%86%E5%9B%BE.png" alt="GitHub Logo"></p>
+</center>
+整车电源由电池提供，电池直接连接中心板再分流到各电机以及主控板，可以有效保护主控板。机器人主要执行器都是用CAN通信，整机一共使用2个CAN网络。  
+<p>轮子驱动电机电子调速器CAN总线直接连接主控板，接入CAN1网络；关节电机发送扩展帧优先级较低，为了避免丢失数据，将四个关节电机单独接入CAN2网络，并通过中心板连接主控板。</p>
+<h2 id="软件设计-a-name2-section-3a">软件设计 <a name="2-section-3" href=""></a> </h2>
+<h3 id="系统架构-a-name2-section-3-1a">系统架构 <a name="2-section-3-1" href=""></a> </h3>
+<p>机器人的主控程序采用相同的驱动层和整体架构。主控程序以 FreeRTOS 作为片上操作系统，实现多线程间的调度和通信。FreeRTOS 操作系统是一个轻量级的操作系统，提供了线程管理、时间管理、内存管理等。</p>
+<center>
+<p><img src="picture/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84.png" alt="GitHub Logo"></p>
+</center>
+系统以FreeRTOS为片上操作系统，底层的外设驱动涉及 UART、CAN、IIC、GPIO、SPI、FLASH等。顶层应用层包含 Task 和 Module 两方面，Task 中主要为与系统运行相关的线程，Module 主要为系统运行过程所需要使用的算法(控制算法、解算算法、滤波算法等)和工具（遥控器、传感器等）。
+<h3 id="运行流程-a-name2-section-3-2a">运行流程 <a name="2-section-3-2" href=""></a> </h3>
+<center>
+<p><img src="picture/%E8%BF%90%E8%A1%8C%E6%B5%81%E7%A8%8B.png" alt="GitHub Logo"></p>
+</center>
+<h3 id="底盘任务流程-a-name2-section-3-3a">底盘任务流程 <a name="2-section-3-3" href=""></a> </h3>
+<center>
+<p><img src="picture/%E5%BA%95%E7%9B%98%E4%BB%BB%E5%8A%A1%E6%B5%81%E7%A8%8B.png" alt="GitHub Logo"></p>
+</center>
+底盘运行任务开始后，会进行一段时间延时，再进行底盘相关变量的初始化。初始化完毕后进入循环体。循环体中，chassis_info_update()更新底盘陀螺仪和电机相关数据；chassis_ctrl_info_get()解析遥控发送的底盘控制信息；chassis_control()根据底盘控制命令对底盘进行运动学正逆解算，并进行LQR和VMC计算出电机的期望转矩，并根据电机说明转换为期望电流；chassis_device_offline_handle()检测底盘相关设备的是否离线，若离线，则使相关电机失能，防止底盘失控；chassis_motors_can_send()发送can数据控制电机。  
+<p>腿部控制处理中，chassis_forward_kinematics()先结算处虚拟腿姿态；chassis_K_matrix_fitting()根据虚拟腿长进行LQR的K矩阵拟合；off_ground_detection()根据腿部支持力判断是否离线以及进行离线处理；jump_handle()在接到跳跃命令之后进行跳跃处理；state_variable_reference相关函数进行状态变量的期望、反馈、误差获取并在motors_torque_cal()中计算电机期望转矩；vmc_inverse_solution()进行运动学和动力学逆解；最后fn_cal()进行支持力计算。</p>
+<h3 id="离线检测任务流程-a-name2-section-3-4a">离线检测任务流程 <a name="2-section-3-4" href=""></a> </h3>
+<center>
+<p><img src="picture/%E7%A6%BB%E7%BA%BF%E7%9B%91%E6%B5%8B%E4%BB%BB%E5%8A%A1%E6%B5%81%E7%A8%8B.png" alt="GitHub Logo"></p>
+</center>
+detect_task是用来检测离线设备的任务。任务开始时，detect_device_init()对被检设备进行初始化，设置离线判断的时间阈值并默认设备离线。初始化完毕后进入循环体。每次循环开始会初始化最高警告等级和离线设备数量，接着检测每个设备离线间隔时间是否超过对应设备的间隔阈值，超过的标记为离线，并且记录最高警告等级。offline_remind()中根据最高离线等级和离线设备数量，利用蜂鸣器和RGB灯发出提醒信息。
+<h2 id="功能设计-a-name2-section-4a">功能设计 <a name="2-section-4" href=""></a> </h2>
+<h3 id="移动控制">移动控制 </h3>
+<p>机器人可以在保持机体Pitch轴稳定的情况下进行移动和旋转运动。</p>
+<center>
+<p><img src="picture/control/%E7%A7%BB%E5%8A%A8%E6%8E%A7%E5%88%B6.jpg" alt="GitHub Logo"></p>
+</center>
+<h3 id="自由度控制">自由度控制 </h3>
+<p>Pitch、Yaw、Roll三轴自由度调节，并配合腿部控制完成Z轴升降。</p>
+<center>
+<p><img src="picture/control/%E8%87%AA%E7%94%B1%E5%BA%A6%E6%8E%A7%E5%88%B6.jpg" alt="GitHub Logo"></p>
+</center>
+<h3 id="适应性控制">适应性控制 </h3>
+<p>复杂路面上的自适应，能完成Roll轴自稳，下台阶冲击抵抗，转向重心偏移。</p>
+<center>
+<p><img src="picture/control/%E9%80%82%E5%BA%94%E6%80%A7%E6%8E%A7%E5%88%B6.jpg" alt="GitHub Logo"></p>
+</center>
+<h3 id="操作控制">操作控制 </h3>
+<p>能在一个遥控器上实现所有操作，能够检测机器人是否离地，能稳定自启。</p>
+<center>
+<p><img src="picture/control/%E6%93%8D%E4%BD%9C%E6%8E%A7%E5%88%B6.jpg" alt="GitHub Logo"></p>
+</center>
+<h3 id="抗干扰能力">抗干扰能力 </h3>
+<p>遇到持续外力和突发冲撞能保持稳定。</p>
+<center>
+<p><img src="picture/control/%E6%8A%97%E5%B9%B2%E6%89%B0%E8%83%BD%E5%8A%9B.jpg" alt="GitHub Logo"></p>
+</center>
+<h3 id="跳跃">跳跃 </h3>
+<p>能够稳定跳跃，实现原地跳跃和向前跳跃。</p>
+<center>
+<p><img src="picture/control/%E5%8E%9F%E5%9C%B0%E8%B7%B3%E8%B7%83.jpg" alt="GitHub Logo"><br>
+<img src="picture/control/%E8%B7%B3%E4%B8%8A%E5%8F%B0%E9%98%B6.jpg" alt="GitHub Logo"></p>
+</center>
+<center>
+</center>
+
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+  
+    </body></html>
