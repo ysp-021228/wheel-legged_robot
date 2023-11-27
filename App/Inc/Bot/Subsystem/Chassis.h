@@ -111,6 +111,7 @@
 
 
 enum ChassisMode {
+  CHASSIS_INIT,
   CHASSIS_DISABLE,
   CHASSIS_ENABLED_LEG,
   CHASSIS_JUMP,
@@ -359,6 +360,7 @@ struct Chassis {
 
   struct JumpFlag jump_flag;
   enum JumpState jump_state;
+  bool_t  init_flag;
 };
 
 /*******************************************************************************

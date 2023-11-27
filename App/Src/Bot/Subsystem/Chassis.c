@@ -131,6 +131,7 @@ static void chassis_init(struct Chassis *chassis) {
 
   chassis->jump_flag.jump_completed = 1;
   chassis->jump_flag.offground = 1;
+  chassis->init_flag = false;
 }
 
 /*******************************************************************************
@@ -409,7 +410,9 @@ static void chassis_ctrl_info_get() {
   if (switch_is_down(get_rc_ctrl().rc.s[RC_s_R])) {
     chassis.last_mode = chassis.mode;
     chassis.mode = CHASSIS_DISABLE;
-  } else if (switch_is_mid(get_rc_ctrl().rc.s[RC_s_R])) {
+  } else if (switch_is_mid(get_rc_ctrl().rc.s[RC_s_R]) && chassis.init_flag == false) {
+    chassis.mode = CHASSIS_INIT;
+  } else if (switch_is_mid(get_rc_ctrl().rc.s[RC_s_R]) && chassis.init_flag == true) {
     chassis.last_mode = chassis.mode;
     chassis.mode = CHASSIS_ENABLED_LEG;
     chassis.jump_state = NOT_READY;
@@ -658,6 +661,48 @@ static void chassis_motor_cmd_send() {
 /*******************************************************************************
  *                                  Subtask                                   *
  *******************************************************************************/
+static void chassis_init_handle() {
+  chassis_forward_kinematics();
+
+  chassis_K_matrix_fitting(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0 * 0.2f, wheel_K_L, wheel_fitting_factor);
+  chassis_K_matrix_fitting(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0 * 0.2f, joint_K_L, joint_fitting_factor);
+  chassis_K_matrix_fitting(chassis.leg_R.vmc.forward_kinematics.fk_L0.L0 * 0.2f, wheel_K_R, wheel_fitting_factor);
+  chassis_K_matrix_fitting(chassis.leg_R.vmc.forward_kinematics.fk_L0.L0 * 0.2f, joint_K_R, joint_fitting_factor);
+
+  chassis_off_ground_detection(&chassis.leg_L);
+  chassis_off_ground_detection(&chassis.leg_R);
+
+  leg_state_variable_reference_get(&chassis.leg_L);
+  leg_state_variable_reference_get(&chassis.leg_R);
+
+  leg_state_variable_set_point_set(&chassis.leg_L, chassis.chassis_move_speed_set_point.vx);
+  leg_state_variable_set_point_set(&chassis.leg_R, chassis.chassis_move_speed_set_point.vx);
+
+  leg_state_variable_error_get(&chassis.leg_L);
+  leg_state_variable_error_get(&chassis.leg_R);
+
+  chassis_motors_torque_set_point_cal(&chassis.leg_L);
+  chassis_motors_torque_set_point_cal(&chassis.leg_R);
+
+  chassis.leg_L.wheel.motor_3508.give_current = -chassis.leg_L.wheel.torque * MOTOR_3508_TORQUE_TO_DATA;
+  chassis.leg_R.wheel.motor_3508.give_current = -chassis.leg_R.wheel.torque * MOTOR_3508_TORQUE_TO_DATA;
+
+  vmc_inverse_solution(&chassis.leg_L);
+  vmc_inverse_solution(&chassis.leg_R);
+
+  leg_fn_cal(&chassis.leg_L, chassis.imu_reference.robot_az);
+  leg_fn_cal(&chassis.leg_R, chassis.imu_reference.robot_az);
+
+  if (ABS(chassis.imu_reference.pitch_angle) <= 0.08 && ABS(chassis.imu_reference.pitch_gyro) <= 0.08) {
+    chassis.init_flag = true;
+  } else {
+    chassis.leg_L.cyber_gear_data[0].torque = 0;
+    chassis.leg_L.cyber_gear_data[1].torque = 0;
+    chassis.leg_R.cyber_gear_data[0].torque = 0;
+    chassis.leg_R.cyber_gear_data[1].torque = 0;
+  }
+}
+
 static void chassis_jump_handle() {
   switch (chassis.jump_state) {
     case READY:chassis.leg_L.L0_set_point = 0.1;//todo 保存当前腿长，以免在两腿不同长度下跳跃出错
@@ -808,6 +853,8 @@ static void chassis_relax_handle() {
 
   chassis.imu_set_point.yaw = chassis.imu_reference.yaw_angle;
 
+  chassis.init_flag = false;
+
   buzzer_off();
 }
 
@@ -831,6 +878,11 @@ void chassis_task(void const *pvParameters) {
     chassis_device_offline_handle();
 
     switch (chassis.mode) {
+      case CHASSIS_INIT: {
+        chassis_init_handle();
+      }
+        break;
+
       case CHASSIS_ENABLED_LEG: {
         chassis_enabled_leg_handle();
       }
