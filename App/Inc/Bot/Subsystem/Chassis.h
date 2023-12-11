@@ -57,7 +57,7 @@
 #define JOINT_THETA_LIMIT      20.5f
 #define JOINT_THETA_DOT_LIMIT  20.5f
 #define JOINT_X_LIMIT          0.f
-#define JOINT_X_DOT_LIMIT      2.0f
+#define JOINT_X_DOT_LIMIT      20.0f
 #define JOINT_PHI_LIMIT        10.5f
 #define JOINT_PHI_DOT_LIMIT    10.0f
 
