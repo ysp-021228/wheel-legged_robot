@@ -25,24 +25,24 @@ fp32 wheel_K_R[6] = {0, 0, 0, 0, 0, 0};
 fp32 joint_K_R[6] = {0, 0, 0, 0, 0, 0};
 
 fp32 wheel_fitting_factor[6][4] = {
-    {-1311.877590, 183.022138, -39.769496, -0.446471},
-    {106.116938, -29.806016, -0.528552, -0.131703},
+    {-1390.844458,210.558221,-43.299609,-0.405702},
+    {120.227900,-30.472601,-0.654288,-0.141133},
 
-    {912.239964, -142.085245, 5.096864, -0.387869},
-    {2120.431678, -318.199916, 13.304728, -0.658861},
+    {386.492094,-59.253801,1.829982,-0.193640},
+    {1444.634419,-216.834697,8.003115,-0.568040},
 
-    {-46.077618, -90.807305, -2.739071, 3.891235},
-    {-120.176412, 13.247289, -1.329640, 0.320311}
+    {519.806950,-203.604674,-1.197443,4.734957},
+    {-57.581120,3.064986,-1.028020,0.349885}
 };
 fp32 joint_fitting_factor[6][4] = {
-    {43524.958598, -9263.401710, 750.130875, 9.380194},
-    {-511.478386, -94.508965, 16.881021, 4.059426},
+    {43173.686464,-9365.635556,743.560181,8.140020},
+    {-206.693172,-150.152260,17.001808,3.900569},
 
-    {7108.893060, -1268.826163, 47.272344, 7.982098},
-    {-13870.412882, 1753.097728, -121.285141, 14.579636},
+    {3073.911069,-571.047733,18.365006,3.972968},
+    {-3682.250521,236.085837,-43.070934,12.059174},
 
-    {-30974.878869, 5403.706333, -20.192550, 24.927891},
-    {-1303.500590, 247.750009, 5.351638, 0.847694}
+    {-46236.756974,7426.428647,-32.513996,36.726109},
+    {-2553.418283,417.790020,0.154780,1.470880}
 };
 
 /*******************************************************************************
@@ -266,6 +266,60 @@ static void leg_state_variable_error_get(struct Leg *leg) {
   leg->state_variable_error.phi_dot = leg->state_variable_reference.phi_dot - leg->state_variable_set_point.phi_dot;
 }
 
+static void leg_state_variable_out_get(struct Leg *leg) {
+  if (leg == NULL) {
+    return;
+  }
+
+  //wheels
+  if (leg->leg_index == L) {
+    leg->state_variable_wheel_out.theta = leg->state_variable_error.theta * wheel_K_L[0];
+    leg->state_variable_wheel_out.theta_dot = leg->state_variable_error.theta_dot * wheel_K_L[1];
+    leg->state_variable_wheel_out.x = leg->state_variable_error.x * wheel_K_L[2];
+    leg->state_variable_wheel_out.x_dot = leg->state_variable_error.x_dot * wheel_K_L[3];
+    leg->state_variable_wheel_out.phi = leg->state_variable_error.phi * wheel_K_L[4];
+    leg->state_variable_wheel_out.phi_dot = leg->state_variable_error.phi_dot * wheel_K_L[5];
+  } else if (leg->leg_index == R) {
+    leg->state_variable_wheel_out.theta = leg->state_variable_error.theta * wheel_K_R[0];
+    leg->state_variable_wheel_out.theta_dot = leg->state_variable_error.theta_dot * wheel_K_R[1];
+    leg->state_variable_wheel_out.x = leg->state_variable_error.x * wheel_K_R[2];
+    leg->state_variable_wheel_out.x_dot = leg->state_variable_error.x_dot * wheel_K_R[3];
+    leg->state_variable_wheel_out.phi = leg->state_variable_error.phi * wheel_K_R[4];
+    leg->state_variable_wheel_out.phi_dot = leg->state_variable_error.phi_dot * wheel_K_R[5];
+  }
+
+  VAL_LIMIT(leg->state_variable_wheel_out.theta, -WHEEL_THETA_LIMIT, WHEEL_THETA_LIMIT);
+  VAL_LIMIT(leg->state_variable_wheel_out.theta_dot, -WHEEL_THETA_DOT_LIMIT, WHEEL_THETA_DOT_LIMIT);
+  VAL_LIMIT(leg->state_variable_wheel_out.x, -WHEEL_X_LIMIT, WHEEL_X_LIMIT);
+  VAL_LIMIT(leg->state_variable_wheel_out.x_dot, -WHEEL_X_DOT_LIMIT, WHEEL_X_DOT_LIMIT);
+  VAL_LIMIT(leg->state_variable_wheel_out.phi, -WHEEL_PHI_LIMIT, WHEEL_PHI_LIMIT);
+  VAL_LIMIT(leg->state_variable_wheel_out.phi_dot, -WHEEL_PHI_DOT_LIMIT, WHEEL_PHI_DOT_LIMIT);
+
+  //joints
+  if (leg->leg_index == L) {
+    leg->state_variable_joint_out.theta = leg->state_variable_error.theta * joint_K_L[0];
+    leg->state_variable_joint_out.theta_dot = leg->state_variable_error.theta_dot * joint_K_L[1];
+    leg->state_variable_joint_out.x = leg->state_variable_error.x * joint_K_L[2];
+    leg->state_variable_joint_out.x_dot = leg->state_variable_error.x_dot * joint_K_L[3];
+    leg->state_variable_joint_out.phi = leg->state_variable_error.phi * joint_K_L[4];
+    leg->state_variable_joint_out.phi_dot = leg->state_variable_error.phi_dot * joint_K_L[5];
+  } else if (leg->leg_index == R) {
+    leg->state_variable_joint_out.theta = leg->state_variable_error.theta * joint_K_R[0];
+    leg->state_variable_joint_out.theta_dot = leg->state_variable_error.theta_dot * joint_K_R[1];
+    leg->state_variable_joint_out.x = leg->state_variable_error.x * joint_K_R[2];
+    leg->state_variable_joint_out.x_dot = leg->state_variable_error.x_dot * joint_K_R[3];
+    leg->state_variable_joint_out.phi = leg->state_variable_error.phi * joint_K_R[4];
+    leg->state_variable_joint_out.phi_dot = leg->state_variable_error.phi_dot * joint_K_R[5];
+  }
+
+  VAL_LIMIT(leg->state_variable_joint_out.theta, -JOINT_THETA_LIMIT, JOINT_THETA_LIMIT);
+  VAL_LIMIT(leg->state_variable_joint_out.theta_dot, -JOINT_THETA_DOT_LIMIT, JOINT_THETA_DOT_LIMIT);
+//  VAL_LIMIT(leg->state_variable_joint_out.x, -JOINT_X_LIMIT, JOINT_X_LIMIT);
+  VAL_LIMIT(leg->state_variable_joint_out.x_dot, -JOINT_X_DOT_LIMIT, JOINT_X_DOT_LIMIT);
+  VAL_LIMIT(leg->state_variable_joint_out.phi, -JOINT_PHI_LIMIT, JOINT_PHI_LIMIT);
+  VAL_LIMIT(leg->state_variable_joint_out.phi_dot, -JOINT_PHI_DOT_LIMIT, JOINT_PHI_DOT_LIMIT);
+}
+
 static void wheel_motors_torque_set_point_cal(struct Leg *leg) {
   if (leg == NULL) {
     return;
@@ -278,6 +332,13 @@ static void wheel_motors_torque_set_point_cal(struct Leg *leg) {
     leg->wheel.torque += leg->state_variable_error.x_dot * wheel_K_L[3];
     leg->wheel.torque += leg->state_variable_error.phi * wheel_K_L[4];//
     leg->wheel.torque += leg->state_variable_error.phi_dot * wheel_K_L[5];
+
+//    leg->wheel.torque += leg->state_variable_wheel_out.theta;//
+//    leg->wheel.torque += leg->state_variable_wheel_out.theta_dot;//
+//    leg->wheel.torque += leg->state_variable_wheel_out.x;
+//    leg->wheel.torque += leg->state_variable_wheel_out.x_dot;
+//    leg->wheel.torque += leg->state_variable_joint_out.phi;//
+//    leg->wheel.torque += leg->state_variable_joint_out.phi_dot;
   } else if (leg->leg_index == R) {
     leg->wheel.torque = 0;
     leg->wheel.torque += leg->state_variable_error.theta * wheel_K_R[0];//
@@ -295,11 +356,6 @@ static void wheel_motors_torque_set_point_cal(struct Leg *leg) {
 
   VAL_LIMIT(leg->wheel.torque, MIN_WHEEL_TORQUE, MAX_WHEEL_TORQUE);
 
-//  if (leg->wheel.torque > 0) {
-//    leg->wheel.torque += 0.05f;
-//  } else {
-//    leg->wheel.torque -= 0.05f;
-//  }
 }
 
 static void joint_motors_torque_set_point_cal() {
@@ -312,6 +368,7 @@ static void joint_motors_torque_set_point_cal() {
   chassis.leg_R.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_R.state_variable_error.x_dot * joint_K_R[3];//
   chassis.leg_R.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_R.state_variable_error.phi * joint_K_R[4];//
   chassis.leg_R.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_R.state_variable_error.phi_dot * joint_K_R[5];//
+
 //L
   chassis.leg_L.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_L.state_variable_error.theta * joint_K_L[0];//
   chassis.leg_L.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_L.state_variable_error.theta_dot * joint_K_L[1];//
@@ -320,21 +377,12 @@ static void joint_motors_torque_set_point_cal() {
   chassis.leg_L.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_L.state_variable_error.phi * joint_K_L[4];//
   chassis.leg_L.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_L.state_variable_error.phi_dot * joint_K_L[5];//
 
-//  if (chassis.leg_L.leg_flag.OFF_GROUND_FLAG == 0) {
+
   pid_calc(&chassis.leg_L.ground_pid, chassis.leg_L.vmc.forward_kinematics.fk_L0.L0, chassis.leg_L.L0_set_point);
   chassis.leg_L.vmc.Fxy_set_point.E.Fy_set_point = chassis.leg_L.ground_pid.out + BODY_WEIGHT * GRAVITY_A * 0.5;
-//  }else if(chassis.leg_L.leg_flag.OFF_GROUND_FLAG == 1){
-//    pid_calc(&chassis.leg_L.offground_pid, chassis.leg_L.vmc.forward_kinematics.fk_L0.L0, chassis.leg_L.L0_set_point);
-//    chassis.leg_L.vmc.Fxy_set_point.E.Fy_set_point = chassis.leg_L.offground_pid.out + BODY_WEIGHT * GRAVITY_A * 0.5;
-//  }
 
-//  if(chassis.leg_R.leg_flag.OFF_GROUND_FLAG == 0){
   pid_calc(&chassis.leg_R.ground_pid, chassis.leg_R.vmc.forward_kinematics.fk_L0.L0, chassis.leg_R.L0_set_point);
   chassis.leg_R.vmc.Fxy_set_point.E.Fy_set_point = chassis.leg_R.ground_pid.out + BODY_WEIGHT * GRAVITY_A * 0.5;
-//  }else if(chassis.leg_R.leg_flag.OFF_GROUND_FLAG == 1){
-//    pid_calc(&chassis.leg_R.offground_pid, chassis.leg_R.vmc.forward_kinematics.fk_L0.L0, chassis.leg_R.L0_set_point);
-//    chassis.leg_R.vmc.Fxy_set_point.E.Fy_set_point = chassis.leg_R.offground_pid.out + BODY_WEIGHT * GRAVITY_A * 0.5;
-//  }
 
   VMC_positive_dynamics(&chassis.leg_R.vmc);
   VMC_positive_dynamics(&chassis.leg_L.vmc);
@@ -693,7 +741,7 @@ static void chassis_init_handle() {
   leg_fn_cal(&chassis.leg_L, chassis.imu_reference.robot_az);
   leg_fn_cal(&chassis.leg_R, chassis.imu_reference.robot_az);
 
-  if (ABS(chassis.imu_reference.pitch_angle) <= 0.08 && ABS(chassis.imu_reference.pitch_gyro) <= 0.08) {
+  if (ABS(chassis.imu_reference.pitch_angle) <= 0.04 && ABS(chassis.imu_reference.pitch_gyro) <= 0.08) {
     chassis.init_flag = true;
   } else {
     chassis.leg_L.cyber_gear_data[0].torque = 0;
@@ -818,6 +866,9 @@ static void chassis_enabled_leg_handle() {
 
   leg_state_variable_error_get(&chassis.leg_L);
   leg_state_variable_error_get(&chassis.leg_R);
+
+  leg_state_variable_out_get(&chassis.leg_L);
+  leg_state_variable_out_get(&chassis.leg_R);
 
   chassis_motors_torque_set_point_cal(&chassis.leg_L);
   chassis_motors_torque_set_point_cal(&chassis.leg_R);

@@ -47,6 +47,20 @@
 #define MAX_JOINT_TORQUE 7.f
 #define MIN_JOINT_TORQUE -7.f
 
+#define WHEEL_THETA_LIMIT      1.5f
+#define WHEEL_THETA_DOT_LIMIT  0.5f
+#define WHEEL_X_LIMIT          0.f
+#define WHEEL_X_DOT_LIMIT      1.0f
+#define WHEEL_PHI_LIMIT        1.5f
+#define WHEEL_PHI_DOT_LIMIT    1.0f
+
+#define JOINT_THETA_LIMIT      20.5f
+#define JOINT_THETA_DOT_LIMIT  20.5f
+#define JOINT_X_LIMIT          0.f
+#define JOINT_X_DOT_LIMIT      2.0f
+#define JOINT_PHI_LIMIT        10.5f
+#define JOINT_PHI_DOT_LIMIT    10.0f
+
 /*******************************************************************************
  *                                Remote control                               *
  *******************************************************************************/
@@ -65,7 +79,7 @@
  *                         Robot physical parameters                           *
  *******************************************************************************/
 #define M3508_MAX_RPM 710
-#define BALANCE_WHEEL_R 0.05 //平衡兵轮子半径m
+#define BALANCE_WHEEL_R 0.05f //平衡兵轮子半径m
 #define BALANCE_REDUCTION_RATIO (1.0f/19) //平衡兵电机减速比
 #define BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED  ((2 * PI  * BALANCE_WHEEL_R*BALANCE_REDUCTION_RATIO) / 60.0f) //平衡兵电机rpm转为轮子的转速m/s
 
@@ -86,8 +100,8 @@
  *                                PID parameters                               *
  *******************************************************************************/
 #define CHASSIS_LEG_LO_PID_P 150
-#define CHASSIS_LEG_L0_PID_I 0.1
-#define CHASSIS_LEG_L0_PID_D 00000
+#define CHASSIS_LEG_L0_PID_I 0.2
+#define CHASSIS_LEG_L0_PID_D 500
 #define CHASSIS_LEG_L0_PID_IOUT_LIMIT 3
 #define CHASSIS_LEG_L0_PID_OUT_LIMIT 100000
 
@@ -104,7 +118,7 @@
 #define CHASSIS_VW_PID_OUT_LIMIT 0.5
 
 #define CHASSIS_ROLL_PID_P 0.2
-#define CHASSIS_ROLL_PID_I 0.001
+#define CHASSIS_ROLL_PID_I 0.0015
 #define CHASSIS_ROLL_PID_D 2
 #define CHASSIS_ROLL_PID_IOUT_LIMIT 0.05
 #define CHASSIS_ROLL_PID_OUT_LIMIT 0.2
@@ -330,6 +344,8 @@ struct Leg {
   struct StateVariable state_variable_reference;
   struct StateVariable state_variable_set_point;
   struct StateVariable state_variable_error;
+  struct StateVariable state_variable_wheel_out;
+  struct StateVariable state_variable_joint_out;
   struct Wheel wheel;
   struct CyberGearData cyber_gear_data[3];
   struct VMC vmc;
