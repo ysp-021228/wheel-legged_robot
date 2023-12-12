@@ -54,10 +54,10 @@
 #define WHEEL_PHI_LIMIT        1.5f
 #define WHEEL_PHI_DOT_LIMIT    1.0f
 
-#define JOINT_THETA_LIMIT      20.5f
+#define JOINT_THETA_LIMIT      15.5f
 #define JOINT_THETA_DOT_LIMIT  20.5f
 #define JOINT_X_LIMIT          0.f
-#define JOINT_X_DOT_LIMIT      20.0f
+#define JOINT_X_DOT_LIMIT      10.0f
 #define JOINT_PHI_LIMIT        10.5f
 #define JOINT_PHI_DOT_LIMIT    10.0f
 
@@ -99,7 +99,7 @@
 /*******************************************************************************
  *                                PID parameters                               *
  *******************************************************************************/
-#define CHASSIS_LEG_LO_PID_P 150
+#define CHASSIS_LEG_LO_PID_P 250
 #define CHASSIS_LEG_L0_PID_I 0.2
 #define CHASSIS_LEG_L0_PID_D 500
 #define CHASSIS_LEG_L0_PID_IOUT_LIMIT 3
@@ -116,6 +116,12 @@
 #define CHASSIS_VW_PID_D -20
 #define CHASSIS_VW_PID_IOUT_LIMIT 0.2
 #define CHASSIS_VW_PID_OUT_LIMIT 0.5
+
+//#define CHASSIS_VW_PID_P 0.0
+//#define CHASSIS_VW_PID_I 0
+//#define CHASSIS_VW_PID_D -0
+//#define CHASSIS_VW_PID_IOUT_LIMIT 0.2
+//#define CHASSIS_VW_PID_OUT_LIMIT 0.5
 
 #define CHASSIS_ROLL_PID_P 0.2
 #define CHASSIS_ROLL_PID_I 0.0015
