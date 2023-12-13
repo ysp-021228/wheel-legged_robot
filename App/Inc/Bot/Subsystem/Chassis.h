@@ -99,9 +99,9 @@
 /*******************************************************************************
  *                                PID parameters                               *
  *******************************************************************************/
-#define CHASSIS_LEG_LO_PID_P 250
+#define CHASSIS_LEG_LO_PID_P 350
 #define CHASSIS_LEG_L0_PID_I 0.2
-#define CHASSIS_LEG_L0_PID_D 500
+#define CHASSIS_LEG_L0_PID_D 5000
 #define CHASSIS_LEG_L0_PID_IOUT_LIMIT 3
 #define CHASSIS_LEG_L0_PID_OUT_LIMIT 100000
 
@@ -111,9 +111,9 @@
 #define CHASSIS_OFFGROUND_LEG_L0_PID_IOUT_LIMIT 3
 #define CHASSIS_OFFGROUND_LEG_L0_PID_OUT_LIMIT 10000
 
-#define CHASSIS_VW_PID_P -0.5
-#define CHASSIS_VW_PID_I 0
-#define CHASSIS_VW_PID_D -20
+#define CHASSIS_VW_PID_P -3
+#define CHASSIS_VW_PID_I -0.01
+#define CHASSIS_VW_PID_D -200
 #define CHASSIS_VW_PID_IOUT_LIMIT 0.2
 #define CHASSIS_VW_PID_OUT_LIMIT 0.5
 
@@ -129,11 +129,11 @@
 #define CHASSIS_ROLL_PID_IOUT_LIMIT 0.05
 #define CHASSIS_ROLL_PID_OUT_LIMIT 0.2
 
-#define CHASSIS_LEG_COORDINATION_PID_P 0
-#define CHASSIS_LEG_COORDINATION_PID_I 0
+#define CHASSIS_LEG_COORDINATION_PID_P 2
+#define CHASSIS_LEG_COORDINATION_PID_I 0.0
 #define CHASSIS_LEG_COORDINATION_PID_D 0
-#define CHASSIS_LEG_COORDINATION_PID_IOUT_LIMIT 0
-#define CHASSIS_LEG_COORDINATION_PID_OUT_LIMIT 0
+#define CHASSIS_LEG_COORDINATION_PID_IOUT_LIMIT 2
+#define CHASSIS_LEG_COORDINATION_PID_OUT_LIMIT 5
 
 enum ChassisMode {
   CHASSIS_INIT,
@@ -378,12 +378,15 @@ struct Chassis {
 
   pid_t chassis_vw_pid;
   pid_t chassis_roll_pid;
+  pid_t chassis_leg_coordination_pid;
 
   struct ChassisMoveSpeedSetPoint chassis_move_speed_set_point;
   struct ChassisMoveSpeedReference chassis_move_speed_reference;
 
   fp32 mileage;
   fp32 L0_delta;
+  fp32 phi_0_error;
+  fp32 steer_compensatory_torque;
 
   struct JumpFlag jump_flag;
   enum JumpState jump_state;
