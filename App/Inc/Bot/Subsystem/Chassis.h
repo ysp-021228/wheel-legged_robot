@@ -35,6 +35,7 @@
  *******************************************************************************/
 #define MAX_CHASSIS_VX_SPEED 1.5f
 #define MAX_CHASSIS_VW_TORQUE 0.5f
+#define MAX_CHASSIS_YAW_INCREMENT 0.02f
 #define MIN_L0 0.08f
 #define MAX_L0 0.25f
 #define DEFAULT_L0 0.15f
@@ -51,7 +52,7 @@
 #define WHEEL_THETA_DOT_LIMIT  0.5f
 #define WHEEL_X_LIMIT          0.f
 #define WHEEL_X_DOT_LIMIT      1.0f
-#define WHEEL_PHI_LIMIT        1.5f
+#define WHEEL_PHI_LIMIT        2.5f
 #define WHEEL_PHI_DOT_LIMIT    1.0f
 
 #define JOINT_THETA_LIMIT      15.5f
@@ -71,6 +72,7 @@
 
 #define RC_TO_VX  (MAX_CHASSIS_VX_SPEED/660)
 #define RC_TO_VW  (MAX_CHASSIS_VW_TORQUE/660)
+#define RC_TO_YAW_INCREMENT (MAX_CHASSIS_YAW_INCREMENT/660)
 #define RC_TO_PITCH ((MAX_PITCH-MIN_PITCH)/660)
 #define RC_TO_ROLL ((MAX_ROLL-MIN_ROLL)/660)
 #define RC_TO_L0  ((MAX_L0-MIN_L0)/1320)

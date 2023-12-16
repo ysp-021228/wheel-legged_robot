@@ -61,7 +61,6 @@ extern struct Chassis chassis;
 Vector_msg vector_receive_msg;//
 TOF_msg tof_msg;
 
-//
 void CAN_cmd_motor(CAN_TYPE can_type,
                    can_msg_id_e CMD_ID,
                    int16_t motor1,
@@ -111,7 +110,6 @@ void CAN_speed_cmd_motor(CAN_TYPE can_type, can_msg_id_e CMD_ID, int32_t speed) 
     HAL_CAN_AddTxMessage(&hcan2, &tx_message, can_send_data, &send_mail_box);
   }
 }
-
 
 void CAN_msg_send(CAN_TYPE can_type, can_msg_id_e CMD_ID, Vector_msg msg) {
   uint32_t send_mail_box;
