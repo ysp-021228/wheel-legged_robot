@@ -52,8 +52,8 @@
 #define WHEEL_THETA_DOT_LIMIT  0.5f
 #define WHEEL_X_LIMIT          0.f
 #define WHEEL_X_DOT_LIMIT      1.0f
-#define WHEEL_PHI_LIMIT        2.5f
-#define WHEEL_PHI_DOT_LIMIT    1.0f
+#define WHEEL_PHI_LIMIT        1.0f
+#define WHEEL_PHI_DOT_LIMIT    0.5f
 
 #define JOINT_THETA_LIMIT      15.5f
 #define JOINT_THETA_DOT_LIMIT  20.5f
@@ -101,7 +101,7 @@
 /*******************************************************************************
  *                                PID parameters                               *
  *******************************************************************************/
-#define CHASSIS_LEG_LO_PID_P 350
+#define CHASSIS_LEG_LO_PID_P 250
 #define CHASSIS_LEG_L0_PID_I 0.2
 #define CHASSIS_LEG_L0_PID_D 5000
 #define CHASSIS_LEG_L0_PID_IOUT_LIMIT 3

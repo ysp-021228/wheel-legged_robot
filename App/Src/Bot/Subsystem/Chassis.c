@@ -25,26 +25,25 @@ fp32 wheel_K_R[6] = {0, 0, 0, 0, 0, 0};
 fp32 joint_K_R[6] = {0, 0, 0, 0, 0, 0};
 
 fp32 wheel_fitting_factor[6][4] = {
-    {-2361.378703, 533.417604, -78.573256, -1.361606},
-    {403.531949, -49.434826, -2.284191, -0.525762},
+    {-2077.811722,459.548092,-85.366531,-1.204181},
+    {487.449089,-68.204256,-2.590844,-0.539694},
 
-    {1104.470398, -130.823160, 0.725964, -1.058435},
-    {4917.008398, -691.968267, 32.249257, -1.608602},
+    {735.097452,-94.016193,1.191476,-0.550878},
+    {3199.224712,-440.079048,16.565160,-1.323022},
 
-    {10589.195631, -1602.436074, -38.131087, 17.403508},
-    {397.937443, -60.826200, -4.691224, 1.214609}
+    {6666.035405,-1196.018257,-21.834688,15.047383},
+    {340.457183,-66.032184,-3.033723,1.235905}
 };
 fp32 joint_fitting_factor[6][4] = {
-    {33344.052195, -5858.471227, 300.327116, 6.250242},
-    {1543.644435, -276.645941, 0.049815, 2.686188},
+    {47857.377282,-9091.020636,540.004050,8.047544},
+    {1634.215201,-372.460076,4.405995,4.276814},
 
-    {5804.128202, -855.893031, 8.303267, 4.651664},
-    {-14442.685975, 2185.095266, -152.660536, 7.330454},
+    {3764.751573,-603.169270,9.087959,3.566759},
+    {-7041.070127,965.184645,-95.333655,8.857653},
 
-    {-52251.267442, 5049.481724, 263.109798, 80.760909},
-    {-2419.213726, 183.622199, 25.224709, 4.734560}
+    {-60798.033064,6795.527694,234.205881,71.502195},
+    {-4124.317824,438.070410,24.097322,5.019507}
 };
-
 /*******************************************************************************
  *                                    Init                                     *
  *******************************************************************************/
@@ -311,21 +310,21 @@ static void leg_state_variable_out_get(struct Leg *leg) {
     leg->state_variable_joint_out.phi_dot = leg->state_variable_error.phi_dot * joint_K_R[5];
   }
 
-  //wheels
-  VAL_LIMIT(leg->state_variable_wheel_out.theta, -WHEEL_THETA_LIMIT, WHEEL_THETA_LIMIT);
-  VAL_LIMIT(leg->state_variable_wheel_out.theta_dot, -WHEEL_THETA_DOT_LIMIT, WHEEL_THETA_DOT_LIMIT);
-//  VAL_LIMIT(leg->state_variable_wheel_out.x, -WHEEL_X_LIMIT, WHEEL_X_LIMIT);
-  VAL_LIMIT(leg->state_variable_wheel_out.x_dot, -WHEEL_X_DOT_LIMIT, WHEEL_X_DOT_LIMIT);
-  VAL_LIMIT(leg->state_variable_wheel_out.phi, -WHEEL_PHI_LIMIT, WHEEL_PHI_LIMIT);
-  VAL_LIMIT(leg->state_variable_wheel_out.phi_dot, -WHEEL_PHI_DOT_LIMIT, WHEEL_PHI_DOT_LIMIT);
-
-  //joints
-  VAL_LIMIT(leg->state_variable_joint_out.theta, -JOINT_THETA_LIMIT, JOINT_THETA_LIMIT);
-  VAL_LIMIT(leg->state_variable_joint_out.theta_dot, -JOINT_THETA_DOT_LIMIT, JOINT_THETA_DOT_LIMIT);
-//  VAL_LIMIT(leg->state_variable_joint_out.x, -JOINT_X_LIMIT, JOINT_X_LIMIT);
-  VAL_LIMIT(leg->state_variable_joint_out.x_dot, -JOINT_X_DOT_LIMIT, JOINT_X_DOT_LIMIT);
-  VAL_LIMIT(leg->state_variable_joint_out.phi, -JOINT_PHI_LIMIT, JOINT_PHI_LIMIT);
-  VAL_LIMIT(leg->state_variable_joint_out.phi_dot, -JOINT_PHI_DOT_LIMIT, JOINT_PHI_DOT_LIMIT);
+//  //wheels
+//  VAL_LIMIT(leg->state_variable_wheel_out.theta, -WHEEL_THETA_LIMIT, WHEEL_THETA_LIMIT);
+//  VAL_LIMIT(leg->state_variable_wheel_out.theta_dot, -WHEEL_THETA_DOT_LIMIT, WHEEL_THETA_DOT_LIMIT);
+////  VAL_LIMIT(leg->state_variable_wheel_out.x, -WHEEL_X_LIMIT, WHEEL_X_LIMIT);
+//  VAL_LIMIT(leg->state_variable_wheel_out.x_dot, -WHEEL_X_DOT_LIMIT, WHEEL_X_DOT_LIMIT);
+//  VAL_LIMIT(leg->state_variable_wheel_out.phi, -WHEEL_PHI_LIMIT, WHEEL_PHI_LIMIT);
+//  VAL_LIMIT(leg->state_variable_wheel_out.phi_dot, -WHEEL_PHI_DOT_LIMIT, WHEEL_PHI_DOT_LIMIT);
+//
+//  //joints
+//  VAL_LIMIT(leg->state_variable_joint_out.theta, -JOINT_THETA_LIMIT, JOINT_THETA_LIMIT);
+//  VAL_LIMIT(leg->state_variable_joint_out.theta_dot, -JOINT_THETA_DOT_LIMIT, JOINT_THETA_DOT_LIMIT);
+////  VAL_LIMIT(leg->state_variable_joint_out.x, -JOINT_X_LIMIT, JOINT_X_LIMIT);
+//  VAL_LIMIT(leg->state_variable_joint_out.x_dot, -JOINT_X_DOT_LIMIT, JOINT_X_DOT_LIMIT);
+//  VAL_LIMIT(leg->state_variable_joint_out.phi, -JOINT_PHI_LIMIT, JOINT_PHI_LIMIT);
+//  VAL_LIMIT(leg->state_variable_joint_out.phi_dot, -JOINT_PHI_DOT_LIMIT, JOINT_PHI_DOT_LIMIT);
 }
 
 static void wheel_motors_torque_set_point_cal(struct Leg *leg) {
@@ -920,6 +919,23 @@ static void chassis_relax_handle() {
   chassis.init_flag = false;
 
   buzzer_off();
+
+  mi_motor_clear_err(&cybergears_2[LF_MOTOR_ID]);
+  osDelay(1);
+  mi_motor_clear_err(&cybergears_2[LB_MOTOR_ID]);
+  osDelay(1);
+  mi_motor_clear_err(&cybergears_2[RB_MOTOR_ID]);
+  osDelay(1);
+  mi_motor_clear_err(&cybergears_2[RF_MOTOR_ID]);
+
+  cyber_gear_enable(&cybergears_2[LF_MOTOR_ID]);
+  osDelay(1);
+  cyber_gear_enable(&cybergears_2[LB_MOTOR_ID]);
+  osDelay(1);
+  cyber_gear_enable(&cybergears_2[RB_MOTOR_ID]);
+  osDelay(1);
+  cyber_gear_enable(&cybergears_2[RF_MOTOR_ID]);
+  osDelay(1);
 }
 
 /*******************************************************************************
