@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include "chassis_algorithm.h"
 #include "struct_typedef.h"
 #include "user_lib.h"
@@ -25,10 +26,9 @@ fp32 cal_leg_theta(fp32 phi0, fp32 phi) {
   return theta;
 }
 
-
 void Matrix_multiply(int rows1, int cols1, fp32 matrix1[rows1][cols1],
-                            int rows2, int cols2, fp32 matrix2[rows2][cols2],
-                            fp32 result[rows1][cols2]) {
+                     int rows2, int cols2, fp32 matrix2[rows2][cols2],
+                     fp32 result[rows1][cols2]) {
   if (cols1 != rows2)
     return;
 
@@ -144,4 +144,23 @@ void leg_fn_cal(struct Leg *leg, fp32 az) {
               * leg->state_variable_reference.theta_dot * cosf(leg->state_variable_reference.theta);
 
   leg->Fn = P + WHEEL_WEIGHT * 9.8f + WHEEL_WEIGHT * leg->wheel.imu_reference.az;
+}
+
+bool_t is_chassis_phi_stable(struct IMUReference *imu_reference) {
+  if (ABS(imu_reference->pitch_angle) <= 0.04 && ABS(imu_reference->pitch_gyro) <= 0.08) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+bool_t is_chassis_leg_return_to_original_position(struct Chassis chassis) {
+  if (ABS(chassis.leg_L.cyber_gear_data[0].angle) <= 0.087267 &&
+      ABS(chassis.leg_L.cyber_gear_data[1].angle) <= 0.087267 &&
+      ABS(chassis.leg_R.cyber_gear_data[0].angle) <= 0.087267 &&
+      ABS(chassis.leg_R.cyber_gear_data[1].angle) <= 0.087267) {
+    return true;
+  } else {
+    return false;
+  }
 }

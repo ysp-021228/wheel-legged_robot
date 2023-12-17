@@ -20,4 +20,8 @@ void chassis_K_matrix_fitting(fp32 L0, fp32 K[6], const fp32 KL[6][4]);
 
 void leg_fn_cal(struct Leg *leg, fp32 az);
 
+bool_t is_chassis_phi_stable(struct IMUReference *imu_reference);
+
+bool_t is_chassis_leg_return_to_original_position(struct Chassis chassis);
+
 #endif //CHASSIS_ALGORITHM_H_

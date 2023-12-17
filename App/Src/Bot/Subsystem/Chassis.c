@@ -753,7 +753,7 @@ static void chassis_init_handle() {
   leg_fn_cal(&chassis.leg_L, chassis.imu_reference.robot_az);
   leg_fn_cal(&chassis.leg_R, chassis.imu_reference.robot_az);
 
-  if (ABS(chassis.imu_reference.pitch_angle) <= 0.04 && ABS(chassis.imu_reference.pitch_gyro) <= 0.08) {
+  if (is_chassis_phi_stable(&chassis.imu_reference)) {
     chassis.init_flag = true;
   } else {
     chassis.leg_L.cyber_gear_data[0].torque = 0;
