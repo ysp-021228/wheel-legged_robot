@@ -719,47 +719,55 @@ static void chassis_motor_cmd_send() {
  *                                  Subtask                                   *
  *******************************************************************************/
 static void chassis_init_handle() {
-  chassis_forward_kinematics();
+  if(is_chassis_leg_return_to_original_position(&chassis)) {
+    chassis_forward_kinematics();
 
-  chassis_K_matrix_fitting(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0 * 0.2f, wheel_K_L, wheel_fitting_factor);
-  chassis_K_matrix_fitting(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0 * 0.2f, joint_K_L, joint_fitting_factor);
-  chassis_K_matrix_fitting(chassis.leg_R.vmc.forward_kinematics.fk_L0.L0 * 0.2f, wheel_K_R, wheel_fitting_factor);
-  chassis_K_matrix_fitting(chassis.leg_R.vmc.forward_kinematics.fk_L0.L0 * 0.2f, joint_K_R, joint_fitting_factor);
+    chassis_K_matrix_fitting(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0 * 0.2f, wheel_K_L, wheel_fitting_factor);
+    chassis_K_matrix_fitting(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0 * 0.2f, joint_K_L, joint_fitting_factor);
+    chassis_K_matrix_fitting(chassis.leg_R.vmc.forward_kinematics.fk_L0.L0 * 0.2f, wheel_K_R, wheel_fitting_factor);
+    chassis_K_matrix_fitting(chassis.leg_R.vmc.forward_kinematics.fk_L0.L0 * 0.2f, joint_K_R, joint_fitting_factor);
 
-  chassis_off_ground_detection(&chassis.leg_L);
-  chassis_off_ground_detection(&chassis.leg_R);
+    chassis_off_ground_detection(&chassis.leg_L);
+    chassis_off_ground_detection(&chassis.leg_R);
 
-  leg_state_variable_reference_get(&chassis.leg_L);
-  leg_state_variable_reference_get(&chassis.leg_R);
+    leg_state_variable_reference_get(&chassis.leg_L);
+    leg_state_variable_reference_get(&chassis.leg_R);
 
-  leg_state_variable_set_point_set(&chassis.leg_L, chassis.chassis_move_speed_set_point.vx);
-  leg_state_variable_set_point_set(&chassis.leg_R, chassis.chassis_move_speed_set_point.vx);
+    leg_state_variable_set_point_set(&chassis.leg_L, chassis.chassis_move_speed_set_point.vx);
+    leg_state_variable_set_point_set(&chassis.leg_R, chassis.chassis_move_speed_set_point.vx);
 
-  leg_state_variable_error_get(&chassis.leg_L);
-  leg_state_variable_error_get(&chassis.leg_R);
+    leg_state_variable_error_get(&chassis.leg_L);
+    leg_state_variable_error_get(&chassis.leg_R);
 
-  leg_state_variable_out_get(&chassis.leg_L);
-  leg_state_variable_out_get(&chassis.leg_R);
+    leg_state_variable_out_get(&chassis.leg_L);
+    leg_state_variable_out_get(&chassis.leg_R);
 
-  chassis_motors_torque_set_point_cal(&chassis.leg_L);
-  chassis_motors_torque_set_point_cal(&chassis.leg_R);
+    chassis_motors_torque_set_point_cal(&chassis.leg_L);
+    chassis_motors_torque_set_point_cal(&chassis.leg_R);
 
-  chassis.leg_L.wheel.motor_3508.give_current = -chassis.leg_L.wheel.torque * MOTOR_3508_TORQUE_TO_DATA;
-  chassis.leg_R.wheel.motor_3508.give_current = -chassis.leg_R.wheel.torque * MOTOR_3508_TORQUE_TO_DATA;
+    chassis.leg_L.wheel.motor_3508.give_current = -chassis.leg_L.wheel.torque * MOTOR_3508_TORQUE_TO_DATA;
+    chassis.leg_R.wheel.motor_3508.give_current = -chassis.leg_R.wheel.torque * MOTOR_3508_TORQUE_TO_DATA;
 
-  vmc_inverse_solution(&chassis.leg_L);
-  vmc_inverse_solution(&chassis.leg_R);
+    vmc_inverse_solution(&chassis.leg_L);
+    vmc_inverse_solution(&chassis.leg_R);
 
-  leg_fn_cal(&chassis.leg_L, chassis.imu_reference.robot_az);
-  leg_fn_cal(&chassis.leg_R, chassis.imu_reference.robot_az);
+    leg_fn_cal(&chassis.leg_L, chassis.imu_reference.robot_az);
+    leg_fn_cal(&chassis.leg_R, chassis.imu_reference.robot_az);
 
-  if (is_chassis_phi_stable(&chassis.imu_reference)) {
-    chassis.init_flag = true;
-  } else {
-    chassis.leg_L.cyber_gear_data[0].torque = 0;
-    chassis.leg_L.cyber_gear_data[1].torque = 0;
-    chassis.leg_R.cyber_gear_data[0].torque = 0;
-    chassis.leg_R.cyber_gear_data[1].torque = 0;
+    if (is_chassis_phi_stable(&chassis.imu_reference)) {
+      chassis.init_flag = true;
+    } else {
+      chassis.leg_L.cyber_gear_data[0].torque = 0;
+      chassis.leg_L.cyber_gear_data[1].torque = 0;
+      chassis.leg_R.cyber_gear_data[0].torque = 0;
+      chassis.leg_R.cyber_gear_data[1].torque = 0;
+    }
+  }else{
+    cyber_gear_control_mode(&cybergears_2[LF_MOTOR_ID], 0, 0, 0, 2, 1);
+    cyber_gear_control_mode(&cybergears_2[LB_MOTOR_ID], 0, 0, 0, 2, 1);
+    osDelay(2);
+    cyber_gear_control_mode(&cybergears_2[RB_MOTOR_ID], 0, 0, 0, 2, 1);
+    cyber_gear_control_mode(&cybergears_2[RF_MOTOR_ID], 0, 0, 0, 2, 1);
   }
 }
 

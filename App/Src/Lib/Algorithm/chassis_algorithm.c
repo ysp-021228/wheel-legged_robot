@@ -154,11 +154,11 @@ bool_t is_chassis_phi_stable(struct IMUReference *imu_reference) {
   }
 }
 
-bool_t is_chassis_leg_return_to_original_position(struct Chassis chassis) {
-  if (ABS(chassis.leg_L.cyber_gear_data[0].angle) <= 0.087267 &&
-      ABS(chassis.leg_L.cyber_gear_data[1].angle) <= 0.087267 &&
-      ABS(chassis.leg_R.cyber_gear_data[0].angle) <= 0.087267 &&
-      ABS(chassis.leg_R.cyber_gear_data[1].angle) <= 0.087267) {
+bool_t is_chassis_leg_return_to_original_position(struct Chassis *chassis) {
+  if (ABS(chassis->leg_L.cyber_gear_data[0].angle) <= 0.087267 &&
+      ABS(chassis->leg_L.cyber_gear_data[1].angle) <= 0.087267 &&
+      ABS(chassis->leg_R.cyber_gear_data[0].angle) <= 0.087267 &&
+      ABS(chassis->leg_R.cyber_gear_data[1].angle) <= 0.087267) {
     return true;
   } else {
     return false;

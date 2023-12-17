@@ -22,6 +22,6 @@ void leg_fn_cal(struct Leg *leg, fp32 az);
 
 bool_t is_chassis_phi_stable(struct IMUReference *imu_reference);
 
-bool_t is_chassis_leg_return_to_original_position(struct Chassis chassis);
+bool_t is_chassis_leg_return_to_original_position(struct Chassis *chassis);
 
 #endif //CHASSIS_ALGORITHM_H_
