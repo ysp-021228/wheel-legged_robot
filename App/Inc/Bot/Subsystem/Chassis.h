@@ -218,6 +218,8 @@ struct StateVariable {
   fp32 theta_ddot;
   fp32 x;
   fp32 x_dot;
+  fp32 x_dot_last;
+  fp32 x_ddot;
   fp32 phi;
   fp32 phi_dot;
 

@@ -25,24 +25,24 @@ fp32 wheel_K_R[6] = {0, 0, 0, 0, 0, 0};
 fp32 joint_K_R[6] = {0, 0, 0, 0, 0, 0};
 
 fp32 wheel_fitting_factor[6][4] = {
-    {-2077.811722,459.548092,-85.366531,-1.204181},
-    {487.449089,-68.204256,-2.590844,-0.539694},
+    {-2077.811722, 459.548092, -85.366531, -1.204181},
+    {487.449089, -68.204256, -2.590844, -0.539694},
 
-    {735.097452,-94.016193,1.191476,-0.550878},
-    {3199.224712,-440.079048,16.565160,-1.323022},
+    {735.097452, -94.016193, 1.191476, -0.550878},
+    {3199.224712, -440.079048, 16.565160, -1.323022},
 
-    {6666.035405,-1196.018257,-21.834688,15.047383},
-    {340.457183,-66.032184,-3.033723,1.235905}
+    {6666.035405, -1196.018257, -21.834688, 15.047383},
+    {340.457183, -66.032184, -3.033723, 1.235905}
 };
 fp32 joint_fitting_factor[6][4] = {
-    {47857.377282,-9091.020636,540.004050,8.047544},
-    {1634.215201,-372.460076,4.405995,4.276814},
+    {47857.377282, -9091.020636, 540.004050, 8.047544},
+    {1634.215201, -372.460076, 4.405995, 4.276814},
 
-    {3764.751573,-603.169270,9.087959,3.566759},
-    {-7041.070127,965.184645,-95.333655,8.857653},
+    {3764.751573, -603.169270, 9.087959, 3.566759},
+    {-7041.070127, 965.184645, -95.333655, 8.857653},
 
-    {-60798.033064,6795.527694,234.205881,71.502195},
-    {-4124.317824,438.070410,24.097322,5.019507}
+    {-60798.033064, 6795.527694, 234.205881, 71.502195},
+    {-4124.317824, 438.070410, 24.097322, 5.019507}
 };
 /*******************************************************************************
  *                                    Init                                     *
@@ -232,10 +232,16 @@ static void leg_state_variable_reference_get(struct Leg *leg) {
 
   if (leg->leg_index == L) {
     leg->state_variable_reference.x = -leg->wheel.mileage;
+    leg->state_variable_reference.x_dot_last=leg->state_variable_reference.x_dot;
     leg->state_variable_reference.x_dot = -leg->wheel.speed;
+    leg->state_variable_reference.x_ddot=(leg->state_variable_reference.x_dot - leg->state_variable_reference.x_dot_last)
+        / (CHASSIS_PERIOD * MILLISECOND_TO_SECOND);
   } else if (leg->leg_index == R) {
     leg->state_variable_reference.x = leg->wheel.mileage;
+    leg->state_variable_reference.x_dot_last=leg->state_variable_reference.x_dot;
     leg->state_variable_reference.x_dot = leg->wheel.speed;
+    leg->state_variable_reference.x_ddot=(leg->state_variable_reference.x_dot - leg->state_variable_reference.x_dot_last)
+        / (CHASSIS_PERIOD * MILLISECOND_TO_SECOND);
   }
 
   if (leg->leg_index == L) {
@@ -719,7 +725,7 @@ static void chassis_motor_cmd_send() {
  *                                  Subtask                                   *
  *******************************************************************************/
 static void chassis_init_handle() {
-  if(is_chassis_leg_return_to_original_position(&chassis)) {
+  if (is_chassis_leg_return_to_original_position(&chassis)) {
     chassis_forward_kinematics();
 
     chassis_K_matrix_fitting(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0 * 0.2f, wheel_K_L, wheel_fitting_factor);
@@ -762,7 +768,7 @@ static void chassis_init_handle() {
       chassis.leg_R.cyber_gear_data[0].torque = 0;
       chassis.leg_R.cyber_gear_data[1].torque = 0;
     }
-  }else{
+  } else {
     cyber_gear_control_mode(&cybergears_2[LF_MOTOR_ID], 0, 0, 0, 2, 1);
     cyber_gear_control_mode(&cybergears_2[LB_MOTOR_ID], 0, 0, 0, 2, 1);
     osDelay(2);
