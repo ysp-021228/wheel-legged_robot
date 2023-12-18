@@ -94,7 +94,7 @@ static void chassis_init(struct Chassis *chassis) {
   cyber_gear_enable(&cybergears_2[RB_MOTOR_ID]);
   osDelay(1);
   cyber_gear_enable(&cybergears_2[RF_MOTOR_ID]);
-  osDelay(1);
+  osDelay(10);
 
   pid_init(&chassis->leg_L.ground_pid,
            CHASSIS_LEG_L0_PID_OUT_LIMIT,

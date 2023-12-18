@@ -147,7 +147,7 @@ void leg_fn_cal(struct Leg *leg, fp32 az) {
 }
 
 bool_t is_chassis_phi_stable(struct IMUReference *imu_reference) {
-  if (ABS(imu_reference->pitch_angle) <= 0.04 && ABS(imu_reference->pitch_gyro) <= 0.08) {
+  if (ABS(imu_reference->pitch_angle) <= 0.04 && ABS(imu_reference->pitch_gyro) <= 0.2) {
     return true;
   } else {
     return false;
