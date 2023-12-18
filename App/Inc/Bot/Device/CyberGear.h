@@ -48,6 +48,7 @@ struct CyberGearData {
   uint8_t index[2];
   uint8_t ref[4];
   float  current;
+  uint32_t last_heartbeat_timestamp_ms;
 };
 
 extern struct CyberGearData cybergears_1[MI_MOTOR_SINGLE_NUM];
