@@ -349,6 +349,7 @@ struct Wheel {
   fp32 speed;
   fp32 mileage;
   fp32 torque;
+  fp32 torque_reference;
   struct IMUReference imu_reference;
   struct Motor3508 motor_3508;
 };

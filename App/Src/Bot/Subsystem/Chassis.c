@@ -19,10 +19,10 @@ extern CAN_HandleTypeDef hcan1;
 extern CAN_HandleTypeDef hcan2;
 uint8_t rc_sw_R_last;
 
-fp32 init_wheel_K_L[6] = {-4.757075,-0.854886,-0.704344,-0.778771,4.951081,0.715452};
-fp32 init_wheel_K_R[6] = {-4.757075,-0.854886,-0.704344,-0.778771,4.951081,0.715452};
-fp32 init_joint_K_L[6] = {12.440470,2.843801,2.270682,2.512329,55.461206,7.761029};
-fp32 init_joint_K_R[6] = {12.440470,2.843801,2.270682,2.512329,55.461206,7.761029};
+fp32 init_wheel_K_L[6] = {-4.719899, -0.475045, -1.109075, -0.777302, 0.580200, 0.100575};
+fp32 init_wheel_K_R[6] = {-4.719899, -0.475045, -1.109075, -0.777302, 0.580200, 0.100575};
+fp32 init_joint_K_L[6] = {2.472615, 0.271866, 0.893388, 0.576950, 19.930258, 2.988647};
+fp32 init_joint_K_R[6] = {2.472615, 0.271866, 0.893388, 0.576950, 19.930258, 2.988647};
 
 fp32 wheel_K_L[6] = {0, 0, 0, 0, 0, 0};
 fp32 joint_K_L[6] = {0, 0, 0, 0, 0, 0};
@@ -179,6 +179,8 @@ static void chassis_imu_info_update() {
 static void chassis_motor_info_update() {
   chassis.leg_L.wheel.speed = -motor_3508_measure[0].speed_rpm * BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED;
   chassis.leg_R.wheel.speed = -motor_3508_measure[1].speed_rpm * BALANCE_RATIO_DEGREE_TO_WHEEL_SPEED;
+  chassis.leg_L.wheel.torque_reference = -motor_3508_measure[0].given_current / MOTOR_3508_TORQUE_TO_DATA;
+  chassis.leg_R.wheel.torque_reference = -motor_3508_measure[1].given_current / MOTOR_3508_TORQUE_TO_DATA;
   chassis.leg_L.wheel.mileage =
       chassis.leg_L.wheel.mileage + CHASSIS_PERIOD * MILLISECOND_TO_SECOND * (chassis.leg_L.wheel.speed);
   chassis.leg_R.wheel.mileage =
