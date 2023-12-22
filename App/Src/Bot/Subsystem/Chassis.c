@@ -979,6 +979,13 @@ static void chassis_relax_handle() {
 
   buzzer_off();
 
+  pid_reset(&chassis.chassis_roll_pid, CHASSIS_ROLL_PID_P, CHASSIS_ROLL_PID_I, CHASSIS_ROLL_PID_D);
+  pid_reset(&chassis.chassis_vw_pid, CHASSIS_VW_PID_P, CHASSIS_VW_PID_I, CHASSIS_VW_PID_D);
+  pid_reset(&chassis.chassis_leg_coordination_pid,
+            CHASSIS_LEG_COORDINATION_PID_P,
+            CHASSIS_LEG_COORDINATION_PID_I,
+            CHASSIS_LEG_COORDINATION_PID_D);
+
   mi_motor_clear_err(&cybergears_2[LF_MOTOR_ID]);
   osDelay(1);
   mi_motor_clear_err(&cybergears_2[LB_MOTOR_ID]);

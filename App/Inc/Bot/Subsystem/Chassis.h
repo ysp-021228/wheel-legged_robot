@@ -39,10 +39,10 @@
 #define MIN_L0 0.08f
 #define MAX_L0 0.25f
 #define DEFAULT_L0 0.15f
-#define MAX_PITCH 0.35f
-#define MIN_PITCH -0.35f
-#define MAX_ROLL 0.17f
-#define MIN_ROLL -0.17f
+#define MAX_PITCH 0.174533f
+#define MIN_PITCH -0.174533f
+#define MAX_ROLL 0.12f
+#define MIN_ROLL -0.12f
 #define MAX_WHEEL_TORQUE 5.f
 #define MIN_WHEEL_TORQUE -5.f
 #define MAX_JOINT_TORQUE 7.f
@@ -101,7 +101,7 @@
 /*******************************************************************************
  *                                PID parameters                               *
  *******************************************************************************/
-#define CHASSIS_LEG_LO_PID_P 250
+#define CHASSIS_LEG_LO_PID_P 150
 #define CHASSIS_LEG_L0_PID_I 0.2
 #define CHASSIS_LEG_L0_PID_D 5000
 #define CHASSIS_LEG_L0_PID_IOUT_LIMIT 3
@@ -125,13 +125,13 @@
 //#define CHASSIS_VW_PID_IOUT_LIMIT 0.2
 //#define CHASSIS_VW_PID_OUT_LIMIT 0.5
 
-#define CHASSIS_ROLL_PID_P 0.2
-#define CHASSIS_ROLL_PID_I 0.0015
-#define CHASSIS_ROLL_PID_D 2
+#define CHASSIS_ROLL_PID_P 0.6
+#define CHASSIS_ROLL_PID_I 0.002
+#define CHASSIS_ROLL_PID_D 8
 #define CHASSIS_ROLL_PID_IOUT_LIMIT 0.05
 #define CHASSIS_ROLL_PID_OUT_LIMIT 0.2
 
-#define CHASSIS_LEG_COORDINATION_PID_P 2
+#define CHASSIS_LEG_COORDINATION_PID_P 8
 #define CHASSIS_LEG_COORDINATION_PID_I 0.0
 #define CHASSIS_LEG_COORDINATION_PID_D 0
 #define CHASSIS_LEG_COORDINATION_PID_IOUT_LIMIT 2
