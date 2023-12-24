@@ -31,24 +31,24 @@ fp32 wheel_K_R[6] = {0, 0, 0, 0, 0, 0};
 fp32 joint_K_R[6] = {0, 0, 0, 0, 0, 0};
 
 fp32 wheel_fitting_factor[6][4] = {
-    {-1793.712433, 416.863107, -76.717631, -1.156107},
-    {487.068415, -64.969479, -2.359367, -0.536741},
+    {-1026.539445,250.007792,-53.354010,-0.760730},
+    {326.984638,-47.476121,-1.143226,-0.300432},
 
-    {725.609278, -92.289010, 1.053623, -0.547176},
-    {3161.178353, -438.486194, 17.859215, -1.171387},
+    {840.386975,-111.142053,1.917940,-0.528179},
+    {2685.203282,-376.789643,15.943527,-0.869791},
 
-    {6667.352760, -1200.768898, -22.305850, 15.024291},
-    {342.953565, -66.697632, -3.073512, 1.226440}
+    {3618.116320,-713.125462,-8.722191,8.781339},
+    {139.054011,-33.722045,-1.852369,0.742604}
 };
 fp32 joint_fitting_factor[6][4] = {
-    {43024.974012, -8099.244919, 468.237734, 7.869602},
-    {1703.699673, -371.034424, 2.176818, 4.266913},
+    {46828.918699,-9141.300077,548.650738,9.287037},
+    {1569.865685,-397.956601,6.725213,4.414161},
 
-    {3687.753125, -592.959107, 8.329151, 3.588302},
-    {-10154.069852, 1449.481727, -114.582256, 7.987524},
+    {6798.468194,-1130.522687,21.506062,6.309383},
+    {-17188.845780,2450.227481,-177.338239,10.949754},
 
-    {-60435.496563, 6720.527940, 240.382558, 71.605266},
-    {-3971.366470, 415.035527, 25.023108, 5.069617}
+    {-71464.105745,8626.705770,174.265458,68.528311},
+    {-4505.208778,516.022004,22.777077,4.715065}
 };
 /*******************************************************************************
  *                                    Init                                     *
@@ -282,7 +282,7 @@ static void leg_state_variable_error_get(struct Leg *leg) {
   }
 
   leg->state_variable_error.x = leg->state_variable_reference.x - leg->state_variable_set_point.x;
-  VAL_LIMIT(leg->state_variable_error.x, -0.05, 0.05);
+//  VAL_LIMIT(leg->state_variable_error.x, -0.1, 0.1);
   leg->state_variable_error.x_dot = leg->state_variable_reference.x_dot - leg->state_variable_set_point.x_dot;
   leg->state_variable_error.theta = leg->state_variable_reference.theta - leg->state_variable_set_point.theta;
   leg->state_variable_error.theta_dot =
@@ -466,10 +466,10 @@ static void chassis_ctrl_info_get() {
   chassis.chassis_move_speed_set_point.vx = (float) (get_rc_ctrl().rc.ch[CHASSIS_X_CHANNEL]) * RC_TO_VX;
 //    chassis.chassis_move_speed_set_point.vw = (float) (get_rc_ctrl().rc.ch[CHASSIS_Z_CHANNEL]) * -RC_TO_VW;
   chassis.imu_set_point.yaw -= (float) (get_rc_ctrl().rc.ch[CHASSIS_Z_CHANNEL]) * -RC_TO_YAW_INCREMENT;
-  if (chassis.imu_set_point.yaw >= 180) {
-    chassis.imu_set_point.yaw -= 360;
-  } else if (chassis.imu_set_point.yaw <= -180) {
-    chassis.imu_set_point.yaw += 360;
+  if (chassis.imu_set_point.yaw >= PI) {
+    chassis.imu_set_point.yaw -= 2*PI;
+  } else if (chassis.imu_set_point.yaw <= -PI) {
+    chassis.imu_set_point.yaw += 2*PI;
   }
 
   chassis.imu_set_point.pitch = (float) (get_rc_ctrl().rc.ch[CHASSIS_PIT_CHANNEL]) * RC_TO_PITCH;
