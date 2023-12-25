@@ -19,10 +19,10 @@ extern CAN_HandleTypeDef hcan1;
 extern CAN_HandleTypeDef hcan2;
 uint8_t rc_sw_R_last;
 
-fp32 init_wheel_K_L[6] = {-3.462473,-0.275274,-0.240808,-0.290170,0.240408,0.050661};
-fp32 init_wheel_K_R[6] = {-3.462473,-0.275274,-0.240808,-0.290170,0.240408,0.050661};
-fp32 init_joint_K_L[6] = {0.700426,0.038837,0.050144,0.055549,0.805145,0.176428};
-fp32 init_joint_K_R[6] = {0.700426,0.038837,0.050144,0.055549,0.805145,0.176428};
+fp32 init_wheel_K_L[6] = {-3.462473, -0.275274, -0.240808, -0.290170, 0.240408, 0.050661};
+fp32 init_wheel_K_R[6] = {-3.462473, -0.275274, -0.240808, -0.290170, 0.240408, 0.050661};
+fp32 init_joint_K_L[6] = {0.700426, 0.038837, 0.050144, 0.055549, 0.805145, 0.176428};
+fp32 init_joint_K_R[6] = {0.700426, 0.038837, 0.050144, 0.055549, 0.805145, 0.176428};
 
 fp32 wheel_K_L[6] = {0, 0, 0, 0, 0, 0};
 fp32 joint_K_L[6] = {0, 0, 0, 0, 0, 0};
@@ -31,24 +31,24 @@ fp32 wheel_K_R[6] = {0, 0, 0, 0, 0, 0};
 fp32 joint_K_R[6] = {0, 0, 0, 0, 0, 0};
 
 fp32 wheel_fitting_factor[6][4] = {
-    {-1026.539445,250.007792,-53.354010,-0.760730},
-    {326.984638,-47.476121,-1.143226,-0.300432},
+    {-1011.973162, 205.891794, -51.990130, -0.816575},
+    {295.819732, -49.757780, -1.156901, -0.277667},
 
-    {840.386975,-111.142053,1.917940,-0.528179},
-    {2685.203282,-376.789643,15.943527,-0.869791},
+    {1325.935878, -187.488799, 4.987205, -0.668164},
+    {3373.101743, -480.871683, 20.463444, -1.015208},
 
-    {3618.116320,-713.125462,-8.722191,8.781339},
-    {139.054011,-33.722045,-1.852369,0.742604}
+    {1024.651547, -314.622321, -8.563741, 6.561355},
+    {-66.639272, -3.930818, -2.022788, 0.637302}
 };
 fp32 joint_fitting_factor[6][4] = {
-    {46828.918699,-9141.300077,548.650738,9.287037},
-    {1569.865685,-397.956601,6.725213,4.414161},
+    {39108.037835, -7801.811178, 506.614735, 8.438491},
+    {455.503233, -227.278755, 7.148530, 3.767256},
 
-    {6798.468194,-1130.522687,21.506062,6.309383},
-    {-17188.845780,2450.227481,-177.338239,10.949754},
+    {7213.337382, -1226.907642, 34.055066, 6.457887},
+    {-15935.813908, 2232.077974, -156.473365, 10.634943},
 
-    {-71464.105745,8626.705770,174.265458,68.528311},
-    {-4505.208778,516.022004,22.777077,4.715065}
+    {-32334.636763, 4317.031008, 104.682186, 31.191821},
+    {-1969.728767, 248.478883, 17.458928, 2.255648}
 };
 /*******************************************************************************
  *                                    Init                                     *
@@ -400,6 +400,10 @@ static void wheel_motors_torque_set_point_cal(struct Leg *leg) {
   }
 
   leg->wheel.torque += chassis.chassis_move_speed_set_point.vw;
+  if (chassis.jump_state == STRETCHING || chassis.jump_state == SHRINKING || chassis.jump_state == STRETCHING_AGAIN
+      || chassis.jump_state == FALLING) {
+    leg->wheel.torque = 0;
+  }
 
   VAL_LIMIT(leg->wheel.torque, MIN_WHEEL_TORQUE, MAX_WHEEL_TORQUE);
 
@@ -467,9 +471,9 @@ static void chassis_ctrl_info_get() {
 //    chassis.chassis_move_speed_set_point.vw = (float) (get_rc_ctrl().rc.ch[CHASSIS_Z_CHANNEL]) * -RC_TO_VW;
   chassis.imu_set_point.yaw -= (float) (get_rc_ctrl().rc.ch[CHASSIS_Z_CHANNEL]) * -RC_TO_YAW_INCREMENT;
   if (chassis.imu_set_point.yaw >= PI) {
-    chassis.imu_set_point.yaw -= 2*PI;
+    chassis.imu_set_point.yaw -= 2 * PI;
   } else if (chassis.imu_set_point.yaw <= -PI) {
-    chassis.imu_set_point.yaw += 2*PI;
+    chassis.imu_set_point.yaw += 2 * PI;
   }
 
   chassis.imu_set_point.pitch = (float) (get_rc_ctrl().rc.ch[CHASSIS_PIT_CHANNEL]) * RC_TO_PITCH;
@@ -829,10 +833,10 @@ static void chassis_jump_handle() {
       chassis.leg_L.ground_pid.p = 200;
       chassis.leg_R.ground_pid.p = 200;
 
-      if ((ABS(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0_dot) <= 0.02f
-          && ABS(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0 - chassis.leg_L.L0_set_point) <= 0.03)
-          && (ABS(chassis.leg_R.vmc.forward_kinematics.fk_L0.L0_dot) <= 0.02f
-              && ABS(chassis.leg_R.vmc.forward_kinematics.fk_L0.L0 - chassis.leg_R.L0_set_point) <= 0.03f)) {
+      if ((ABS(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0_dot) <= 0.03f
+          && ABS(chassis.leg_L.vmc.forward_kinematics.fk_L0.L0 - chassis.leg_L.L0_set_point) <= 0.07)
+          && (ABS(chassis.leg_R.vmc.forward_kinematics.fk_L0.L0_dot) <= 0.03f
+              && ABS(chassis.leg_R.vmc.forward_kinematics.fk_L0.L0 - chassis.leg_R.L0_set_point) <= 0.07f)) {
         buzzer_on(5, 1000);
         if (switch_is_mid(get_rc_ctrl().rc.s[RC_s_L])) {
           chassis.jump_state = STRETCHING;
@@ -876,8 +880,8 @@ static void chassis_jump_handle() {
     case STRETCHING_AGAIN:chassis.leg_L.L0_set_point = DEFAULT_L0;
       chassis.leg_R.L0_set_point = DEFAULT_L0;
 
-      chassis.leg_L.ground_pid.p = 1000;
-      chassis.leg_R.ground_pid.p = 1000;
+      chassis.leg_L.ground_pid.p = 2000;
+      chassis.leg_R.ground_pid.p = 2000;
 
       if (chassis.imu_reference.robot_az <= -5) {
         chassis.jump_state = FALLING;
