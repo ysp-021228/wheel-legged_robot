@@ -1,3 +1,41 @@
+
+
+​                                                                                                                                                                                                     **分数：**    
+
+
+
+![image-20240102122848165](C:\Users\11367\AppData\Roaming\Typora\typora-user-images\image-20240102122848165.png)
+
+
+
+<div style="text-align: center;font-size: 35px;">     深圳技术大学项目实践课程报告 </div>
+
+
+
+
+
+
+
+<div style="text-align: center;font-size: 25px;">     课程名称：           项目实践                  </div>
+
+<div style="text-align: center;font-size: 25px;"> 课程编号：           IB00037                   </div>
+
+<div style="text-align: center;font-size: 25px;"> 任课教师：            孙瑞泽                  </div>
+
+<div style="text-align: center;font-size: 25px;">学 生：    杨松坪    学 号：  202002010227    </div>
+
+<div style="text-align: center;font-size: 25px;">班    级：            物联网工程2班         
+
+<div style="text-align: center;font-size: 25px;">报告/实践地点：       大数据与互联网学院      </div>
+
+<div style="text-align: center;font-size: 25px;">报告/实践时间：  2024 年  1  月 2 日   星期 二  </div>
+
+<div style="text-align: center;font-size: 25px;">提交时间：     2024 年  1  月 2 日            </div>
+
+
+
+<div style="page-break-before: always;"></div>
+
 # 目录
 
 - [项目背景与项目内容](#项目背景与项目内容)
@@ -27,11 +65,21 @@
       - [LQR](#LQR)
       - [VMC](#VMC)
     - [控制逻辑及代码](#控制逻辑及代码)
-  - [机器人离地检测](#机器人离地检测)
-    - [驱动轮竖直加速度求解](#驱动轮竖直加速度求解)
-    - [支持力解算](#支持力解算)
-    - [实机测试](#实机测试)
-    - [控制逻辑及代码](#控制逻辑及代码)
+  - [跳跃功能](#跳跃功能)
+    - [跳跃过程](#跳跃过程)
+  - [项目部署与测试](#项目部署与测试)
+    - [功能测试](#功能测试)
+    - [遥控测试](#遥控测试)
+    - [传感器测试](#传感器测试)
+    - [负载和耐久测试](#负载和耐久测试)
+    - [安全性测试](#安全性测试)
+    - [温度和环境测试](#温度和环境测试)
+- [参考文献](#参考文献)
+- [总结与感悟](#总结与感悟)
+
+
+
+<div style="page-break-before: always;"></div>
 
 # 项目背景与项目内容
 ## 项目背景
@@ -58,17 +106,18 @@
 **抗干扰**：遇到持续外力和突发冲撞能保持稳定。
 **跳跃**：能够稳定跳跃。
 
-
+<div style="page-break-before: always;"></div>
 
 # 轮腿机器人相关说明
 
 ## 整机图片
 
-<img src="picture/f1f453ee73a97a37a0b2060098c7de4.jpg" alt="GitHub Logo" style="zoom: 200%;" />
+![](D:\Github\wheel-legged_robot\picture\整机图片.jpg)
 
 ## 正方向定义
 
-<img src="picture/Positive_direction_specification.jpg" alt="GitHub Logo" style="zoom: 33%;" />
+
+![GitHub Logo](picture/Positive_direction_specification.jpg)
 
 ## 底盘结构体从属关系
 
@@ -79,7 +128,10 @@
 
 机器人左右两腿皆从左视图参照正方向定义中控制两腿，参考示意图：
 
-<img src="picture/Control_specification.jpg" alt="GitHub Logo" style="zoom:33%;" />
+
+![GitHub Logo](picture/Control_specification.jpg)
+
+<div style="page-break-before: always;"></div>
 
 # 项目系统与功能设计
 
@@ -125,16 +177,20 @@
 |    单腿    | 0.715 | kg  |
 |    车体    | 2.839 | kg  |
 
+<div style="page-break-before: always;"></div>
+
 ## 硬件设计
 
 ### 整机硬件框图
 
-<img src="picture/硬件框图.png" alt="GitHub Logo" style="zoom: 67%;" />
+![GitHub Logo](picture/硬件框图.png)
 
 
 ​	整车电源由电池提供，电池直接连接中心板再分流到各电机以及主控板，可以有效保护主控板。机器人主要执行器都是用CAN通信，整机一共使用2个CAN网络。  
 
 ​	轮子驱动电机电子调速器CAN总线直接连接主控板，接入CAN1网络；关节电机发送扩展帧优先级较低，为了避免丢失数据，将四个关节电机单独接入CAN2网络，并通过中心板连接主控板。
+
+<div style="page-break-before: always;"></div>
 
 ## 软件设计
 
@@ -142,13 +198,17 @@
 
 ​	机器人的主控程序采用相同的驱动层和整体架构。主控程序以 FreeRTOS 作为片上操作系统，实现多线程间的调度和通信。FreeRTOS 操作系统是一个轻量级的操作系统，提供了线程管理、时间管理、内存管理等。
 
-<img src="picture/系统架构.png" alt="GitHub Logo" style="zoom: 67%;" />
+![GitHub Logo](picture/系统架构.png)
 
 ​	系统以FreeRTOS为片上操作系统，底层的外设驱动涉及 UART、CAN、IIC、GPIO、SPI、FLASH等。顶层应用层包含 Task 和 Module 两方面，Task 中主要为与系统运行相关的线程，Module 主要为系统运行过程所需要使用的算法(控制算法、解算算法、滤波算法等)和工具（遥控器、传感器等）。
 
+<div style="page-break-before: always;"></div>
+
 ### 运行流程
 
-<img src="picture/运行流程.png" alt="GitHub Logo" style="zoom: 67%;" />
+![GitHub Logo](picture/运行流程.png)
+
+<div style="page-break-before: always;"></div>
 
 ### 底盘任务流程 
 
@@ -157,10 +217,14 @@
 
 ​	腿部控制处理中，chassis_forward_kinematics()先结算处虚拟腿姿态；chassis_K_matrix_fitting()根据虚拟腿长进行LQR的K矩阵拟合；off_ground_detection()根据腿部支持力判断是否离线以及进行离线处理；jump_handle()在接到跳跃命令之后进行跳跃处理；state_variable_reference相关函数进行状态变量的期望、反馈、误差获取并在motors_torque_cal()中计算电机期望转矩；vmc_inverse_solution()进行运动学和动力学逆解；最后fn_cal()进行支持力计算。
 
+<div style="page-break-before: always;"></div>
+
 ### 离线检测任务流程
 
-<img src="picture/离线监测任务流程.png" alt="GitHub Logo"  />
+![GitHub Logo](picture/离线监测任务流程.png)
 	detect_task是用来检测离线设备的任务。任务开始时，detect_device_init()对被检设备进行初始化，设置离线判断的时间阈值并默认设备离线。初始化完毕后进入循环体。每次循环开始会初始化最高警告等级和离线设备数量，接着检测每个设备离线间隔时间是否超过对应设备的间隔阈值，超过的标记为离线，并且记录最高警告等级。offline_remind()中根据最高离线等级和离线设备数量，利用蜂鸣器和RGB灯发出提醒信息。
+
+<div style="page-break-before: always;"></div>
 
 ## 功能设计
 
@@ -199,15 +263,17 @@ Pitch、Yaw、Roll三轴自由度调节，并配合腿部控制完成Z轴升降�
 ![GitHub Logo](picture/control/原地跳跃.jpg)
 ![GitHub Logo](picture/control/跳上台阶.jpg)
 
+<div style="page-break-before: always;"></div>
+
 # 项目关键技术与实现
+
 ​	本部分将主要介绍机器人的平衡与运动控制和跳跃功能的实验，平衡与运动控制中分为系统建模和控制器设计，控制器设计中涉及到LQR和VMC。
 ## 机器人运动和控制
 ### 系统建模
 #### 模型定义
-
 以下只对单腿模型做分析，轮腿倒摆模型如下图：
 
-<img src="picture/模型定义.jpg" alt="GitHub Logo" style="zoom: 50%;" />
+![GitHub Logo](picture/模型定义.jpg)
 
 **模型变量**
 
@@ -306,10 +372,9 @@ x= \begin{bmatrix}
   \end{bmatrix}
 $$
 
-根据(1.4)、(1.5)、(1.7)、(1.8)消去中间变量$P,N,P_M,N_M$,之后可以用Jacobian函数求$A、B$阵。
+根据(1.4)、(1.5)、(1.7)、(1.8)消去中间变量$P,N,P_M,N_M$,之后可以用Jacobian函数求AB阵。
 
 ### 控制器设计
-
 #### LQR
 ​	LQR (外文名linear quadratic regulator)即线性二次型调节器，LQR可得到状态线性反馈的最优控制规律，易于构成闭环最优控制。LQR最优控制利用廉价成本可以使原系统达到较好的性能指标(事实也可以对不稳定的系统进行整定) ，而且方法简单便于实现。  
 
@@ -329,8 +394,8 @@ $$
 将腿部五连杆机构进行简化：
 
 ![GitHub Logo](picture/五连杆机构.png)
-其中A、E两转动副为髋关节，由CyberGear电机驱动，B、D两点为膝关节，无动力。
-VMC控制的关键在与五连杆机构末端驱动轮C点的位置，和沿虚拟腿方向的推力和沿重心轴的力矩。
+	其中A、E两转动副为髋关节，由CyberGear电机驱动，B、D两点为膝关节，无动力。
+	VMC控制的关键在与五连杆机构末端驱动轮C点的位置，和沿虚拟腿方向的推力和沿重心轴的力矩。
 
 **解出C点极坐标**
 $\phi_1、\phi_4$角度可以由关节电机编码器直接获取。
@@ -422,63 +487,522 @@ $$
 
 则得到了沿虚拟腿方向的推力$F$和沿重心轴的力矩$T_p$,与两关节电机转矩$T_1、T_2$的关系。
 
-## 机器人离地检测
+### 控制逻辑及代码
+**运行学正解**
+该部分可以通过两个关节电机的角度反馈解出虚拟腿长$L_0$以及虚拟关节角度$\phi_0$，以左腿为例：
+```C
+chassis.leg_L.vmc.forward_kinematics.fk_point_coordinates.b_x =
+      cosf(chassis.leg_L.vmc.forward_kinematics.fk_phi.phi1) * L1;
+  chassis.leg_L.vmc.forward_kinematics.fk_point_coordinates.b_y =
+      sinf(chassis.leg_L.vmc.forward_kinematics.fk_phi.phi1) * L1;
+  chassis.leg_L.vmc.forward_kinematics.fk_point_coordinates.d_x =
+      cosf(chassis.leg_L.vmc.forward_kinematics.fk_phi.phi4) * L4
+          + L5;
+  chassis.leg_L.vmc.forward_kinematics.fk_point_coordinates.d_y =
+      sinf(chassis.leg_L.vmc.forward_kinematics.fk_phi.phi4) * L4;
 
-​	离地检测功能用来检测机器人是否离开地面，轮足机器人在离地情况下无法保持自身姿态稳定，若没有检测离地状态，会因为在空中无法控制姿态而让系统输入异常，因此离地检测是必要的。
+  fp32 L_A0 = (chassis.leg_L.vmc.forward_kinematics.fk_point_coordinates.d_x
+      - chassis.leg_L.vmc.forward_kinematics.fk_point_coordinates.b_x) * 2.f * L2;
+  fp32 L_B0 = (chassis.leg_L.vmc.forward_kinematics.fk_point_coordinates.d_y
+      - chassis.leg_L.vmc.forward_kinematics.fk_point_coordinates.b_y) * 2.f * L2;
+  fp32 L_BD_sq = (chassis.leg_L.vmc.forward_kinematics.fk_point_coordinates.d_x
+      - chassis.leg_L.vmc.forward_kinematics.fk_point_coordinates.b_x)
+      * (chassis.leg_L.vmc.forward_kinematics.fk_point_coordinates.d_x
+          - chassis.leg_L.vmc.forward_kinematics.fk_point_coordinates.b_x)
+      + (chassis.leg_L.vmc.forward_kinematics.fk_point_coordinates.d_y
+          - chassis.leg_L.vmc.forward_kinematics.fk_point_coordinates.b_y)
+          * (chassis.leg_L.vmc.forward_kinematics.fk_point_coordinates.d_y
+              - chassis.leg_L.vmc.forward_kinematics.fk_point_coordinates.b_y);
+  fp32 L_C0 = L2 * L2 + L_BD_sq - L3 * L3;
 
-​	其中支持力解算是离地检测中最关键的部分。
+  fp32 temp = L_A0 * L_A0 + L_B0 * L_B0 - L_C0 * L_C0;
+  fp32 y = L_B0 + sqrtf(ABS(temp));
+  fp32 x = L_A0 + L_C0;
+  chassis.leg_L.vmc.forward_kinematics.fk_phi.phi2 = 2.0f * atan2f(y, x);
 
-### 驱动轮竖直加速度求解
+  chassis.leg_L.vmc.forward_kinematics.fk_point_coordinates.c_x =
+      L1 * cos(chassis.leg_L.vmc.forward_kinematics.fk_phi.phi1)
+          + L2 * cos(chassis.leg_L.vmc.forward_kinematics.fk_phi.phi2);
+  chassis.leg_L.vmc.forward_kinematics.fk_point_coordinates.c_y =
+      L1 * sin(chassis.leg_L.vmc.forward_kinematics.fk_phi.phi1)
+          + L2 * sin(chassis.leg_L.vmc.forward_kinematics.fk_phi.phi2);
+  y = chassis.leg_L.vmc.forward_kinematics.fk_point_coordinates.c_y
+      - chassis.leg_L.vmc.forward_kinematics.fk_point_coordinates.d_y;
+  x = chassis.leg_L.vmc.forward_kinematics.fk_point_coordinates.c_x
+      - chassis.leg_L.vmc.forward_kinematics.fk_point_coordinates.d_x;
+  chassis.leg_L.vmc.forward_kinematics.fk_phi.phi3 = atan2f(y, x);
 
-先由加速度计测量值结合姿态矩阵消去重力加速度，设定Roll轴偏转角度为$\alpha$，求机体竖直方向运动加速度$\ddot z_M$：
-$$
-\left\{
-\begin{array}{l}
-\ddot x_{filtered}=\ddot x_{imu}-g\sin{\phi}\\
-\ddot y_{filtered}=\ddot y_{imu}-g\cos{\phi}\sin{\alpha}\\
-\ddot z_{filtered}=\ddot z_{imu}-g\cos{\phi}\cos{\alpha}\\
-\end{array}
-\right.\\
-\ddot z_M=\ddot x_{filtered}\sin{phi}+\ddot y_{filtered}\sin{(-\alpha)}\cos{\phi}+\ddot z_{filtered}\cos{\phi}\cos{\alpha}
-$$
-求驱动轮竖直方向加速度$\ddot z_w$：
-$$
-\begin{align*}
-\ddot z_w&=\frac{d^2}{dt^2}(z_M-L_0\cos{\theta})\\
-&=\frac{d}{dt}(\dot z_M-\dot L_0\cos{\theta}+L_0\dot \theta \sin{\theta})\\
-&=\ddot z_M -\ddot L_0 \cos{\theta} +2\dot L_0 \dot \theta \sin{\theta}+L_0 \ddot \theta \sin{\theta}+L_0\dot \theta^2\cos{\theta}
-\end{align*}
-$$
+  temp = (chassis.leg_L.vmc.forward_kinematics.fk_point_coordinates.c_x - L5 * 0.5f)
+      * (chassis.leg_L.vmc.forward_kinematics.fk_point_coordinates.c_x - L5 * 0.5f)
+      + chassis.leg_L.vmc.forward_kinematics.fk_point_coordinates.c_y
+          * chassis.leg_L.vmc.forward_kinematics.fk_point_coordinates.c_y;
+  chassis.leg_L.vmc.forward_kinematics.fk_L0.L0_last = chassis.leg_L.vmc.forward_kinematics.fk_L0.L0;
+  chassis.leg_L.vmc.forward_kinematics.fk_L0.L0 = sqrtf(ABS(temp));
+  chassis.leg_L.vmc.forward_kinematics.fk_L0.L0_dot_last = chassis.leg_L.vmc.forward_kinematics.fk_L0.L0_dot;
+  chassis.leg_L.vmc.forward_kinematics.fk_L0.L0_dot =
+      (chassis.leg_L.vmc.forward_kinematics.fk_L0.L0 - chassis.leg_L.vmc.forward_kinematics.fk_L0.L0_last)
+          / (CHASSIS_PERIOD * MILLISECOND_TO_SECOND);
+  chassis.leg_L.vmc.forward_kinematics.fk_L0.L0_ddot =
+      (chassis.leg_L.vmc.forward_kinematics.fk_L0.L0_dot - chassis.leg_L.vmc.forward_kinematics.fk_L0.L0_dot_last)
+          / (CHASSIS_PERIOD * MILLISECOND_TO_SECOND);
+  y = chassis.leg_L.vmc.forward_kinematics.fk_point_coordinates.c_y;
+  x = chassis.leg_L.vmc.forward_kinematics.fk_point_coordinates.c_x - L5 * 0.5f;
+  chassis.leg_L.vmc.forward_kinematics.fk_phi.phi0 = atan2f(y, x);
+```
 
-### 支持力解算
+**K矩阵拟合**
+该通过运动学正解得到的实时虚拟腿长拟合出该状态下的K矩阵：
+```C
+void chassis_K_matrix_fitting(fp32 L0, fp32 K[6], const fp32 KL[6][4]) {
+  for (int i = 0; i < 6; i++) {
+    K[i] = KL[i][0] * powf(L0, 3) + KL[i][1] * powf(L0, 2) + KL[i][2] * powf(L0, 1) + KL[i][3] * powf(L0, 0);
+  }
+}
+```
 
-对于驱动轮竖直方向使用牛顿第二定律：
-$$
-F_N-F\cos{\theta}-\frac{T_p\sin{\theta}}{L_0}-m_wg=m_w\ddot z_w
-$$
-则$F_N$：
-$$
-F_N=F\cos{\theta}+\frac{T_p\sin{\theta}}{L_0}+m_wg+m_w\ddot z_w
-$$
+**状态变量反馈获取**
+该部分获取LQR控制所需的状态变量实时反馈值、期望值、误差值：
+```C
+static void leg_state_variable_reference_get(struct Leg *leg) {
+  if (leg == NULL) {
+    return;
+  }
+  leg->state_variable_reference.theta_last = leg->state_variable_reference.theta;
 
-### 实机测试
+  if (leg->leg_index == L) {
+    leg->state_variable_reference.theta =
+        cal_leg_theta(leg->vmc.forward_kinematics.fk_phi.phi0, -chassis.imu_reference.pitch_angle);
+  } else if (leg->leg_index == R) {
+    leg->state_variable_reference.theta =
+        cal_leg_theta(leg->vmc.forward_kinematics.fk_phi.phi0, -chassis.imu_reference.pitch_angle);
+  }
 
-将机器人从台阶落下，观察双腿支持力变化情况：
+  leg->state_variable_reference.theta_dot_last = leg->state_variable_reference.theta_dot;
+  leg->state_variable_reference.theta_dot =
+      (leg->state_variable_reference.theta - leg->state_variable_reference.theta_last)
+          / (CHASSIS_PERIOD * MILLISECOND_TO_SECOND);
+  leg->state_variable_reference.theta_ddot =
+      (leg->state_variable_reference.theta_dot - leg->state_variable_reference.theta_dot_last)
+          / (CHASSIS_PERIOD * MILLISECOND_TO_SECOND);
 
-![台阶落下](C:\Users\11367\Documents\GitHub\wheel-legged_robot\picture\离地图片.jpg)
+  if (leg->leg_index == L) {
+    leg->state_variable_reference.x = -leg->wheel.mileage;
+    leg->state_variable_reference.x_dot = -leg->wheel.speed;
+  } else if (leg->leg_index == R) {
+    leg->state_variable_reference.x = leg->wheel.mileage;
+    leg->state_variable_reference.x_dot = leg->wheel.speed;
+  }
 
-![支持力变化图片](C:\Users\11367\Documents\GitHub\wheel-legged_robot\picture\支持力图片.jpg)
+  if (leg->leg_index == L) {
+    leg->state_variable_reference.phi = -chassis.imu_reference.pitch_angle;
+    leg->state_variable_reference.phi_dot = -chassis.imu_reference.pitch_gyro;
+  } else if (leg->leg_index == R) {
+    leg->state_variable_reference.phi = -chassis.imu_reference.pitch_angle;
+    leg->state_variable_reference.phi_dot = -chassis.imu_reference.pitch_gyro;
+  }
+  //todo 对位移处理，提高刹车性能
+}
 
-观察到冲击瞬间支持力会上升到20以上，离地时为保险起见将支持力判定阈值改为3N。
+static void leg_state_variable_set_point_set(struct Leg *leg, fp32 vx) {
+  if (leg == NULL) {
+    return;
+  }
 
-## 机器人跳跃
+  leg->state_variable_set_point.x = 0;
+  leg->state_variable_set_point.x_dot = vx;
+  leg->state_variable_set_point.theta = 0;
+  leg->state_variable_set_point.theta_dot = 0;
+  leg->state_variable_set_point.phi = chassis.imu_set_point.pitch;
+  leg->state_variable_set_point.phi_dot = 0;
+}
+
+static void leg_state_variable_error_get(struct Leg *leg) {
+  if (leg == NULL) {
+    return;
+  }
+
+  leg->state_variable_error.x = leg->state_variable_reference.x - leg->state_variable_set_point.x;
+  leg->state_variable_error.x_dot = leg->state_variable_reference.x_dot - leg->state_variable_set_point.x_dot;
+  leg->state_variable_error.theta = leg->state_variable_reference.theta - leg->state_variable_set_point.theta;
+  leg->state_variable_error.theta_dot =
+      leg->state_variable_reference.theta_dot - leg->state_variable_set_point.theta_dot;
+  leg->state_variable_error.phi = leg->state_variable_reference.phi - leg->state_variable_set_point.phi;
+  leg->state_variable_error.phi_dot = leg->state_variable_reference.phi_dot - leg->state_variable_set_point.phi_dot;
+}
+```
+
+**电机期望转矩获取**
+该部分计算电机期望转矩，其中关节电机加入了腿长控制，将腿长的期望和反馈输入pid控制器中，输出沿腿方向的力，并加入车体重力前馈：
+
+```C
+
+static void wheel_motors_torque_set_point_cal(struct Leg *leg) {
+  if (leg == NULL) {
+    return;
+  }
+  if (leg->leg_index == L) {
+    leg->wheel.torque = 0;
+    leg->wheel.torque += leg->state_variable_error.theta * wheel_K_L[0];//
+    leg->wheel.torque += leg->state_variable_error.theta_dot * wheel_K_L[1];//
+    leg->wheel.torque += leg->state_variable_error.x * wheel_K_L[2];
+    leg->wheel.torque += leg->state_variable_error.x_dot * wheel_K_L[3];
+    leg->wheel.torque += leg->state_variable_error.phi * wheel_K_L[4];//
+    leg->wheel.torque += leg->state_variable_error.phi_dot * wheel_K_L[5];
+  } else if (leg->leg_index == R) {
+    leg->wheel.torque = 0;
+    leg->wheel.torque += leg->state_variable_error.theta * wheel_K_R[0];//
+    leg->wheel.torque += leg->state_variable_error.theta_dot * wheel_K_R[1];//
+    leg->wheel.torque += leg->state_variable_error.x * wheel_K_R[2];
+    leg->wheel.torque += leg->state_variable_error.x_dot * wheel_K_R[3];
+    leg->wheel.torque += leg->state_variable_error.phi * wheel_K_R[4];//
+    leg->wheel.torque += leg->state_variable_error.phi_dot * wheel_K_R[5];
+  }
+  if (leg->leg_index == R) {
+    leg->wheel.torque *= -1;
+  }
+
+  leg->wheel.torque += chassis.chassis_move_speed_set_point.vw;
+
+  VAL_LIMIT(leg->wheel.torque, MIN_WHEEL_TORQUE, MAX_WHEEL_TORQUE);
+
+}
+
+static void joint_motors_torque_set_point_cal() {
+  chassis.leg_L.vmc.Fxy_set_point.E.Tp_set_point = 0;
+  chassis.leg_R.vmc.Fxy_set_point.E.Tp_set_point = 0;
+//R
+  chassis.leg_R.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_R.state_variable_error.theta * joint_K_R[0];//
+  chassis.leg_R.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_R.state_variable_error.theta_dot * joint_K_R[1];//
+  chassis.leg_R.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_R.state_variable_error.x * joint_K_R[2];//
+  chassis.leg_R.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_R.state_variable_error.x_dot * joint_K_R[3];//
+  chassis.leg_R.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_R.state_variable_error.phi * joint_K_R[4];//
+  chassis.leg_R.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_R.state_variable_error.phi_dot * joint_K_R[5];//
+//L
+  chassis.leg_L.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_L.state_variable_error.theta * joint_K_L[0];//
+  chassis.leg_L.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_L.state_variable_error.theta_dot * joint_K_L[1];//
+  chassis.leg_L.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_L.state_variable_error.x * joint_K_L[2];//
+  chassis.leg_L.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_L.state_variable_error.x_dot * joint_K_L[3];//
+  chassis.leg_L.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_L.state_variable_error.phi * joint_K_L[4];//
+  chassis.leg_L.vmc.Fxy_set_point.E.Tp_set_point += chassis.leg_L.state_variable_error.phi_dot * joint_K_L[5];//
+
+  pid_calc(&chassis.leg_L.ground_pid, chassis.leg_L.vmc.forward_kinematics.fk_L0.L0, chassis.leg_L.L0_set_point);
+  chassis.leg_L.vmc.Fxy_set_point.E.Fy_set_point = chassis.leg_L.ground_pid.out + BODY_WEIGHT * GRAVITY_A * 0.5;
+
+  pid_calc(&chassis.leg_R.ground_pid, chassis.leg_R.vmc.forward_kinematics.fk_L0.L0, chassis.leg_R.L0_set_point);
+  chassis.leg_R.vmc.Fxy_set_point.E.Fy_set_point = chassis.leg_R.ground_pid.out + BODY_WEIGHT * GRAVITY_A * 0.5;
+
+  VMC_positive_dynamics(&chassis.leg_R.vmc);
+  VMC_positive_dynamics(&chassis.leg_L.vmc);
+
+  chassis.leg_L.cyber_gear_data[2].torque = chassis.leg_L.vmc.Fxy_set_point.E.Tp_set_point;
+  chassis.leg_L.cyber_gear_data[0].torque = chassis.leg_L.vmc.T1_T4_set_point.E.T1_set_point;//F
+  chassis.leg_L.cyber_gear_data[1].torque = chassis.leg_L.vmc.T1_T4_set_point.E.T4_set_point;//B
+
+  chassis.leg_R.cyber_gear_data[2].torque = chassis.leg_R.vmc.Fxy_set_point.E.Tp_set_point;
+  chassis.leg_R.cyber_gear_data[0].torque = chassis.leg_R.vmc.T1_T4_set_point.E.T1_set_point;//F
+  chassis.leg_R.cyber_gear_data[1].torque = chassis.leg_R.vmc.T1_T4_set_point.E.T4_set_point;//B
+
+  VAL_LIMIT(chassis.leg_R.cyber_gear_data[0].torque, MIN_JOINT_TORQUE, MAX_JOINT_TORQUE);
+  VAL_LIMIT(chassis.leg_R.cyber_gear_data[1].torque, MIN_JOINT_TORQUE, MAX_JOINT_TORQUE);
+  VAL_LIMIT(chassis.leg_L.cyber_gear_data[0].torque, MIN_JOINT_TORQUE, MAX_JOINT_TORQUE);
+  VAL_LIMIT(chassis.leg_L.cyber_gear_data[1].torque, MIN_JOINT_TORQUE, MAX_JOINT_TORQUE);
+}
+
+```
+
+**动力学逆解**
+该部分通过雅可比矩阵求得沿虚拟腿方向的推力$F$和沿重心轴的力矩$T_p$,与两关节电机转矩$T_1、T_2$的关系，求出关节电机的期望转矩：
+```C
+void Vmc_Negative_Dynamics(struct VMC *vmc, fp32 T1, fp32 T4) {
+  if (vmc == NULL) {
+    return;
+  }
+  vmc->T1_T4_fdb.E.T1_fdb = T1;
+  vmc->T1_T4_fdb.E.T4_fdb = T4;
+
+  vmc->J_T_to_F.E.x1_1 =
+      vmc->forward_kinematics.fk_L0.L0 * sinf(vmc->forward_kinematics.fk_phi.phi0 - vmc->forward_kinematics.fk_phi.phi2)
+          / (L1 * sinf(vmc->forward_kinematics.fk_phi.phi1 - vmc->forward_kinematics.fk_phi.phi2));
+  vmc->J_T_to_F.E.x1_2 =
+      vmc->forward_kinematics.fk_L0.L0 * sinf(vmc->forward_kinematics.fk_phi.phi0 - vmc->forward_kinematics.fk_phi.phi3)
+          / (L4 * sinf(vmc->forward_kinematics.fk_phi.phi4 - vmc->forward_kinematics.fk_phi.phi3));
+  vmc->J_T_to_F.E.x2_1 = cosf(vmc->forward_kinematics.fk_phi.phi0 - vmc->forward_kinematics.fk_phi.phi2)
+      / (L1 * sin(vmc->forward_kinematics.fk_phi.phi2 - vmc->forward_kinematics.fk_phi.phi1));
+  vmc->J_T_to_F.E.x2_2 = cosf(vmc->forward_kinematics.fk_phi.phi0 - vmc->forward_kinematics.fk_phi.phi3)
+      / (L4 * sinf(vmc->forward_kinematics.fk_phi.phi3 - vmc->forward_kinematics.fk_phi.phi4));
+
+  Matrix_multiply(2, 2, vmc->J_T_to_F.array, 2, 1, vmc->T1_T4_fdb.array, vmc->Fxy_fdb.array);
+}
+
+void Vmc_Negative_Kinematics(struct VMC *vmc, fp32 w1, fp32 w4) {
+  if (vmc == NULL) {
+    return;
+  }
+  vmc->W_fdb.E.w1_fdb = w1;
+  vmc->W_fdb.E.w4_fdb = w4;
+
+  vmc->J_w_to_v.E.x1_1 = (L1 * sinf(vmc->forward_kinematics.fk_phi.phi0) * sinf(vmc->forward_kinematics.fk_phi.phi3)
+      * sinf(vmc->forward_kinematics.fk_phi.phi1 - vmc->forward_kinematics.fk_phi.phi2)
+      - L4 * cosf(vmc->forward_kinematics.fk_phi.phi0) * sinf(vmc->forward_kinematics.fk_phi.phi2)
+          * sinf(vmc->forward_kinematics.fk_phi.phi3 - vmc->forward_kinematics.fk_phi.phi4))
+      / sinf(vmc->forward_kinematics.fk_phi.phi2 - vmc->forward_kinematics.fk_phi.phi3);
+  vmc->J_w_to_v.E.x1_2 = (L1 * cosf(vmc->forward_kinematics.fk_phi.phi0) * sinf(vmc->forward_kinematics.fk_phi.phi3)
+      * sinf(vmc->forward_kinematics.fk_phi.phi1 - vmc->forward_kinematics.fk_phi.phi2)
+      + L4 * sinf(vmc->forward_kinematics.fk_phi.phi0) * sinf(vmc->forward_kinematics.fk_phi.phi2)
+          * sinf(vmc->forward_kinematics.fk_phi.phi3 - vmc->forward_kinematics.fk_phi.phi4))
+      / sinf(vmc->forward_kinematics.fk_phi.phi2 - vmc->forward_kinematics.fk_phi.phi3);
+  vmc->J_w_to_v.E.x2_1 = (-L1 * sinf(vmc->forward_kinematics.fk_phi.phi0) * cosf(vmc->forward_kinematics.fk_phi.phi3)
+      * sinf(vmc->forward_kinematics.fk_phi.phi1 - vmc->forward_kinematics.fk_phi.phi2)
+      + L4 * cosf(vmc->forward_kinematics.fk_phi.phi0) * cosf(vmc->forward_kinematics.fk_phi.phi2)
+          * sinf(vmc->forward_kinematics.fk_phi.phi3 - vmc->forward_kinematics.fk_phi.phi4))
+      / sinf(vmc->forward_kinematics.fk_phi.phi2 - vmc->forward_kinematics.fk_phi.phi3);
+  vmc->J_w_to_v.E.x2_2 = -(L1 * cosf(vmc->forward_kinematics.fk_phi.phi0) * cosf(vmc->forward_kinematics.fk_phi.phi3)
+      * sinf(vmc->forward_kinematics.fk_phi.phi1 - vmc->forward_kinematics.fk_phi.phi2) * L4
+      * sinf(vmc->forward_kinematics.fk_phi.phi0) * cosf(vmc->forward_kinematics.fk_phi.phi2)
+      * sinf(vmc->forward_kinematics.fk_phi.phi3 - vmc->forward_kinematics.fk_phi.phi4))
+      / sinf(vmc->forward_kinematics.fk_phi.phi2 - vmc->forward_kinematics.fk_phi.phi3);
+
+  Matrix_multiply(2, 2, vmc->J_w_to_v.array, 2, 1, vmc->W_fdb.array, vmc->V_fdb.array);
+  vmc->V_fdb.E.w0_fdb /= vmc->forward_kinematics.fk_L0.L0;
+}
+```
+
+**支持力计算**
+该部分计算腿部受到的支持力：
+
+```C
+void leg_fn_cal(struct Leg *leg, fp32 az) {
+  if (leg == NULL) {
+    return;
+  }
+  fp32 P;
+  P = leg->vmc.Fxy_fdb.E.Tp_fdb * sinf(leg->state_variable_reference.theta) / leg->vmc.forward_kinematics.fk_L0.L0
+      + leg->vmc.Fxy_fdb.E.Fy_fdb * cosf(leg->state_variable_reference.theta);
+
+  leg->wheel.imu_reference.az =
+      az - leg->vmc.forward_kinematics.fk_L0.L0_ddot * cosf(leg->state_variable_reference.theta)
+          + 2 * leg->vmc.forward_kinematics.fk_L0.L0_dot * leg->state_variable_reference.theta_dot
+              * sinf(leg->state_variable_reference.theta)
+          + leg->vmc.forward_kinematics.fk_L0.L0 * leg->state_variable_reference.theta_ddot
+              * sinf(leg->state_variable_reference.theta)
+          + leg->vmc.forward_kinematics.fk_L0.L0 * leg->state_variable_reference.theta_dot
+              * leg->state_variable_reference.theta_dot * cosf(leg->state_variable_reference.theta);
+
+  leg->Fn = P + WHEEL_WEIGHT * 9.8f + WHEEL_WEIGHT * leg->wheel.imu_reference.az;
+}
+```
+
+<div style="page-break-before: always;"></div>
+
+## 腿长控制
+
+机器人的$z$轴自由度和$roll$轴自由度需要改变机器人腿长，机器人的腿长控制主要为一个PIDF（Proportional-Integral-Derivative-Feedforward）控制器实现。
+
+机器人两腿各有一个PIDF控制器，分别控制两腿的虚拟长度，两腿长度配合变化可以改变整车高度和$roll$轴角度等。
+
+### 控制逻辑及代码
+
+**输入期望腿长（Reference）：** 设置期望的腿长作为控制系统的期望值。
+
+**输入实际腿长（Feedback）：** 获取实际腿长的反馈信息。
+
+**误差计算：** 计算期望腿长和实际腿长之间的误差。
+
+**PID控制器：** 通过比例（P）、积分（I）、微分（D）三个环节计算控制输出。
+
+**前馈控制：** 将重力值作为前馈输入，以提前补偿系统。
+
+**输出支持力：** 将PID控制器的输出和前馈控制的输出相结合，得到最终的支持力输出。
+
+```c
+pid_calc(&chassis.leg_L.ground_pid, chassis.leg_L.vmc.forward_kinematics.fk_L0.L0, chassis.leg_L.L0_set_point);
+chassis.leg_L.vmc.Fxy_set_point.E.Fy_set_point = chassis.leg_L.ground_pid.out + BODY_WEIGHT * GRAVITY_A * 0.5;
+
+pid_calc(&chassis.leg_R.ground_pid, chassis.leg_R.vmc.forward_kinematics.fk_L0.L0, chassis.leg_R.L0_set_point);
+chassis.leg_R.vmc.Fxy_set_point.E.Fy_set_point = chassis.leg_R.ground_pid.out + BODY_WEIGHT * GRAVITY_A * 0.5;
+```
+
+<div style="page-break-before: always;"></div>
+
+## 跳跃功能
+
+机器人跳跃功能主要仿造人类原地跳跃过程，主要控通过制腿长的瞬间变化实现跳跃功能，跳跃过程中涉及到的控制都为上文介绍中的共能作为基础。
+
+### 跳跃过程
+
+机器人在模仿人类原地跳跃中，分为以下五个过程：
+
+跳跃准备 -> 起跳 -> 空中收腿 -> 空中伸腿 -> 落地缓冲
+
+**跳跃准备：**机器人压缩双腿，达到目标虚拟腿长后准备跳跃。
+
+**起跳：**机器人腿部瞬间发力，改变虚拟腿长至几乎最大长度，提供极大的向上加速度。
+
+**空中收腿：**机器人在空中收腿，提高自己的越障能力。
+
+**空中伸腿：**机器人在收腿完成之后伸腿，准备给落地的冲击提供缓冲的行程。
+
+**落地缓冲：**机器人触地之后调整腿部力度，完成落地缓冲。
+
+<div style="page-break-before: always;"></div>
+
+# 项目部署与测试
+
+机器人在完成代码编写之后进入了测试阶段，测试内容有：**功能测试**、**遥控测试**、**传感器测试**、**负载和耐久测试**、**安全性测试**、**温度和环境测试**
+
+以下为测试结果：
+
+## 功能测试
+
+确保机器人能够执行其设计的基本功能。包括检查各个传感器、执行器、控制系统等组件的正常工作，并验证机器人是否按照预期执行各项任务。
+
+**机器人能完美完成项目内容中预设的功能和技术点。**
+
+## 遥控测试
+
+验证遥控设备对机器人的有效控制。确保遥控器能够正确发送指令，并机器人能够正确响应。
+
+**在遥控接收机连接稳定且遥控信号强度正常的情况下，机器人能正确响应遥控器的指令。**
+
+## 传感器测试
+
+验证机器人的传感器性能，包括IMU、轮子驱动电机、关节电机中的传感器等。测试其对环境变化的敏感性和准确性。
+
+**机器人IMU噪声可接受，温漂正常，5分钟内漂移不超过0.017453$rad$。轮子驱动电机做历程计连续滚动1$m$误差小于5$cm$，作为状态反馈可以接受。关节电机力矩反馈正常。所有电机的角度反馈和速度反馈误差均可接受。**
+
+## 负载和耐久测试
+
+确保机器人能够承受其设计负载范围内的工作。进行长时间运行测试，以评估机器人的耐久性和可靠性。
+
+**机器人在间断静止和运动状态下承载2L水持续30$min$，没有出现过热现象，工作正常。机器人在1$m$高度跌落可以保持稳定，机器人连续摔倒并且滚下台阶等突发或持续冲击情况下，可以保持稳定初始化并重新恢复平衡状态。**
+
+**在冲击过程中偶发电池接触不良，会导致关节电机通信错误，需要重新上电。**
+
+**机器人机械结构在一周维护一次的频率下没有损坏情况。大多磨损出现在轮子轴承上，正常补充润滑油即可。**
+
+## 安全性测试
+
+ 测试机器人的安全性能，包括紧急停止功能、安全防护等。确保机器人在与人或其他物体交互时不会造成危险。
+
+**机器人遥控设有紧急停止，开启紧急停止状态时，机器人将会将所有电机瞬间失能。机器人在检测到遥控离线时也会触发遥控离线状态，从而让整机失能。机器人所有电机均有过温保护，超过设定温度机器人该电机将会停止工作。**
+
+## 温度和环境测试
+
+在不同温度和地面环境下测试机器人的性能。确保机器人在各种环境中都能正常工作。
+
+**机器人在室外温度25℃时连续工作一小时没有任何电机出现过温保护，未做低温测试。机器人能够行驶在瓷砖地面、胶地、草地、柏油路等大多数常见路面，其中瓷砖地面若摩擦系数较小，在大加速度下可能发生打滑。机器人在不跳跃的情况下可以跨越起伏不超过轮子半径一半的障碍，跳跃可跨越高度不超过15$cm$的障碍。**
+
+<div style="page-break-before: always;"></div>
+
+# 参考文献
+
+[1]黄荣舟,李炳川,陈果,等.轮腿式移动机器人的设计与研究[J].机械, 2015, 42(8):6.DOI:10.3969/j.issn.1006-0316.2015.08.011.
+
+[2]于红英,唐德威,王建宇.平面五杆机构运动学和动力学特性分析[J].哈尔滨工业大学学报,2007(06):940-943.
+
+[3]谢惠祥. 四足机器人对角小跑步态虚拟模型直觉控制方法研究[D].国防科学技术大学,2015.
+
+[4]范凯越,陆志国,马一平,等.一种双形态轮腿复合式平衡车:CN202221194382.2[P].CN218368048U[2023-12-05].
+
+[5]张志强.基于STM32的双轮平衡车[J].电子设计工程, 2011, 19(13):4.DOI:10.3969/j.issn.1674-6236.2011.13.032.
+
+[6]刘斌,荣学文,柴汇.基于虚拟模型控制的四足机器人缓冲策略[J].机器人, 2016(6).DOI:10.13973/j.cnki.robot.2016.0659.
+
+[7]Dawn Tilbury, Bill Messner, Rick Hill. Control Tutorials for MATLAB and Simulink CTMS. http://ctms.engin.umich.edu/CTMS/index.php?aux=Home.
+
+[8]V. Klemm et al., "Ascento: A Two-Wheeled Jumping Robot," 2019 International Conference on Robotics and Automation (ICRA), 2019, pp. 7515-7521, doi: 10.1109/ICRA.2019.8793792.
+
+[9]S. Wang et al., "Balance Control of a Novel Wheel-legged Robot: Design and Experiments," 2021 IEEE International Conference on Robotics and Automation (ICRA), 2021, pp. 6782-6788, doi: 10.1109/ICRA48506.2021.9561579.
+
+[10] Tuna S E .LQR-Based Coupling Gain for Synchronization of Linear Systems.2008[2023-12-05].DOI:10.48550/arXiv.0801.3390.
+
+<div style="page-break-before: always;"></div>
+
+# 总结与感悟
+
+在轮腿机器人的研发过程中，我完成了基本运动、自由度控制和跳跃等关键功能的设计与开发，经历了从虚拟直腿仿真到五连杆仿真再到实机调试的漫长而挑战性的研发阶段。这一过程不仅让我对机器人技术的前沿有了更为深刻的认识，也让我深感科技创新的力量。
+
+首先，基本运动是轮腿机器人的核心之一。通过运动控制的研发，我深刻理解了轮腿移动机器人中，如何有效地实现轮式和腿式运动的切换与协同工作。这不仅对机器人在各种地形中的适应性提出了更高要求，同时也展现了轮腿机器人在未来机器人领域的广阔应用前景。
+
+其次，自由度控制是实现机器人灵活动作和高效运动的关键。在自由度控制的研发中，我深入了解了如何通过合理的控制策略，使机器人能够在复杂环境中做出更为精准和高效的动作。这不仅对于机器人在特定任务中的表现至关重要，也对其在各种实际应用场景中的灵活性提出了更高的要求。
+
+更令人振奋的是，跳跃功能的研发让我亲眼见证了机器人在动作表现上的巨大潜力。通过研发跳跃功能，我体会到了如何在保证稳定性的前提下，使机器人在空中完成复杂的动作。这为机器人在需要跨越障碍物或迅速变换位置的任务中展现了更为广泛的应用前景。
+
+在研发过程中，我首先通过虚拟直腿仿真建立了基本的运动框架，然后逐步演进到五连杆仿真，最终转化为实机调试。这个过程不仅考验了我的理论水平，更锻炼了我的动手实践能力。与此同时，虚拟仿真环境的使用使得我能够更灵活地验证设计方案，提前发现潜在问题，为后续的实机调试奠定了坚实的基础。
+
+总体而言，轮腿机器人的研发过程是一场挑战与收获并存的旅程。参与其中，不仅深化了我对机器人技术的理解，更让我亲身感受到科技创新的喜悦。这段经历激发了我对未来机器人技术发展的热情，同时也为我未来的学术和职业生涯奠定了坚实的基础。
 
 
 
-## 机器人启动处理
+<div style="page-break-before: always;"></div>
 
-机器人从使能状态到启动状态中，主要会遇到腿部姿态错误和启动打滑的问题，针对这两个问题进行了一些处理。
+**指导教师批阅意见：**
 
-### 腿部姿态处理
+ 
 
-机器人在初始状态腿部可能处在错误位置，在此种情况下无法正常工作，需要先进行复位，
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+
+
+
+
+
+
+
+ 
+
+ 
+
+
+
+ 
+
+
+
+
+
+**成绩评定：**
+
+ 
+
+<table>
+  <tr style="height:50px; text-align:center;">
+    <td><div style="text-align: center;">
+    <strong> 平时成绩（40分）</strong>
+</div></td>
+    <td><div style="text-align: center;">
+    <strong> 项目实践展示（30分）</strong>
+</div></td>
+    <td><div style="text-align: center;">
+    <strong> 项目总结报告（30分）</strong>
+</div></td>
+    <td><div style="text-align: center;">
+    <strong> 总分</strong>
+</div></td>
+  </tr>
+  <tr style="height:50px;">
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+</table>
+
+​                      														教师签字：
+
+​                    																		 年      月      日  

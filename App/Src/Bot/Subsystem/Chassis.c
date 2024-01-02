@@ -671,22 +671,22 @@ static void chassis_relax_judge() {
 static void chassis_off_ground_handle(struct Leg *leg) {
   if (leg->leg_index == L) {
     for (int i = 0; i < 6; i++) {
-      joint_K_L[i] *= 0.2f;
+      joint_K_L[i] *= 0.4f;
     }
     for (int i = 0; i < 6; i++) {
       wheel_K_L[i] = 0;
     }
-    for (int i = 0; i < 6; i++) {
+    for (int i = 2; i < 6; i++) {
       joint_K_L[i] = 0;
     }
   } else if (leg->leg_index == R) {
     for (int i = 0; i < 6; i++) {
-      joint_K_R[i] *= 0.2f;
+      joint_K_R[i] *= 0.4f;
     }
     for (int i = 0; i < 6; i++) {
       wheel_K_R[i] = 0;
     }
-    for (int i = 0; i < 6; i++) {
+    for (int i = 2; i < 6; i++) {
       joint_K_R[i] = 0;
     }
   }
